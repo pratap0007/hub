@@ -50,7 +50,7 @@ func main() {
 		categorySvc category.Service
 	)
 	{
-		categorySvc = hub.NewCategory(logger)
+		categorySvc = hub.NewCategory(api)
 	}
 
 	// Wrap the services in endpoints that can be invoked from other services
