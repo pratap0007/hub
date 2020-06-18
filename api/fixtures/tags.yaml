@@ -1,0 +1,23 @@
+- id: 1
+  name: ab
+  category_id: 2
+  created_at: 2016-01-01 12:30:12
+  updated_at: 2016-01-01 12:30:12
+
+- id: 2
+  name: bc
+  category_id: 3
+  created_at: 2016-01-01 12:30:12
+  updated_at: 2016-01-01 12:30:12
+
+- id: 3
+  name: cd
+  category_id: 1
+  created_at: 2016-01-01 12:30:12
+  updated_at: 2016-01-01 12:30:12
+
+- id: 4
+  name: df
+  category_id: 2
+  created_at: 2016-01-01 12:30:12
+  updated_at: 2016-01-01 12:30:12

@@ -1,7 +1,9 @@
 package design
+
 import (
 	. "goa.design/goa/v3/dsl"
 )
+
 var Category = Type("category", func() {
 	Attribute("id", UInt, "unique id of category", func() {
 		Example("id", 1)

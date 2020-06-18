@@ -2,15 +2,14 @@ package model
 
 import (
 	"github.com/jinzhu/gorm"
-	"gopkg.in/gormigrate.v1"
 	"github.com/tektoncd/hub/api/pkg/app"
-
+	"gopkg.in/gormigrate.v1"
 )
 
 // Migrate create tables and populates master tables
 func Migrate(api *app.ApiConfig) error {
 
-	logger :=api.Logger()
+	logger := api.Logger()
 
 	// NOTE: If writing a migration for a new table then add the same in InitSchema
 	migration := gormigrate.New(api.DB(), gormigrate.DefaultOptions, []*gormigrate.Migration{
@@ -71,17 +70,17 @@ func Migrate(api *app.ApiConfig) error {
 	return nil
 }
 
-// Initilise category table with data and associate to tag table
+// Initialize category table with data and associate to tag table
 func initialiseTables(db *gorm.DB) {
 	var categories = map[string][]string{
-		"Others":         []string{},
-		"Build Tools":    []string{"build-tool"},
-		"CLI":            []string{"cli"},
-		"Cloud":          []string{"gcp", "aws", "azure", "cloud"},
-		"Deploy":         []string{"deploy"},
-		"Image Build":    []string{"image-build"},
-		"Notification":   []string{"notification"},
-		"Test Framework": []string{"test"},
+		"Others":         {},
+		"Build Tools":    {"build-tool"},
+		"CLI":            {"cli"},
+		"Cloud":          {"gcp", "aws", "azure", "cloud"},
+		"Deploy":         {"deploy"},
+		"Image Build":    {"image-build"},
+		"Notification":   {"notification"},
+		"Test Framework": {"test"},
 	}
 
 	for name, tags := range categories {

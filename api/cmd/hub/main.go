@@ -9,11 +9,12 @@ import (
 	"os/signal"
 	"strings"
 	"sync"
+
 	"go.uber.org/zap"
 
 	category "github.com/tektoncd/hub/api/gen/category"
-	hub "github.com/tektoncd/hub/api/pkg/service"
 	app "github.com/tektoncd/hub/api/pkg/app"
+	hub "github.com/tektoncd/hub/api/pkg/service"
 )
 
 func main() {

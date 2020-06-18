@@ -7,6 +7,7 @@ import (
 	"os"
 	"sync"
 	"time"
+
 	"go.uber.org/zap"
 
 	category "github.com/tektoncd/hub/api/gen/category"
