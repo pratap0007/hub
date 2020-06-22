@@ -14,6 +14,7 @@ import (
 	"os"
 
 	categoryc "github.com/tektoncd/hub/api/gen/http/category/client"
+	resourceversionsc "github.com/tektoncd/hub/api/gen/http/resourceversions/client"
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
 )
@@ -24,12 +25,14 @@ import (
 //
 func UsageCommands() string {
 	return `category all
+resourceversions resourceversionsdetail
 `
 }
 
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` category all` + "\n" +
+		os.Args[0] + ` resourceversions resourceversionsdetail --resource-id 2080206299815314743` + "\n" +
 		""
 }
 
@@ -46,9 +49,17 @@ func ParseEndpoint(
 		categoryFlags = flag.NewFlagSet("category", flag.ContinueOnError)
 
 		categoryAllFlags = flag.NewFlagSet("all", flag.ExitOnError)
+
+		resourceversionsFlags = flag.NewFlagSet("resourceversions", flag.ContinueOnError)
+
+		resourceversionsResourceversionsdetailFlags          = flag.NewFlagSet("resourceversionsdetail", flag.ExitOnError)
+		resourceversionsResourceversionsdetailResourceIDFlag = resourceversionsResourceversionsdetailFlags.String("resource-id", "REQUIRED", "id of resource")
 	)
 	categoryFlags.Usage = categoryUsage
 	categoryAllFlags.Usage = categoryAllUsage
+
+	resourceversionsFlags.Usage = resourceversionsUsage
+	resourceversionsResourceversionsdetailFlags.Usage = resourceversionsResourceversionsdetailUsage
 
 	if err := flag.CommandLine.Parse(os.Args[1:]); err != nil {
 		return nil, nil, err
@@ -67,6 +78,8 @@ func ParseEndpoint(
 		switch svcn {
 		case "category":
 			svcf = categoryFlags
+		case "resourceversions":
+			svcf = resourceversionsFlags
 		default:
 			return nil, nil, fmt.Errorf("unknown service %q", svcn)
 		}
@@ -86,6 +99,13 @@ func ParseEndpoint(
 			switch epn {
 			case "all":
 				epf = categoryAllFlags
+
+			}
+
+		case "resourceversions":
+			switch epn {
+			case "resourceversionsdetail":
+				epf = resourceversionsResourceversionsdetailFlags
 
 			}
 
@@ -116,6 +136,13 @@ func ParseEndpoint(
 				endpoint = c.All()
 				data = nil
 			}
+		case "resourceversions":
+			c := resourceversionsc.NewClient(scheme, host, doer, enc, dec, restore)
+			switch epn {
+			case "resourceversionsdetail":
+				endpoint = c.Resourceversionsdetail()
+				data, err = resourceversionsc.BuildResourceversionsdetailPayload(*resourceversionsResourceversionsdetailResourceIDFlag)
+			}
 		}
 	}
 	if err != nil {
@@ -145,5 +172,30 @@ Get all Categories with their tags sorted by name
 
 Example:
     `+os.Args[0]+` category all
+`, os.Args[0])
+}
+
+// resourceversionsUsage displays the usage of the resourceversions command and
+// its subcommands.
+func resourceversionsUsage() {
+	fmt.Fprintf(os.Stderr, `The category service gives category details
+Usage:
+    %s [globalflags] resourceversions COMMAND [flags]
+
+COMMAND:
+    resourceversionsdetail: Get all versions information of a resource by resourceId
+
+Additional help:
+    %s resourceversions COMMAND --help
+`, os.Args[0], os.Args[0])
+}
+func resourceversionsResourceversionsdetailUsage() {
+	fmt.Fprintf(os.Stderr, `%s [flags] resourceversions resourceversionsdetail -resource-id INT
+
+Get all versions information of a resource by resourceId
+    -resource-id INT: id of resource
+
+Example:
+    `+os.Args[0]+` resourceversions resourceversionsdetail --resource-id 2080206299815314743
 `, os.Args[0])
 }

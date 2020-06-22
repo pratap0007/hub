@@ -13,6 +13,7 @@ import (
 	"go.uber.org/zap"
 
 	category "github.com/tektoncd/hub/api/gen/category"
+	resourceversions "github.com/tektoncd/hub/api/gen/resourceversions"
 	app "github.com/tektoncd/hub/api/pkg/app"
 	hub "github.com/tektoncd/hub/api/pkg/service"
 )
@@ -48,19 +49,24 @@ func main() {
 
 	// Initialize the services.
 	var (
-		categorySvc category.Service
+		categorySvc         category.Service
+		resourceversionsSvc resourceversions.Service
 	)
 	{
 		categorySvc = hub.NewCategory(api)
+		resourceversionsSvc = hub.NewResourceversions(api)
+
 	}
 
 	// Wrap the services in endpoints that can be invoked from other services
 	// potentially running in different processes.
 	var (
-		categoryEndpoints *category.Endpoints
+		categoryEndpoints         *category.Endpoints
+		resourceversionsEndpoints *resourceversions.Endpoints
 	)
 	{
 		categoryEndpoints = category.NewEndpoints(categorySvc)
+		resourceversionsEndpoints = resourceversions.NewEndpoints(resourceversionsSvc)
 
 	}
 
@@ -101,7 +107,7 @@ func main() {
 			} else if u.Port() == "" {
 				u.Host += ":80"
 			}
-			handleHTTPServer(ctx, u, categoryEndpoints, &wg, errc, logger, *dbgF)
+			handleHTTPServer(ctx, u, categoryEndpoints, resourceversionsEndpoints, &wg, errc, logger, *dbgF)
 		}
 
 	default:

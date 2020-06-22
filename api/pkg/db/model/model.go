@@ -50,9 +50,11 @@ type (
 	ResourceVersion struct {
 		gorm.Model
 		Version     string
+		DisplayName string
 		Description string
 		URL         string
 		Resource    Resource
 		ResourceID  uint
 	}
+	// ResourceVersion represents diffrent versions of a Resource
 )

@@ -12,7 +12,9 @@ import (
 
 	category "github.com/tektoncd/hub/api/gen/category"
 	categorysvr "github.com/tektoncd/hub/api/gen/http/category/server"
+	resourceversionssvr "github.com/tektoncd/hub/api/gen/http/resourceversions/server"
 	swaggersvr "github.com/tektoncd/hub/api/gen/http/swagger/server"
+	resourceversions "github.com/tektoncd/hub/api/gen/resourceversions"
 	goahttp "goa.design/goa/v3/http"
 	httpmdlwr "goa.design/goa/v3/http/middleware"
 	"goa.design/goa/v3/middleware"
@@ -20,7 +22,7 @@ import (
 
 // handleHTTPServer starts configures and starts a HTTP server on the given
 // URL. It shuts down the server if any error is received in the error channel.
-func handleHTTPServer(ctx context.Context, u *url.URL, categoryEndpoints *category.Endpoints, wg *sync.WaitGroup, errc chan error, logger *zap.SugaredLogger, debug bool) {
+func handleHTTPServer(ctx context.Context, u *url.URL, categoryEndpoints *category.Endpoints, resourceversionsEndpoints *resourceversions.Endpoints, wg *sync.WaitGroup, errc chan error, logger *zap.SugaredLogger, debug bool) {
 
 	// Provide the transport specific request decoder and response encoder.
 	// The goa http package has built-in support for JSON, XML and gob.
@@ -43,17 +45,20 @@ func handleHTTPServer(ctx context.Context, u *url.URL, categoryEndpoints *catego
 	// the service input and output data structures to HTTP requests and
 	// responses.
 	var (
-		categoryServer *categorysvr.Server
-		swaggerServer  *swaggersvr.Server
+		categoryServer         *categorysvr.Server
+		swaggerServer          *swaggersvr.Server
+		resourceversionsServer *resourceversionssvr.Server
 	)
 	{
 		eh := errorHandler(logger)
 		categoryServer = categorysvr.New(categoryEndpoints, mux, dec, enc, eh, nil)
 		swaggerServer = swaggersvr.New(nil, mux, dec, enc, eh, nil)
+		resourceversionsServer = resourceversionssvr.New(resourceversionsEndpoints, mux, dec, enc, eh, nil)
 		if debug {
 			servers := goahttp.Servers{
 				categoryServer,
 				swaggerServer,
+				resourceversionsServer,
 			}
 			servers.Use(httpmdlwr.Debug(mux, os.Stdout))
 		}
@@ -61,6 +66,7 @@ func handleHTTPServer(ctx context.Context, u *url.URL, categoryEndpoints *catego
 	// Configure the mux.
 	categorysvr.Mount(mux, categoryServer)
 	swaggersvr.Mount(mux, swaggerServer)
+	resourceversionssvr.Mount(mux, resourceversionsServer)
 
 	// Wrap the multiplexer with additional middlewares. Middlewares mounted
 	// here apply to all the service endpoints.
@@ -76,6 +82,9 @@ func handleHTTPServer(ctx context.Context, u *url.URL, categoryEndpoints *catego
 		logger.Infof("HTTP %q mounted on %s %s", m.Method, m.Verb, m.Pattern)
 	}
 	for _, m := range swaggerServer.Mounts {
+		logger.Infof("HTTP %q mounted on %s %s", m.Method, m.Verb, m.Pattern)
+	}
+	for _, m := range resourceversionsServer.Mounts {
 		logger.Infof("HTTP %q mounted on %s %s", m.Method, m.Verb, m.Pattern)
 	}
 	(*wg).Add(1)

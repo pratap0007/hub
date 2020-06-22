@@ -11,7 +11,7 @@ var _ = API("hub", func() {
 	Version("1.0")
 	Meta("swagger:example", "false")
 	Server("hub", func() {
-		Services("category", "swagger")
+		Services("category", "swagger", "resourceversions")
 		Host("localhost", func() {
 			URI("http://localhost:8000")
 		})
