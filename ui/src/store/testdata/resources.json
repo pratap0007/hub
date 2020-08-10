@@ -1,0 +1,1164 @@
+[
+    {
+        "id": 5,
+        "name": "buildah",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 5,
+            "version": "0.1",
+            "displayName": "buildah",
+            "description": "Buildah task builds source into a container image and then pushes it to a container registry.\nBuildah Task builds source into a container image using Project Atomic's Buildah build tool.It uses Buildah's support for building from Dockerfiles, using its buildah bud command.This command executes the directives in the Dockerfile to assemble a container image, then pushes that image to a container registry.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/buildah/0.1/buildah.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/buildah/0.1/buildah.yaml",
+            "updatedAt": "2020-07-17 12:26:26.835302 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 5
+    },
+    {
+        "id": 4,
+        "name": "build-push-gke-deploy",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 4,
+            "version": "0.1",
+            "displayName": "",
+            "description": "This Pipeline builds, pushes, and deploys your application to a Google Kubernetes Engine cluster using gke-deploy.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/build-push-gke-deploy/0.1/build-push-gke-deploy.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/build-push-gke-deploy/0.1/build-push-gke-deploy.yaml",
+            "updatedAt": "2020-07-17 12:26:26.831271 +0000 UTC"
+        },
+        "tags": [{
+            "id": 10,
+            "name": "deploy"
+        }],
+        "rating": 5
+    },
+    {
+        "id": 6,
+        "name": "buildkit",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 6,
+            "version": "0.1",
+            "displayName": "buildkit",
+            "description": "This Task builds source into a container image using Moby BuildKit.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/buildkit/0.1/buildkit.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/buildkit/0.1/buildkit.yaml",
+            "updatedAt": "2020-07-17 12:26:26.839271 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 4
+    },
+    {
+        "id": 7,
+        "name": "buildkit-daemonless",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 7,
+            "version": "0.1",
+            "displayName": "buildkit daemonless",
+            "description": "This Task builds source into a container image using Moby BuildKit.\nThis buildkit-daemonless Task is similar to buildkit but does not need creating Secret, Deployment, and Service resources for setting up the buildkitd daemon cluster.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/buildkit-daemonless/0.1/buildkit-daemonless.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/buildkit-daemonless/0.1/buildkit-daemonless.yaml",
+            "updatedAt": "2020-07-17 12:26:26.843821 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 4
+    },
+    {
+        "id": 2,
+        "name": "argocd",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 2,
+            "version": "0.1",
+            "displayName": "argocd",
+            "description": "This task syncs (deploys) an Argo CD application and waits for it to be healthy.\nTo do so, it requires the address of the Argo CD server and some form of authentication either a username/password or an authentication token.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/argocd/0.1/argocd.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/argocd/0.1/argocd.yaml",
+            "updatedAt": "2020-07-17 12:26:26.822315 +0000 UTC"
+        },
+        "tags": [{
+            "id": 10,
+            "name": "deploy"
+        }],
+        "rating": 3.5
+    },
+    {
+        "id": 16,
+        "name": "git-batch-merge",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 16,
+            "version": "0.1",
+            "displayName": "git batch merge",
+            "description": "These Tasks are Git tasks to work with repositories used by other tasks in your Pipeline.\nThis task takes a set of refspecs, fetches them and performs git operations (cherry-pick or merge) to apply them in order on the given base revision (default master). The resulting commit SHA will not match across taskruns, but the git tree SHA should match. This can be useful for batch testing changes, for example, when you want to batch up your PRs into a single merge by taking the HEAD of the branch you want to merge to, and adding all the PRs to it. This concept is used in tools such as Tide to batch test PR’s, and Zuul CI Gating, to perform speculative execution of PR’s/change requests individually",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/git-batch-merge/0.1/git-batch-merge.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/git-batch-merge/0.1/git-batch-merge.yaml",
+            "updatedAt": "2020-07-17 12:26:26.880533 +0000 UTC"
+        },
+        "tags": [{
+            "id": 14,
+            "name": "git"
+        }],
+        "rating": 3
+    },
+    {
+        "id": 1,
+        "name": "ansible-tower-cli",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 1,
+            "version": "0.1",
+            "displayName": "ansible tower cli",
+            "description": "ansible-tower-cli task simplifies starting jobs, workflow jobs, manage users, projects etc.\nAnsible Tower (formerly ‘AWX’) is a web-based solution that makes Ansible even more easy to use for IT teams of all kinds, It provides the tower-cli(Tower-CLI) command line tool that simplifies the tasks of starting jobs, workflow jobs, manage users, projects etc.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/ansible-tower-cli/0.1/ansible-tower-cli.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/ansible-tower-cli/0.1/ansible-tower-cli.yaml",
+            "updatedAt": "2020-07-17 12:26:26.81542 +0000 UTC"
+        },
+        "tags": [{
+                "id": 11,
+                "name": "ansible"
+            },
+            {
+                "id": 12,
+                "name": " cli"
+            }
+        ],
+        "rating": 2.5
+    },
+    {
+        "id": 3,
+        "name": "azure-cli",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 3,
+            "version": "0.1",
+            "displayName": "azure cli",
+            "description": "This task performs operations on Microsoft Azure resources using az.\nAfter creating the task, you should now be able to execute az commands by specifying the command you would like to run as the ARGS param. The ARGS param takes an array of az subcommands that will be executed as part of this task.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/azure-cli/0.1/azure-cli.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/azure-cli/0.1/azure-cli.yaml",
+            "updatedAt": "2020-07-17 12:26:26.82729 +0000 UTC"
+        },
+        "tags": [{
+            "id": 5,
+            "name": "cli"
+        }],
+        "rating": 2
+    },
+    {
+        "id": 8,
+        "name": "buildpacks",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 8,
+            "version": "0.1",
+            "displayName": "buildpacks",
+            "description": "This build template builds source into a container image using Cloud Native Buildpacks.\nThe Cloud Native Buildpacks website describes v3 buildpacks as pluggable, modular tools that translate source code into container-ready artifacts such as OCI images. They replace Dockerfiles in the app development lifecycle with a higher level of abstraction. Cloud Native Buildpacks embrace modern container standards, such as the OCI image format. They take advantage of the latest capabilities of these standards, such as remote image layer rebasing on Docker API v2 registries.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/buildpacks/0.1/buildpacks.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/buildpacks/0.1/buildpacks.yaml",
+            "updatedAt": "2020-07-17 12:26:26.847756 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 2
+    },
+    {
+        "id": 10,
+        "name": "create-github-release",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 10,
+            "version": "0.1",
+            "displayName": "create github release",
+            "description": "This `task` can be used to make a github release.\nIt is typical to create a Github tag at the moment of release to introduce a checkpoint in your source code history,but in most cases users will need compiled objects or other assets output, not just the raw source code.Github Releases are a way to track deliverables in your project. Consider them a snapshot in time of the source, build output, artifacts, and other metadata associated with a released version of your code.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/create-github-release/0.1/create-github-release.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/create-github-release/0.1/create-github-release.yaml",
+            "updatedAt": "2020-07-17 12:26:26.855499 +0000 UTC"
+        },
+        "tags": [{
+            "id": 13,
+            "name": "github"
+        }],
+        "rating": 2
+    },
+    {
+        "id": 9,
+        "name": "conftest",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 9,
+            "version": "0.1",
+            "displayName": "conftest",
+            "description": "These tasks make it possible to use Conftest within your Tekton pipelines\nConftest is a tool for testing configuration files using Open Policy Agent.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/conftest/0.1/conftest.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/conftest/0.1/conftest.yaml",
+            "updatedAt": "2020-07-17 12:26:26.851623 +0000 UTC"
+        },
+        "tags": [{
+            "id": 3,
+            "name": "test"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 11,
+        "name": "gcloud",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 11,
+            "version": "0.1",
+            "displayName": "",
+            "description": "This task performs operations on Google Cloud Platform resources using gcloud.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/gcloud/0.1/gcloud.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/gcloud/0.1/gcloud.yaml",
+            "updatedAt": "2020-07-17 12:26:26.859903 +0000 UTC"
+        },
+        "tags": [{
+            "id": 6,
+            "name": "gcp"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 12,
+        "name": "gcs-create-bucket",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 12,
+            "version": "0.1",
+            "displayName": "gcs create bucket",
+            "description": "A Task that creates a new GCS bucket.\nThese Tasks are for copying to and from GCS buckets from Pipelines. These Tasks do a similar job to the GCS PipelineResource and are intended as its replacement.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/gcs-create-bucket/0.1/gcs-create-bucket.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/gcs-create-bucket/0.1/gcs-create-bucket.yaml",
+            "updatedAt": "2020-07-17 12:26:26.864541 +0000 UTC"
+        },
+        "tags": [{
+            "id": 9,
+            "name": "cloud"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 13,
+        "name": "gcs-delete-bucket",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 13,
+            "version": "0.1",
+            "displayName": "gcs delete bucket",
+            "description": "A Task that deletes a GCS bucket.\nThese Tasks are for copying to and from GCS buckets from Pipelines. These Tasks do a similar job to the GCS PipelineResource and are intended as its replacement.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/gcs-delete-bucket/0.1/gcs-delete-bucket.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/gcs-delete-bucket/0.1/gcs-delete-bucket.yaml",
+            "updatedAt": "2020-07-17 12:26:26.868432 +0000 UTC"
+        },
+        "tags": [{
+            "id": 9,
+            "name": "cloud"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 14,
+        "name": "gcs-download",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 14,
+            "version": "0.1",
+            "displayName": "gcs download",
+            "description": "A Task that fetches files or directories from a GCS bucket and puts them on a Workspace.\nThese Tasks are for copying to and from GCS buckets from Pipelines. These Tasks do a similar job to the GCS PipelineResource and are intended as its replacement.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/gcs-download/0.1/gcs-download.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/gcs-download/0.1/gcs-download.yaml",
+            "updatedAt": "2020-07-17 12:26:26.872208 +0000 UTC"
+        },
+        "tags": [{
+            "id": 9,
+            "name": "cloud"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 15,
+        "name": "gcs-upload",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 15,
+            "version": "0.1",
+            "displayName": "gcs cloud",
+            "description": "A Task that uploads files or directories from a Workspace to a GCS bucket.\nThese Tasks are for copying to and from GCS buckets from Pipelines. These Tasks do a similar job to the GCS PipelineResource and are intended as its replacement.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/gcs-upload/0.1/gcs-upload.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/gcs-upload/0.1/gcs-upload.yaml",
+            "updatedAt": "2020-07-17 12:26:26.875983 +0000 UTC"
+        },
+        "tags": [{
+            "id": 9,
+            "name": "cloud"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 17,
+        "name": "git-clone",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 17,
+            "version": "0.1",
+            "displayName": "git clone",
+            "description": "These Tasks are Git tasks to work with repositories used by other tasks in your Pipeline.\nThe git-clone Task will clone a repo from the provided url into the output Workspace. By default the repo will be cloned into the root of your Workspace. You can clone into a subdirectory by setting this Task's subdirectory param.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/git-clone/0.1/git-clone.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/git-clone/0.1/git-clone.yaml",
+            "updatedAt": "2020-07-17 12:26:26.885081 +0000 UTC"
+        },
+        "tags": [{
+            "id": 14,
+            "name": "git"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 18,
+        "name": "github-add-comment",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 18,
+            "version": "0.1",
+            "displayName": "github add comment",
+            "description": "This Task will add a comment to a pull request or an issue.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/github-add-comment/0.1/github-add-comment.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/github-add-comment/0.1/github-add-comment.yaml",
+            "updatedAt": "2020-07-17 12:26:26.888716 +0000 UTC"
+        },
+        "tags": [{
+            "id": 13,
+            "name": "github"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 19,
+        "name": "github-close-issue",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 19,
+            "version": "0.1",
+            "displayName": "github close issue",
+            "description": "This Task will close a pull request or an issue.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/github-close-issue/0.1/github-close-issue.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/github-close-issue/0.1/github-close-issue.yaml",
+            "updatedAt": "2020-07-17 12:26:26.892516 +0000 UTC"
+        },
+        "tags": [{
+            "id": 13,
+            "name": "github"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 20,
+        "name": "github-set-status",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 20,
+            "version": "0.1",
+            "displayName": "github set status",
+            "description": "This task will set the CI as running and add a link to the openshift console viewer url.\nThe `github-set-status` task allows external services to mark GtiHUB commits with an `error`, `failure`, `pending`, or `success` state, which is then reflected in pull requests involving those commits.Statuses include as well a `description` and a `target_url`, to give the user informations about the CI statuses or a direct link to the full log.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/github-set-status/0.1/github-set-status.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/github-set-status/0.1/github-set-status.yaml",
+            "updatedAt": "2020-07-17 12:26:26.896284 +0000 UTC"
+        },
+        "tags": [{
+            "id": 13,
+            "name": "github"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 21,
+        "name": "gitlab-add-label",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 21,
+            "version": "0.1",
+            "displayName": "gitlab add label",
+            "description": "This Task will add a label to an issue in Gitlab.\nA collection of tasks to help working with the GitLab API. Most tasks would expect to have a secret set in the kubernetes secret `gitlab`with a GitLab token in the key `token`.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/gitlab-add-label/0.1/gitlab-add-label.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/gitlab-add-label/0.1/gitlab-add-label.yaml",
+            "updatedAt": "2020-07-17 12:26:26.901006 +0000 UTC"
+        },
+        "tags": [{
+            "id": 15,
+            "name": "gitlab"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 22,
+        "name": "gke-deploy",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 22,
+            "version": "0.1",
+            "displayName": "gke deploy",
+            "description": "This Task deploys an application to a Google Kubernetes Engine cluster using gke-deploy",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/gke-deploy/0.1/gke-deploy.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/gke-deploy/0.1/gke-deploy.yaml",
+            "updatedAt": "2020-07-17 12:26:26.905017 +0000 UTC"
+        },
+        "tags": [{
+            "id": 10,
+            "name": "deploy"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 23,
+        "name": "golang-build",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 23,
+            "version": "0.1",
+            "displayName": "golang build",
+            "description": "This Task is Golang task to build Go projects.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/golang-build/0.1/golang-build.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/golang-build/0.1/golang-build.yaml",
+            "updatedAt": "2020-07-17 12:26:26.90894 +0000 UTC"
+        },
+        "tags": [{
+            "id": 4,
+            "name": "build-tool"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 25,
+        "name": "golangci-lint",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 25,
+            "version": "0.1",
+            "displayName": "golangci test",
+            "description": "This Task is Golang task to validate Go projects.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/golangci-lint/0.1/golangci-lint.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/golangci-lint/0.1/golangci-lint.yaml",
+            "updatedAt": "2020-07-17 12:26:26.916685 +0000 UTC"
+        },
+        "tags": [{
+            "id": 16,
+            "name": "lint"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 24,
+        "name": "golang-test",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 24,
+            "version": "0.1",
+            "displayName": "golang test",
+            "description": "This Task is Golang task to test Go projects.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/golang-test/0.1/golang-test.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/golang-test/0.1/golang-test.yaml",
+            "updatedAt": "2020-07-17 12:26:26.912833 +0000 UTC"
+        },
+        "tags": [{
+            "id": 3,
+            "name": "test"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 26,
+        "name": "helm-conftest",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 26,
+            "version": "0.1",
+            "displayName": "helm conftest",
+            "description": "These tasks make it possible to use Conftest within your Tekton pipelines\nConftest is a tool for testing configuration files using Open Policy Agent.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/helm-conftest/0.1/helm-conftest.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/helm-conftest/0.1/helm-conftest.yaml",
+            "updatedAt": "2020-07-17 12:26:26.921529 +0000 UTC"
+        },
+        "tags": [{
+            "id": 3,
+            "name": "test"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 27,
+        "name": "jib-gradle",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 27,
+            "version": "0.1",
+            "displayName": "jib gradle",
+            "description": "This Task builds Java/Kotlin/Groovy/Scala source into a container image using Google’s Jib tool.\nJib works with Gradle and Maven projects, and this template is for Gradle projects.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/jib-gradle/0.1/jib-gradle.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/jib-gradle/0.1/jib-gradle.yaml",
+            "updatedAt": "2020-07-17 12:26:26.925466 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 28,
+        "name": "jib-maven",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 28,
+            "version": "0.1",
+            "displayName": "jib maven",
+            "description": "This Task builds Java/Kotlin/Groovy/Scala source into a container image using Google’s Jib tool.\nJib works with Maven and Gradle projects, and this template is for Maven projects.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/jib-maven/0.1/jib-maven.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/jib-maven/0.1/jib-maven.yaml",
+            "updatedAt": "2020-07-17 12:26:26.930267 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 29,
+        "name": "kaniko",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 29,
+            "version": "0.1",
+            "displayName": "kaniko",
+            "description": "This Task builds source into a container image using Google's kaniko tool.\nKaniko doesn't depend on a Docker daemon and executes each command within a Dockerfile completely in userspace. This enables building container images in environments that can't easily or securely run a Docker daemon, such as a standard Kubernetes cluster.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/kaniko/0.1/kaniko.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/kaniko/0.1/kaniko.yaml",
+            "updatedAt": "2020-07-17 12:26:26.934698 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 30,
+        "name": "kn",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 30,
+            "version": "0.1",
+            "displayName": "kn",
+            "description": "This Task performs operations on Knative resources (services, revisions, routes) using kn CLI.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/kn/0.1/kn.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/kn/0.1/kn.yaml",
+            "updatedAt": "2020-07-17 12:26:26.939038 +0000 UTC"
+        },
+        "tags": [{
+            "id": 5,
+            "name": "cli"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 31,
+        "name": "knctl-deploy",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 31,
+            "version": "0.1",
+            "displayName": "knctl deploy",
+            "description": "This Task deploys (or update) a Knative service.\nIt uses knctl for that, and supports only the deploy subcommand as of today.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/knctl-deploy/0.1/knctl-deploy.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/knctl-deploy/0.1/knctl-deploy.yaml",
+            "updatedAt": "2020-07-17 12:26:26.942876 +0000 UTC"
+        },
+        "tags": [{
+            "id": 10,
+            "name": "deploy"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 32,
+        "name": "kubeconfig-creator",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 32,
+            "version": "0.1",
+            "displayName": "kubeconfig creator",
+            "description": "This Task do a similar job to the Cluster PipelineResource and are intended as its replacement.\nThis task creates a kubeconfig file that can be used to configure access to the different clusters. A common use case for this task is to deploy your application/function on different clusters. The task will use the kubeconfigwriter image and the provided parameters to create a kubeconfig file that can be used by other tasks in the pipeline to access the target cluster.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/kubeconfig-creator/0.1/kubeconfig-creator.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/kubeconfig-creator/0.1/kubeconfig-creator.yaml",
+            "updatedAt": "2020-07-17 12:26:26.946633 +0000 UTC"
+        },
+        "tags": [{
+            "id": 10,
+            "name": "deploy"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 33,
+        "name": "kubectl-deploy-pod",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 33,
+            "version": "0.1",
+            "displayName": "kubectl deploy pod",
+            "description": "This Task deploys (or delete) a Kubernates resource (pod). It uses kubectl for that.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/kubectl-deploy-pod/0.1/kubectl-deploy-pod.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/kubectl-deploy-pod/0.1/kubectl-deploy-pod.yaml",
+            "updatedAt": "2020-07-17 12:26:26.950424 +0000 UTC"
+        },
+        "tags": [{
+                "id": 10,
+                "name": "deploy"
+            },
+            {
+                "id": 17,
+                "name": " delete"
+            }
+        ],
+        "rating": 0
+    },
+    {
+        "id": 34,
+        "name": "kubeval",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 34,
+            "version": "0.1",
+            "displayName": "kubeval",
+            "description": "This task makes it possible to use Kubeval within your Tekton pipelines.\nKubeval is a tool used for validating Kubernetes configuration files. By default the task will recursively scan the provided repository for YAML files and validate them against the Kubernetes schemas.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/kubeval/0.1/kubeval.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/kubeval/0.1/kubeval.yaml",
+            "updatedAt": "2020-07-17 12:26:26.955934 +0000 UTC"
+        },
+        "tags": [{
+            "id": 3,
+            "name": "test"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 35,
+        "name": "makisu",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 35,
+            "version": "0.1",
+            "displayName": "",
+            "description": "This Task builds source into a container image using uber’s makisu tool.\nMakisu is a fast and flexible Docker image build tool designed for unprivileged containerized environments such as Mesos or Kubernetes. makisu uses a registry configuration which should be stored as a secret in Kubernetes.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/makisu/0.1/makisu.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/makisu/0.1/makisu.yaml",
+            "updatedAt": "2020-07-17 12:26:26.960496 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 36,
+        "name": "maven",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 36,
+            "version": "0.1",
+            "displayName": "",
+            "description": "This Task can be used to run a Maven build.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/maven/0.1/maven.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/maven/0.1/maven.yaml",
+            "updatedAt": "2020-07-17 12:26:26.964376 +0000 UTC"
+        },
+        "tags": [{
+            "id": 4,
+            "name": "build-tool"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 37,
+        "name": "openshift-client",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 37,
+            "version": "0.1",
+            "displayName": "",
+            "description": "This task runs commands against the cluster where the task run is being executed.\nOpenShift is a Kubernetes distribution from Red Hat which provides oc, the OpenShift CLI that complements kubectl for simplifying deployment and configuration applications on OpenShift.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/openshift-client/0.1/openshift-client.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/openshift-client/0.1/openshift-client.yaml",
+            "updatedAt": "2020-07-17 12:26:26.968175 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 38,
+        "name": "openshift-client-kubecfg",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 38,
+            "version": "0.1",
+            "displayName": "openshift client kubecfg",
+            "description": "This task runs commands against any cluster that is provided to it as an input.\nOpenShift is a Kubernetes distribution from Red Hat which provides oc, the OpenShift CLI that complements kubectl for simplifying deployment and configuration applications on OpenShift.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/openshift-client-kubecfg/0.1/openshift-client-kubecfg.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/openshift-client-kubecfg/0.1/openshift-client-kubecfg.yaml",
+            "updatedAt": "2020-07-17 12:26:26.97195 +0000 UTC"
+        },
+        "tags": [{
+            "id": 5,
+            "name": "cli"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 39,
+        "name": "openshift-client-python",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 39,
+            "version": "0.1",
+            "displayName": "",
+            "description": "This task can be used to interact with the openshift cluster via oc commands in a python script.\nOpenShift is a Kubernetes distribution from Red Hat which provides oc, the OpenShift CLI that complements kubectl for simplifying deployment and configuration applications on OpenShift.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/openshift-client-python/0.1/openshift-client-python.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/openshift-client-python/0.1/openshift-client-python.yaml",
+            "updatedAt": "2020-07-17 12:26:26.97631 +0000 UTC"
+        },
+        "tags": [{
+            "id": 5,
+            "name": "cli"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 40,
+        "name": "openshift-install",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 40,
+            "version": "0.1",
+            "displayName": "",
+            "description": "The following task helps you to provision the Openshift cluster using the Installer Provided Infrastructure on the desired cloud platform.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/openshift-install/0.1/openshift-install.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/openshift-install/0.1/openshift-install.yaml",
+            "updatedAt": "2020-07-17 12:26:26.980537 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 41,
+        "name": "openshift-uninstall",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 41,
+            "version": "0.1",
+            "displayName": "",
+            "description": "The following task helps you to provision the Openshift cluster using the Installer Provided Infrastructure on the desired cloud platform.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/openshift-uninstall/0.1/openshift-uninstall.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/openshift-uninstall/0.1/openshift-uninstall.yaml",
+            "updatedAt": "2020-07-17 12:26:26.984307 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 42,
+        "name": "pull-request",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 42,
+            "version": "0.1",
+            "displayName": "",
+            "description": "This Task allows a user to interact with an SCM (source control management) system through an abstracted interface\nThis Task works with both public SCM instances and self-hosted/enterprise GitHub/GitLab instances. In download mode, this Task will look at the state of an existing pull request and populate the pr workspace with the state of the pull request, including the .MANIFEST file. In upload mode, this Task will look at the contents of the pr workspace and compare it to the .MANIFEST file (if it exists).",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/pull-request/0.1/pull-request.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/pull-request/0.1/pull-request.yaml",
+            "updatedAt": "2020-07-17 12:26:26.987861 +0000 UTC"
+        },
+        "tags": [{
+            "id": 18,
+            "name": "SCM"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 43,
+        "name": "replace-tokens",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 43,
+            "version": "0.1",
+            "displayName": "",
+            "description": "This task can be used to replace tokens in a file.\nThe supported file types are YAML and JSON.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/replace-tokens/0.1/replace-tokens.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/replace-tokens/0.1/replace-tokens.yaml",
+            "updatedAt": "2020-07-17 12:26:26.992255 +0000 UTC"
+        },
+        "tags": [{
+            "id": 19,
+            "name": "tokens"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 44,
+        "name": "s2i",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 44,
+            "version": "0.1",
+            "displayName": "",
+            "description": "This Task builds source into a container image using Google's kaniko tool.\nKaniko doesn't depend on a Docker daemon and executes each command within a Dockerfile completely in userspace. This enables building container images in environments that can't easily or securely run a Docker daemon, such as a standard Kubernetes cluster.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/s2i/0.1/s2i.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/s2i/0.1/s2i.yaml",
+            "updatedAt": "2020-07-17 12:26:26.99727 +0000 UTC"
+        },
+        "tags": [{
+            "id": 1,
+            "name": "image-build"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 45,
+        "name": "sendmail",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 45,
+            "version": "0.1",
+            "displayName": "send mail",
+            "description": "This task sends a simple email to receivers via SMTP server",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/sendmail/0.1/sendmail.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/sendmail/0.1/sendmail.yaml",
+            "updatedAt": "2020-07-17 12:26:27.001096 +0000 UTC"
+        },
+        "tags": [{
+            "id": 20,
+            "name": "mail"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 46,
+        "name": "skopeo",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 46,
+            "version": "0.1",
+            "displayName": "",
+            "description": "Skopeo is a command line tool for working with remote image registries.\nSkopeo doesn’t require a daemon to be running while performing its operations. In particular, the handy skopeo command called copy will ease the whole image copy operation. The copy command will take care of copying the image from internal.registry to production.registry. If your production registry requires credentials to login in order to push the image, skopeo can handle that as well.",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/skopeo/0.1/skopeo.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/skopeo/0.1/skopeo.yaml",
+            "updatedAt": "2020-07-17 12:26:27.005281 +0000 UTC"
+        },
+        "tags": [{
+            "id": 5,
+            "name": "cli"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 47,
+        "name": "terraform-cli",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 47,
+            "version": "0.1",
+            "displayName": "",
+            "description": "Terraform is an open-source infrastructure as codesoftware tool created by HashiCorp.\nIt enables users to define and provision a datacenter infrastructure using a high-level configuration language known as Hashicorp Configuration Language (HCL), or optionally JSON",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/terraform-cli/0.1/terraform-cli.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/terraform-cli/0.1/terraform-cli.yaml",
+            "updatedAt": "2020-07-17 12:26:27.00907 +0000 UTC"
+        },
+        "tags": [{
+            "id": 5,
+            "name": "cli"
+        }],
+        "rating": 0
+    },
+    {
+        "id": 48,
+        "name": "tkn",
+        "catalog": {
+            "id": 1,
+            "type": "official"
+        },
+        "type": "Task",
+        "latestVersion": {
+            "id": 48,
+            "version": "0.1",
+            "displayName": "tkn",
+            "description": "This task performs operations on Tekton resources using tkn",
+            "minPipelinesVersion": "",
+            "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/tkn/0.1/tkn.yaml",
+            "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/tkn/0.1/tkn.yaml",
+            "updatedAt": "2020-07-17 12:26:27.013699 +0000 UTC"
+        },
+        "tags": [{
+            "id": 5,
+            "name": "cli"
+        }],
+        "rating": 0
+    }
+]
