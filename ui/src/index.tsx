@@ -4,20 +4,18 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-
-import { Resources } from "./models/resources";
+import { Resources } from "./store/resources";
+import { Hub } from './api';
+import { getSnapshot } from 'mobx-state-tree';
 
 export const StoreContext = React.createContext(Resources.create());
 
-const ResourceFetcher = () =>
-  window.fetch(`https://api-tekton-hub-staging.apps.openshift-web.p0s5.p1.openshiftapps.com/resources`)
-    .then((response) => response.json())
-
-const store = Resources.create({}, { fetch: ResourceFetcher });
+const store = Resources.create({}, { api: new Hub() });
 
 
 setInterval(function () {
   console.log(store.count)
+  console.log("list", getSnapshot(store.resouresData))
 }, 6000);
 
 ReactDOM.render(
