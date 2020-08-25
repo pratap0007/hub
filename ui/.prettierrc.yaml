@@ -1,0 +1,9 @@
+semi: false
+overrides:
+  - files: "*.test.ts"
+    options:
+      semi: true
+  - files:
+      - "src/*"
+    options:
+      tabWidth: 2
