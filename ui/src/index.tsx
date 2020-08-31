@@ -3,11 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { CategoryStore } from './store/category';
+import { Provider } from "mobx-react"
+import { Hub } from './api';
+import { getSnapshot } from 'mobx-state-tree';
+
+const api = new Hub()
+export const Store = CategoryStore.create({}, { api });
+setInterval(() => {
+  console.log(getSnapshot(Store))
+}, 10000)
+// console.log("oooo", getSnapshot(Store));
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <Provider>
+    <App store={Store} />,
+  </Provider>,
   document.getElementById('root')
 );
 

@@ -7,7 +7,7 @@ const TESTDATA_DIR = `${__dirname}/testdata`;
 const api = new FakeHub(TESTDATA_DIR);
 
 describe("Category Object", () => {
-	it("can create a category object", () => {
+	fit("can create a category object", () => {
 		const category = Category.create({
 			id: 1,
 			name: "test",
@@ -56,8 +56,8 @@ describe("Store functions", () => {
 				expect(store.count).toBe(5);
 				expect(store.isLoading).toBe(false);
 
-				store.toggleSelectedCategory(1);
-				store.toggleSelectedCategory(3);
+				store.toggleSelected(1);
+				store.toggleSelected(3);
 				expect(store.categories[0].selected).toBe(true);
 
 				done();
@@ -76,8 +76,8 @@ describe("Store functions", () => {
 				expect(store.count).toBe(5);
 				expect(store.isLoading).toBe(false);
 
-				store.toggleSelectedCategory(1);
-				store.toggleSelectedCategory(2);
+				store.toggleSelected(1);
+				store.toggleSelected(2);
 
 				const tags = store.filteredTags;
 				expect(tags[0]).toBe("build-tool");
@@ -98,8 +98,8 @@ describe("Store functions", () => {
 				expect(store.count).toBe(5);
 				expect(store.isLoading).toBe(false);
 
-				store.toggleSelectedCategory(1);
-				store.toggleSelectedCategory(3);
+				store.toggleSelected(1);
+				store.toggleSelected(3);
 				store.clearAll();
 
 				expect(store.categories).toEqual(

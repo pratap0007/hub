@@ -37,7 +37,7 @@ export const CategoryStore = types
 			return self.categories.length;
 		},
 
-		get listCategories() {
+		get categoriesCategories() {
 			const { categories } = self;
 			return categories;
 		},
@@ -58,7 +58,7 @@ export const CategoryStore = types
 			self.isLoading = l;
 		},
 
-		toggleSelectedCategory(id: number) {
+		toggleSelected(id: number) {
 			self.categories.forEach((c: ICategory) => {
 				if (c.id === id) {
 					c.toggle();
