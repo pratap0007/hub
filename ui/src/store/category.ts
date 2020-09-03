@@ -1,9 +1,11 @@
 import { types, getEnv, flow, Instance } from "mobx-state-tree";
 import { Api } from "../api";
+
 export const Tag = types.model("Tags", {
   id: types.integer,
   name: types.string
 });
+
 export const Category = types
   .model("Category", {
     id: types.number,
@@ -16,7 +18,9 @@ export const Category = types
       self.selected = !self.selected;
     }
   }));
+
 export type ICategory = Instance<typeof Category>;
+
 export const CategoryStore = types
   .model("CategoryStore", {
     categories: types.array(Category),
@@ -30,11 +34,11 @@ export const CategoryStore = types
     get count() {
       return self.categories.length;
     },
-    get listCategories() {
+    get list() {
       const { categories } = self;
       return categories;
     },
-    get filteredTags() {
+    get tags() {
       return self.categories
         .filter(c => c.selected)
         .reduce(
@@ -82,3 +86,6 @@ export const CategoryStore = types
       // self.loadCategories();
     }
   }));
+
+  export type ICategoryStore = Instance<typeof CategoryStore>;
+

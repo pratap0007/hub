@@ -50,3 +50,5 @@ export const CatalogStore = types
       self.catalogList.map((item: ICatalog) => (item.selected = false));
     }
   }));
+
+export type ICatalogStore = Instance<typeof CatalogStore>;

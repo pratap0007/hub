@@ -48,3 +48,5 @@ export const KindStore = types
       self.kindList.map((item: IKind) => (item.selected = false));
     }
   }));
+
+  export type IKindStore = Instance<typeof KindStore>;
