@@ -17,6 +17,7 @@ export const KindStore = types
   .model({
     kindList: types.array(Kind)
   })
+
   .views(self => ({
     get count() {
       return self.kindList.length;
@@ -32,6 +33,7 @@ export const KindStore = types
       return kindList;
     }
   }))
+
   .actions(self => ({
     add(item: any) {
       self.kindList.push(item);
@@ -48,3 +50,5 @@ export const KindStore = types
       self.kindList.map((item: IKind) => (item.selected = false));
     }
   }));
+
+export type IKindStore = Instance<typeof KindStore>;

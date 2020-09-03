@@ -14,7 +14,9 @@ describe("CatalogType", () => {
 
   it("it can toggle a type", done => {
     const store = CatalogStore.create();
-    store.toggleCatalogType("official");
+    store.add({name:'x'});
+    store.add({name: 'y'});
+    store.toggleCatalogType('x');
     expect(store.catalogList[0].selected).toBe(true);
 
     done();

@@ -6,7 +6,7 @@ export const Catalog = types
     selected: false
   })
   .actions(self => ({
-    toggle() {
+    toggle(): void {
       self.selected = !self.selected;
     }
   }));
@@ -50,3 +50,5 @@ export const CatalogStore = types
       self.catalogList.map((item: ICatalog) => (item.selected = false));
     }
   }));
+
+export type ICatalogStore = Instance<typeof CatalogStore>;

@@ -22,93 +22,92 @@ describe("Category Object", () => {
   });
 });
 describe("Store functions", () => {
-	it("can create a store", (done) => {
-		const store = CategoryStore.create({}, { api });
-		expect(store.count).toBe(0);
-		expect(store.isLoading).toBe(true);
-		when(
-			() => !store.isLoading,
-			() => {
-				expect(store.count).toBe(5);
-				expect(store.isLoading).toBe(false);
+  it("can create a store", done => {
+    const store = CategoryStore.create({}, { api });
+    expect(store.count).toBe(0);
+    expect(store.isLoading).toBe(true);
+    when(
+      () => !store.isLoading,
+      () => {
+        expect(store.count).toBe(5);
+        expect(store.isLoading).toBe(false);
 
-				expect(store.categories[0].id).toBe(1);
-				expect(store.categories[0].name).toBe("Build Tools");
-				expect(getSnapshot(store)).toMatchSnapshot();
+        expect(store.categories[0].id).toBe(1);
+        expect(store.categories[0].name).toBe("Build Tools");
+        expect(getSnapshot(store)).toMatchSnapshot();
 
-				done();
-			}
-		);
-	});
+        done();
+      }
+    );
+  });
 
-	it("can toggle the selected category", (done) => {
-		const store = CategoryStore.create({}, { api });
-		expect(store.count).toBe(0);
-		expect(store.isLoading).toBe(true);
+  it("can toggle the selected category", done => {
+    const store = CategoryStore.create({}, { api });
+    expect(store.count).toBe(0);
+    expect(store.isLoading).toBe(true);
 
-		when(
-			() => !store.isLoading,
-			() => {
-				expect(store.count).toBe(5);
-				expect(store.isLoading).toBe(false);
+    when(
+      () => !store.isLoading,
+      () => {
+        expect(store.count).toBe(5);
+        expect(store.isLoading).toBe(false);
 
-				store.categories[0].toggle();
+        store.categories[0].toggle();
 
-				expect(store.categories[0].selected).toBe(true);
+        expect(store.categories[0].selected).toBe(true);
 
-				done();
-			}
-		);
-	});
+        done();
+      }
+    );
+  });
 
-	it("can return the tags for the categories which are selected", (done) => {
-		const store = CategoryStore.create({}, { api });
-		expect(store.count).toBe(0);
-		expect(store.isLoading).toBe(true);
+  it("can return the tags for the categories which are selected", done => {
+    const store = CategoryStore.create({}, { api });
+    expect(store.count).toBe(0);
+    expect(store.isLoading).toBe(true);
 
-		when(
-			() => !store.isLoading,
-			() => {
-				expect(store.count).toBe(5);
-				expect(store.isLoading).toBe(false);
+    when(
+      () => !store.isLoading,
+      () => {
+        expect(store.count).toBe(5);
+        expect(store.isLoading).toBe(false);
 
-				store.categories[0].toggle();
-				store.categories[1].toggle();
+        store.categories[0].toggle();
+        store.categories[1].toggle();
 
-				const tags = store.filteredTags;
-				expect(tags[0]).toBe("build-tool");
+        const tags = store.tags;
+        expect(tags[0]).toBe("build-tool");
 
-				done();
-			}
-		);
-	});
+        done();
+      }
+    );
+  });
 
-	it("clears all the selected categories", (done) => {
-		const store = CategoryStore.create({}, { api });
-		expect(store.count).toBe(0);
-		expect(store.isLoading).toBe(true);
+  it("clears all the selected categories", done => {
+    const store = CategoryStore.create({}, { api });
+    expect(store.count).toBe(0);
+    expect(store.isLoading).toBe(true);
 
-		when(
-			() => !store.isLoading,
-			() => {
-				expect(store.count).toBe(5);
-				expect(store.isLoading).toBe(false);
+    when(
+      () => !store.isLoading,
+      () => {
+        expect(store.count).toBe(5);
+        expect(store.isLoading).toBe(false);
 
-				store.categories[0].toggle();
-				store.categories[2].toggle();
-				store.clearAll();
+        store.categories[0].toggle();
+        store.categories[2].toggle();
+        store.clearAll();
 
-				expect(store.categories).toEqual(
-					expect.arrayContaining([
-						expect.objectContaining({
-							selected: false,
-						}),
-					])
-				);
+        expect(store.categories).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              selected: false
+            })
+          ])
+        );
 
-				done();
-			}
-		);
-	});
+        done();
+      }
+    );
+  });
 });
-  
