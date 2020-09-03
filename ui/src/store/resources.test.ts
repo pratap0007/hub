@@ -14,7 +14,7 @@ describe("Resources", () => {
         id: 1,
         type: "official"
       },
-      type: "Task",
+      kind: "Task",
       latestVersion: {
         id: 5,
         version: "0.1",
@@ -38,7 +38,6 @@ describe("Resources", () => {
     });
 
     expect(store.name).toBe("buildah");
-
     done();
   });
 });
@@ -52,7 +51,7 @@ describe("Store functions", () => {
     when(
       () => !store.isLoading,
       () => {
-        expect(store.count).toBe(2);
+        expect(store.count).toBe(0);
         expect(store.isLoading).toBe(false);
 
         expect(store.resources[0].name).toBe("asd");
@@ -60,7 +59,5 @@ describe("Store functions", () => {
         done();
       }
     );
-
-    done();
   });
 });

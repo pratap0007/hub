@@ -6,19 +6,37 @@ import * as serviceWorker from './serviceWorker';
 import { Hub } from './api';
 import { RootStore } from './store/rootStore';
 import { getSnapshot } from 'mobx-state-tree';
+import { KindStore } from "./store/kind";
+import { CatalogStore } from "./store/catalog";
+import { CategoryStore } from "./store/category";
 
 export const StoreContext = React.createContext(RootStore.create());
 
-const store = RootStore.create({}, { api: new Hub() });
+const store = RootStore.create({}, {
+  api: new Hub(),
+  kindStore: KindStore.create({}),
+  catalogStore: CatalogStore.create({}),
+  categoryStore: CategoryStore.create({}, { api: new Hub() })
 
+});
 setInterval(function () {
-
-
-  console.log("resourcelist", getSnapshot(store.resourceStore.list))
-  console.log("cataloglist", getSnapshot(store.resourceStore.catalogStore.list));
+  // store.resourceStore.kindStore.toggleKind('Task');
+  // store.resourceStore.catalogStore.toggleCatalogType('official');
+  // store.resourceStore.categoryStore.list[3].toggle();
+  console.log("categorylist", getSnapshot(store.resourceStore.categoryStore.list));
   console.log("kindlist", getSnapshot(store.resourceStore.kindStore.list));
+  console.log("cataloglist", getSnapshot(store.resourceStore.catalogStore.list));
 
-  // console.log("filterresource", store.allDashboardResource);
+  console.log("resourcelist", getSnapshot(store.resourceStore.resourceList));
+
+  // console.log("999", getSnapshot(store.resourceStore.catalogStore.catalogList))
+  // store.resourceStore.setSearchText('arg');
+  // console.log("searchtext", store.resourceStore.searchedText);
+  // console.log("selectedtags", store.resourceStore.categoryStore.tags)
+  // console.log("resourcelist", getSnapshot(store.resourceStore.resources));
+  // console.log("selectedkind", store.resourceStore.kindStore.selectedkind);
+  // console.log("selectedcatalog", store.resourceStore.catalogStore.selectedCatalogType);
+  // console.log("filteredresources", store.resourceStore.list);
 }, 6000);
 
 ReactDOM.render(
