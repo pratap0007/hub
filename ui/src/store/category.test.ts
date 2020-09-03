@@ -2,29 +2,25 @@ import { FakeHub } from "../api/testutil";
 import { CategoryStore, Category } from "./category";
 import { when } from "mobx";
 import { getSnapshot } from "mobx-state-tree";
-
 const TESTDATA_DIR = `${__dirname}/testdata`;
 const api = new FakeHub(TESTDATA_DIR);
-
 describe("Category Object", () => {
-	it("can create a category object", () => {
-		const category = Category.create({
-			id: 1,
-			name: "test",
-			tags: [
-				{
-					id: 1,
-					name: "test-category",
-				},
-			],
-		});
-
-		expect(category.name).toBe("test");
-		expect(category.id).toBe(1);
-		expect(category.tags[0].name).toBe("test-category");
-	});
+  it("can create a category object", () => {
+    const category = Category.create({
+      id: 1,
+      name: "test",
+      tags: [
+        {
+          id: 1,
+          name: "test-category"
+        }
+      ]
+    });
+    expect(category.name).toBe("test");
+    expect(category.id).toBe(1);
+    expect(category.tags[0].name).toBe("test-category");
+  });
 });
-
 describe("Store functions", () => {
 	it("can create a store", (done) => {
 		const store = CategoryStore.create({}, { api });
@@ -115,3 +111,4 @@ describe("Store functions", () => {
 		);
 	});
 });
+  

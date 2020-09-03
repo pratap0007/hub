@@ -1,26 +1,22 @@
 import { types, getEnv, flow, Instance } from "mobx-state-tree";
 import { Api } from "../api";
-
-const Tag = types.model("Tags", {
-	id: types.integer,
-	name: types.string,
+export const Tag = types.model("Tags", {
+  id: types.integer,
+  name: types.string
 });
-
 export const Category = types
-	.model("Category", {
-		id: types.number,
-		name: types.string,
-		tags: types.array(Tag),
-		selected: false,
-	})
-	.actions((self) => ({
-		toggle() {
-			self.selected = !self.selected;
-		},
-	}));
-
+  .model("Category", {
+    id: types.number,
+    name: types.string,
+    tags: types.array(Tag),
+    selected: false
+  })
+  .actions(self => ({
+    toggle() {
+      self.selected = !self.selected;
+    }
+  }));
 export type ICategory = Instance<typeof Category>;
-
 export const CategoryStore = types
 	.model("CategoryStore", {
 		categories: types.array(Category),
