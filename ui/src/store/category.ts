@@ -1,23 +1,22 @@
 import { types, getEnv, flow, Instance } from "mobx-state-tree"
 import { Api } from "../api"
 
-const Tag = types
-  .model("Tags", {
-    id: types.integer,
-    name: types.string,
-  })
+export const Tag = types.model("Tags", {
+  id: types.integer,
+  name: types.string
+})
 
 export const Category = types
   .model("Category", {
     id: types.number,
     name: types.string,
     tags: types.array(Tag),
-    selected: false,
+    selected: false
   })
-  .actions((self) => ({
+  .actions(self => ({
     toggle() {
       self.selected = !self.selected
-    },
+    }
   }))
 
 export type ICategory = Instance<typeof Category>
@@ -27,10 +26,10 @@ export const CategoryStore = types
   .model("CategoryStore", {
     categories: types.array(Category),
     isLoading: true,
-    err: "",
+    err: ""
   })
 
-  .views((self) => ({
+  .views(self => ({
     get api(): Api {
       return getEnv(self).api
     },
@@ -41,18 +40,15 @@ export const CategoryStore = types
 
     get tags() {
       return self.categories
-        .filter((c) => c.selected)
+        .filter(c => c.selected)
         .reduce(
-          (acc: string[], c: ICategory) => [
-            ...acc,
-            ...c.tags.map((t) => t.name),
-          ],
+          (acc: string[], c: ICategory) => [...acc, ...c.tags.map(t => t.name)],
           []
         )
-    },
+    }
   }))
 
-  .actions((self) => ({
+  .actions(self => ({
     add(item: ICategory) {
       self.categories.push(item)
     },
@@ -63,11 +59,11 @@ export const CategoryStore = types
 
     clearAll() {
       self.categories.map((c: ICategory) => (c.selected = false))
-    },
+    }
   }))
 
-  .actions((self) => ({
-    load: flow(function* () {
+  .actions(self => ({
+    load: flow(function*() {
       try {
         self.setLoading(true)
         const { api } = self
@@ -79,11 +75,11 @@ export const CategoryStore = types
         self.err = err.toString()
       }
       self.setLoading(false)
-    }),
+    })
   }))
 
-  .actions((self) => ({
+  .actions(self => ({
     afterCreate() {
       self.load()
-    },
+    }
   }))
