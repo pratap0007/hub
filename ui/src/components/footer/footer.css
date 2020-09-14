@@ -1,0 +1,20 @@
+:root {
+  --footer-card-background--Color: #151515;
+}
+
+.pf-c-card {
+  --pf-c-card--BackgroundColor: var(--footer-card-background--Color)
+}
+
+
+.pf-l-flex a img {
+  max-width: 55%;
+  margin-left: 25%;
+
+}
+
+ img.logo-size {
+  height: 6em ;
+  margin-bottom: -1em ;
+
+}
