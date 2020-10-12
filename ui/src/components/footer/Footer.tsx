@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
                 </a>
               </FlexItem>
             </Flex>
-            <Flex justifyContent={{ default: "justifyContentCenter" }}>
+            <Flex justifyContent={{ default: 'justifyContentCenter' }}>
               <TextContent>
                 <Text component={TextVariants.h1} style={{ color: 'white' }}>
                   Tekton is a{' '}
@@ -39,9 +39,9 @@ const Footer: React.FC = () => {
                 </Text>
               </TextContent>
             </Flex>
-            <Flex justifyContent={{ default: "justifyContentCenter" }}>
-              <FlexItem >
-                <img src={tekton} alt="Tekton" className="logo-size"/>
+            <Flex justifyContent={{ default: 'justifyContentCenter' }}>
+              <FlexItem>
+                <img src={tekton} alt="Tekton" className="logo-size" />
               </FlexItem>
             </Flex>
             <Flex>

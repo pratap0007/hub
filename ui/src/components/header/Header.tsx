@@ -9,6 +9,7 @@ import {
 } from '@patternfly/react-core';
 import { GithubIcon, UserIcon } from '@patternfly/react-icons';
 import logo from '../../assets/logo/logo.png';
+import './header.css';
 
 const Header: React.FC = () => {
   const logoProps = {
@@ -24,8 +25,8 @@ const Header: React.FC = () => {
           md: 'visible'
         }}
       >
-        <PageHeaderToolsItem >
-          <span style={{marginRight: '1em',fontWeight: 'bold',fontSize: '1em'}}>{' '}Login</span>
+        <PageHeaderToolsItem>
+          <span style={{ marginRight: '1em', fontWeight: 'bold', fontSize: '1em' }}> Login</span>
         </PageHeaderToolsItem>
 
         <PageHeaderToolsItem>
@@ -36,7 +37,7 @@ const Header: React.FC = () => {
           <GithubIcon size="md" />
         </PageHeaderToolsItem>
       </PageHeaderToolsGroup>
-    </PageHeaderTools >
+    </PageHeaderTools>
   );
 
   return (
@@ -44,6 +45,7 @@ const Header: React.FC = () => {
       logo={<Brand src={logo} alt="Tekton Hub Logo" />}
       headerTools={headerTools}
       logoProps={logoProps}
+      showNavToggle
     />
   );
 };
