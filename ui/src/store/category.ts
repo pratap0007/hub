@@ -1,7 +1,7 @@
 import { types, getEnv, flow, Instance } from 'mobx-state-tree';
 import { Api } from '../api';
 
-const Tag = types.model('Tags', {
+export const Tag = types.model('Tags', {
   id: types.integer,
   name: types.string
 });
@@ -20,6 +20,7 @@ export const Category = types
   }));
 
 export type ICategory = Instance<typeof Category>;
+export type ITag = Instance<typeof Tag>;
 
 export const CategoryStore = types
   .model('CategoryStore', {

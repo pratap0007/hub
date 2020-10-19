@@ -1,0 +1,134 @@
+{
+  "data": [
+    {
+      "id": 5,
+      "name": "buildah",
+      "catalog": {
+        "id": 1,
+        "type": "official"
+      },
+      "kind": "Task",
+      "latestVersion": {
+        "id": 5,
+        "version": "0.1",
+        "displayName": "buildah",
+        "description": "Buildah task builds source into a container image and then pushes it to a container registry.\nBuildah Task builds source into a container image using Project Atomic's Buildah build tool.It uses Buildah's support for building from Dockerfiles, using its buildah bud command.This command executes the directives in the Dockerfile to assemble a container image, then pushes that image to a container registry.",
+        "minPipelinesVersion": "",
+        "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/buildah/0.1/buildah.yaml",
+        "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/buildah/0.1/buildah.yaml",
+        "updatedAt": "2020-07-17 12:26:26.835302 +0000 UTC"
+      },
+      "tags": [
+        {
+          "id": 1,
+          "name": "image-build"
+        }
+      ],
+      "rating": 5
+    },
+    {
+      "id": 4,
+      "name": "build-push-gke-deploy",
+      "catalog": {
+        "id": 1,
+        "type": "official"
+      },
+      "kind": "Task",
+      "latestVersion": {
+        "id": 4,
+        "version": "0.1",
+        "displayName": "",
+        "description": "This Pipeline builds, pushes, and deploys your application to a Google Kubernetes Engine cluster using gke-deploy.",
+        "minPipelinesVersion": "",
+        "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/build-push-gke-deploy/0.1/build-push-gke-deploy.yaml",
+        "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/build-push-gke-deploy/0.1/build-push-gke-deploy.yaml",
+        "updatedAt": "2020-07-17 12:26:26.831271 +0000 UTC"
+      },
+      "tags": [
+        {
+          "id": 10,
+          "name": "deploy"
+        }
+      ],
+      "rating": 5
+    },
+    {
+      "id": 6,
+      "name": "buildkit",
+      "catalog": {
+        "id": 1,
+        "type": "official"
+      },
+      "kind": "Task",
+      "latestVersion": {
+        "id": 6,
+        "version": "0.1",
+        "displayName": "buildkit",
+        "description": "This Task builds source into a container image using Moby BuildKit.",
+        "minPipelinesVersion": "",
+        "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/buildkit/0.1/buildkit.yaml",
+        "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/buildkit/0.1/buildkit.yaml",
+        "updatedAt": "2020-07-17 12:26:26.839271 +0000 UTC"
+      },
+      "tags": [
+        {
+          "id": 1,
+          "name": "image-build"
+        }
+      ],
+      "rating": 4
+    },
+    {
+      "id": 7,
+      "name": "buildkit-daemonless",
+      "catalog": {
+        "id": 1,
+        "type": "official"
+      },
+      "kind": "Task",
+      "latestVersion": {
+        "id": 7,
+        "version": "0.1",
+        "displayName": "buildkit daemonless",
+        "description": "This Task builds source into a container image using Moby BuildKit.\nThis buildkit-daemonless Task is similar to buildkit but does not need creating Secret, Deployment, and Service resources for setting up the buildkitd daemon cluster.",
+        "minPipelinesVersion": "",
+        "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/buildkit-daemonless/0.1/buildkit-daemonless.yaml",
+        "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/buildkit-daemonless/0.1/buildkit-daemonless.yaml",
+        "updatedAt": "2020-07-17 12:26:26.843821 +0000 UTC"
+      },
+      "tags": [
+        {
+          "id": 1,
+          "name": "image-build"
+        }
+      ],
+      "rating": 4
+    },
+    {
+      "id": 2,
+      "name": "argocd",
+      "catalog": {
+        "id": 1,
+        "type": "official"
+      },
+      "kind": "Task",
+      "latestVersion": {
+        "id": 2,
+        "version": "0.1",
+        "displayName": "argocd",
+        "description": "This task syncs (deploys) an Argo CD application and waits for it to be healthy.\nTo do so, it requires the address of the Argo CD server and some form of authentication either a username/password or an authentication token.",
+        "minPipelinesVersion": "",
+        "rawURL": "https://raw.githubusercontent.com/Pipelines-Marketplace/catalog/master/task/argocd/0.1/argocd.yaml",
+        "webURL": "https://github.com/Pipelines-Marketplace/catalog/tree/master/task/argocd/0.1/argocd.yaml",
+        "updatedAt": "2020-07-17 12:26:26.822315 +0000 UTC"
+      },
+      "tags": [
+        {
+          "id": 10,
+          "name": "deploy"
+        }
+      ],
+      "rating": 3.5
+    }
+  ]
+}
