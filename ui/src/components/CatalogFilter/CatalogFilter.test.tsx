@@ -1,18 +1,19 @@
 import React from 'react';
-import App from './App';
 import { shallow } from 'enzyme';
+import { when } from 'mobx';
 import { FakeHub } from '../../api/testutil';
-import { CategoryStore } from '../../store/category';
 import { KindStore } from '../../store/kind';
 import { CatalogStore } from '../../store/catalog';
 import { ResourceStore } from '../../store/resources';
-import LeftPane from '../LeftPane/LeftPane';
+import { CategoryStore } from '../../store/category';
+import CatalogFilter from './CatalogFilter';
+import Filter from '../Filter/Filter';
 
 const TESTDATA_DIR = `src/store/testdata`;
 const api = new FakeHub(TESTDATA_DIR);
 
-describe('App', () => {
-  it('should find the LeftPane component and match the count', () => {
+describe('CatalogFilter', () => {
+  it('finds the filter component and matches the count', (done) => {
     const store = ResourceStore.create(
       {},
       {
@@ -22,8 +23,16 @@ describe('App', () => {
         categoryStore: CategoryStore.create({}, { api })
       }
     );
-    const component = shallow(<App store={store} />);
 
-    expect(component.find(LeftPane).length).toEqual(1);
+    when(
+      () => !store.isLoading,
+      () => {
+        const component = shallow(<CatalogFilter store={store.catalogStore} />);
+
+        expect(component.find(Filter).length).toEqual(1);
+
+        done();
+      }
+    );
   });
 });

@@ -21,11 +21,21 @@ interface FilterList {
   header: string;
 }
 
+/**
+ * To convert the first letter of the input word to Upper Case
+ * @param str {String}
+ */
+export const titleCase = (str: string) => {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+};
+
 const checkboxes = (items: Filterable[]) =>
   items.map((c: Filterable) => (
     <Checkbox
       key={c.id}
-      label={c.name}
+      label={titleCase(c.name)}
       isChecked={c.selected}
       onChange={() => c.toggle()}
       aria-label="controlled checkbox"
@@ -38,17 +48,15 @@ const Filter: React.FC<FilterList> = ({ store, header }) => {
   return useObserver(() => (
     <div className="Filter">
       <Grid sm={6} md={4} lg={3} xl2={1}>
-        <GridItem className="Text-Header" span={1} rowSpan={2}>
-          <Text component={TextVariants.h1} style={{ fontWeight: 'bold' }}>
+        <GridItem className="Text-Header">
+          <Text component={TextVariants.h1} style={{ fontWeight: 'bold', width: '4em' }}>
             {header}
           </Text>
         </GridItem>
 
-        <GridItem rowSpan={2}>
-          <Button variant="plain" aria-label="Clear" onClick={store.clear}>
-            <TimesIcon />
-          </Button>
-        </GridItem>
+        <Button variant="plain" aria-label="Clear" onClick={store.clear}>
+          <TimesIcon />
+        </Button>
       </Grid>
 
       <Grid>

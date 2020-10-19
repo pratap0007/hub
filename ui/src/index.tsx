@@ -23,7 +23,7 @@ const store = ResourceStore.create(
 
 ReactDOM.render(
   <Provider>
-    <App store={store.categoryStore} />,
+    <App store={store} />,
   </Provider>,
   document.getElementById('root')
 );

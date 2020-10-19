@@ -1,16 +1,16 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import CategoryFilter from '../CategoryFilter/CategoryFilter';
-import { ICategoryStore } from '../../store/category';
+import LeftPane from '../LeftPane/LeftPane';
+import { IResourceStore } from '../../store/resources';
 import '@patternfly/react-core/dist/styles/base.css';
 
 interface store {
-  store: ICategoryStore;
+  store: IResourceStore;
 }
 
 const App = observer(({ store }: store) => (
   <div className="App">
-    <CategoryFilter store={store} />
+    <LeftPane store={store} />
   </div>
 ));
 

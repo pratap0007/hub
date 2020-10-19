@@ -32,6 +32,7 @@ export const Resource = types.model('Resource', {
 });
 
 export type IResource = Instance<typeof Resource>;
+export type IResourceStore = Instance<typeof ResourceStore>;
 
 export const ResourceStore = types
   .model('ResourceStore', {

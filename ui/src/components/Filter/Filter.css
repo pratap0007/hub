@@ -1,11 +1,12 @@
 .Filter {
-  margin: 3em;
+  margin-left: 1.5em;
+  margin-top: 1em;
 }
 
 .Text-Header {
-  width: 10em;
+  width: 7em;
 }
 
-.Checkboxes {
-  padding-left: 0.7em;
+.pf-c-check__label {
+  color: rgb(0, 0, 0);
 }
