@@ -1,0 +1,29 @@
+.footer-card {
+  padding: 2em;
+  background-color: #151515;
+}
+
+.pf-l-grid .text {
+  text-align: center;
+}
+
+.pf-l-grid .text-color {
+  color: white;
+}
+
+.logo-size {
+  height: 6em;
+  padding: 0.8em;
+}
+
+.logo-margin {
+  margin: auto;
+}
+
+.pf-l-grid__item a img {
+  width: 15%;
+}
+
+.pf-l-grid__item p {
+  text-align: center;
+}
