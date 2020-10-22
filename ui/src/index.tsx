@@ -11,7 +11,7 @@ import { ResourceStore } from './store/resources';
 import * as serviceWorker from './serviceWorker';
 
 const api = new Hub();
-const store = ResourceStore.create(
+export const store = ResourceStore.create(
   {},
   {
     api,
@@ -21,6 +21,11 @@ const store = ResourceStore.create(
   }
 );
 
+// store.setSortByNaming(true);
+// store.setSortByRating(true);
+// setInterval(() => {
+//   console.log('list', store.list);
+// }, 5000);
 ReactDOM.render(
   <Provider>
     <App store={store} />,

@@ -21,7 +21,7 @@ interface store {
 const App = observer(({ store }: store) => {
   return (
     <Router>
-      <Page header={<Header />}>
+      <Page header={<Header store={store} />}>
         <Route exact path="/" component={Background} />
         <PageSection>
           <Grid hasGutter>

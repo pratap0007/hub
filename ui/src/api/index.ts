@@ -11,7 +11,7 @@ export interface Api {
 export class Hub implements Api {
   async resources() {
     try {
-      return axios.get(`${API_URL}/resources`);
+      return axios.get(`${API_URL}/resources`).then((resp) => resp.data);
     } catch (err) {
       return err.response;
     }
@@ -19,7 +19,7 @@ export class Hub implements Api {
 
   async categories() {
     try {
-      return axios.get(`${API_URL}/categories`);
+      return axios.get(`${API_URL}/categories`).then((resp) => resp.data);
     } catch (err) {
       return err.response;
     }

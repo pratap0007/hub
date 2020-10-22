@@ -1,20 +1,36 @@
 import { TextInput } from '@patternfly/react-core';
 import React, { useState } from 'react';
-
+import { useHistory } from 'react-router-dom';
+import { IResourceStore } from '../../store/resources';
 import './SearchBar.css';
 
-const SearchBar: React.FC = () => {
-  const [value, setValue] = useState('');
+export interface store {
+  store: IResourceStore;
+}
 
-  const setInput = (event: string) => {
-    setValue(event);
+const SearchBar: React.FC<store> = (props: store) => {
+  const [value, setValue] = useState('');
+  const history = useHistory();
+
+  const onSearchChange = (text: string) => {
+    setValue(text);
+    props.store.setSearchInput(text);
+  };
+
+  const onSearchKeyPress = (e: any) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      history.push('/');
+    }
+    return;
   };
 
   return (
     <TextInput
-      value={value}
+      defaultValue={value}
       type="search"
-      onChange={setInput}
+      onChange={onSearchChange}
+      onKeyPress={onSearchKeyPress}
       aria-label="text input example"
       placeholder="Search for resources..."
       spellCheck="false"

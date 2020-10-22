@@ -11,8 +11,14 @@ import {
 } from '@patternfly/react-core';
 import logo from '../../assets/logo/logo.png';
 import SearchBar from '../SearchBar/SearchBar';
+import { IResourceStore } from '../../store/resources';
 
-const Header: React.FC = () => {
+interface store {
+  store: IResourceStore;
+}
+
+const Header: React.FC<store> = (props: store) => {
+  const { store } = props;
   const logoProps = {
     href: '/',
     target: ''
@@ -22,7 +28,7 @@ const Header: React.FC = () => {
     <PageHeaderTools>
       <Grid>
         <GridItem span={11}>
-          <SearchBar />
+          <SearchBar store={store} />
         </GridItem>
       </Grid>
       <Text component={TextVariants.h3}>Login</Text>

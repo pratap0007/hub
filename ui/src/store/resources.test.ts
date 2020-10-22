@@ -124,4 +124,68 @@ describe('Store functions', () => {
       }
     );
   });
+
+  it('can sort resources by rating', (done) => {
+    const store = ResourceStore.create(
+      {},
+      {
+        api,
+        kindStore: KindStore.create({}),
+        catalogStore: CatalogStore.create({}),
+        categoryStore: CategoryStore.create({}, { api })
+      }
+    );
+    expect(store.count).toBe(0);
+    expect(store.isLoading).toBe(true);
+
+    when(
+      () => !store.isLoading,
+      () => {
+        expect(store.count).toBe(5);
+        expect(store.isLoading).toBe(false);
+
+        store.kindStore.list[0].toggle();
+        store.catalogStore.list[0].toggle();
+        store.categoryStore.list[3].toggle();
+        store.setSortByRating(true);
+
+        expect(store.list.length).toBe(2);
+        expect(store.list[0].rating).toBe(5);
+
+        done();
+      }
+    );
+  });
+
+  it('can sort resources by name', (done) => {
+    const store = ResourceStore.create(
+      {},
+      {
+        api,
+        kindStore: KindStore.create({}),
+        catalogStore: CatalogStore.create({}),
+        categoryStore: CategoryStore.create({}, { api })
+      }
+    );
+    expect(store.count).toBe(0);
+    expect(store.isLoading).toBe(true);
+
+    when(
+      () => !store.isLoading,
+      () => {
+        expect(store.count).toBe(5);
+        expect(store.isLoading).toBe(false);
+
+        store.kindStore.list[0].toggle();
+        store.catalogStore.list[0].toggle();
+        store.categoryStore.list[3].toggle();
+        store.setSortByName(true);
+
+        expect(store.list.length).toBe(2);
+        expect(store.list[0].name).toBe('argocd');
+
+        done();
+      }
+    );
+  });
 });

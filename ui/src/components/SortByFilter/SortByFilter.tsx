@@ -14,9 +14,13 @@ const SortByFilter: React.FC<store> = (props: store) => {
   const [isOpen, set] = useState(false);
   function sortByName(event: any) {
     setSort(event.target.text);
+    store.setSortByName(true);
+    store.setSortByRating(false);
   }
   function sortByRatings(event: any) {
     setSort(event.target.text);
+    store.setSortByRating(true);
+    store.setSortByName(false);
   }
   const dropdownItems = [
     <DropdownItem key="name" onClick={sortByName}>

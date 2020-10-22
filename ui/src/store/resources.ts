@@ -39,6 +39,8 @@ export const ResourceStore = types
     resources: types.array(Resource),
     isLoading: true,
     searchInput: types.optional(types.string, ''),
+    sortByName: types.optional(types.boolean, false),
+    sortByRating: types.optional(types.boolean, false),
     err: ''
   })
 
@@ -73,6 +75,12 @@ export const ResourceStore = types
     },
     setSearchInput(text: string) {
       self.searchInput = text;
+    },
+    setSortByName(l: boolean) {
+      self.sortByName = l;
+    },
+    setSortByRating(l: boolean) {
+      self.sortByRating = l;
     }
   }))
 
@@ -111,6 +119,8 @@ export const ResourceStore = types
     get list(): Array<IResource> {
       const { resources } = self;
       const { searchInput } = self;
+      const { sortByName } = self;
+      const { sortByRating } = self;
 
       const kind = new Set(self.kindStore.kinds);
       const tag = new Set(self.categoryStore.tags);
@@ -123,13 +133,28 @@ export const ResourceStore = types
           (kind.size > 0 ? kind.has(r.kind) : true)
       );
 
-      return searchInput !== ''
-        ? fuzzysort
-            .go(searchInput, filterResources, {
-              keys: ['name', 'displayName']
-            })
-            .map((resource: Fuzzysort.KeysResult<IResource>) => resource.obj)
-        : filterResources;
+      const resourcesWithoutSort =
+        searchInput !== ''
+          ? fuzzysort
+              .go(searchInput, filterResources, {
+                keys: ['name', 'displayName']
+              })
+              .map((resource: Fuzzysort.KeysResult<IResource>) => resource.obj)
+          : filterResources;
+
+      if (sortByRating === true) {
+        return resourcesWithoutSort.sort((first: any, second: any) =>
+          first.rating < second.rating ? 1 : -1
+        );
+      }
+
+      if (sortByName === true) {
+        return resourcesWithoutSort.sort((first: any, second: any) =>
+          first.name > second.name ? 1 : -1
+        );
+      }
+
+      return resourcesWithoutSort;
     }
   }))
 
