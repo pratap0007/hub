@@ -4,15 +4,20 @@ import { Button, Checkbox, Text, TextVariants, Grid, GridItem } from '@patternfl
 import TimesIcon from '@patternfly/react-icons/dist/js/icons/times-icon';
 import './Filter.css';
 
+interface Tags {
+  id: number;
+  name: string;
+}
 interface Filterable {
   id: number;
   name: string;
   selected: boolean;
+  tags?: Tags[];
   toggle(): void;
 }
 
 interface Store {
-  list: Filterable[];
+  list: Map<number, Filterable>;
   clear(): void;
 }
 
@@ -21,18 +26,19 @@ interface FilterList {
   header: string;
 }
 
-const checkboxes = (items: Filterable[]) =>
-  items.map((c: Filterable) => (
+const checkboxes = (items: Map<number, Filterable>) => {
+  return Array.from(items.values()).map((c: Filterable) => (
     <Checkbox
-      key={c.id}
+      key={1}
       label={c.name}
       isChecked={c.selected}
       onChange={() => c.toggle()}
       aria-label="controlled checkbox"
-      id={`${c.id}`}
-      name={c.name}
+      id={`${'1'}`}
+      name={'tags'}
     />
   ));
+};
 
 const Filter: React.FC<FilterList> = ({ store, header }) => {
   return useObserver(() => (
