@@ -12,7 +12,7 @@ interface Filterable {
 }
 
 interface Store {
-  list: Filterable[];
+  list: Map<string | number, Filterable>;
   clear(): void;
 }
 
@@ -21,18 +21,19 @@ interface FilterList {
   header: string;
 }
 
-const checkboxes = (items: Filterable[]) =>
-  items.map((c: Filterable) => (
+const checkboxes = (items: Map<string | number, Filterable>) => {
+  return Array.from(items.values()).map((c: Filterable) => (
     <Checkbox
       key={c.id}
       label={c.name}
       isChecked={c.selected}
       onChange={() => c.toggle()}
       aria-label="controlled checkbox"
-      id={`${c.id}`}
-      name={c.name}
+      id={`${'1'}`}
+      name={'tags'}
     />
   ));
+};
 
 const Filter: React.FC<FilterList> = ({ store, header }) => {
   return useObserver(() => (

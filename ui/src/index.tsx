@@ -1,18 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'mobx-react';
 import './index.css';
 import App from './components/App/App';
-import { CategoryStore } from './store/category';
 import { Hub } from './api';
-import { Provider } from 'mobx-react';
 import * as serviceWorker from './serviceWorker';
 
+import { RootStore } from './store/rootStore';
+
 const api = new Hub();
-export const Store = CategoryStore.create({}, { api });
+
+const store = RootStore.create(
+  {
+    category: {},
+    resources: {
+      catalog: {},
+      kind: {}
+    }
+  },
+  {
+    api
+  }
+);
 
 ReactDOM.render(
   <Provider>
-    <App store={Store} />,
+    <App store={store.category} />,
   </Provider>,
   document.getElementById('root')
 );
