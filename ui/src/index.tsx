@@ -6,9 +6,18 @@ import { CategoryStore } from './store/category';
 import { Hub } from './api';
 import { Provider } from 'mobx-react';
 import * as serviceWorker from './serviceWorker';
+import { RootStore } from './store/resource';
+import { getSnapshot } from 'mobx-state-tree';
 
 const api = new Hub();
+export const store = RootStore.create({}, { api });
+
 export const Store = CategoryStore.create({}, { api });
+
+// setInterval(() => {
+//   // console.log(getSnapshot(Store));
+//   console.log(getSnapshot(store));
+// }, 10000);
 
 ReactDOM.render(
   <Provider>

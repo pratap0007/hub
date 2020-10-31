@@ -7,6 +7,7 @@ import './Filter.css';
 interface Filterable {
   id: number;
   name: string;
+  tags: string[];
   selected: boolean;
   toggle(): void;
 }
@@ -21,8 +22,8 @@ interface FilterList {
   header: string;
 }
 
-const checkboxes = (items: Filterable[]) =>
-  items.map((c: Filterable) => (
+const checkboxes = (items: any) =>
+  items.forEach((c: Filterable) => (
     <Checkbox
       key={c.id}
       label={c.name}

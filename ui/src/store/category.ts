@@ -1,16 +1,17 @@
 import { types, getEnv, flow, Instance } from 'mobx-state-tree';
 import { Api } from '../api';
+import { NavItemSeparator } from '@patternfly/react-core';
 
-const Tag = types.model('Tags', {
-  id: types.integer,
+export const Tag = types.model('Tags', {
+  id: types.identifier,
   name: types.string
 });
 
 export const Category = types
   .model('Category', {
-    id: types.number,
+    id: types.identifier,
     name: types.string,
-    tags: types.array(Tag),
+    tags: types.array(types.reference(Tag)),
     selected: false
   })
   .actions((self) => ({
@@ -23,7 +24,8 @@ export type ICategory = Instance<typeof Category>;
 
 export const CategoryStore = types
   .model('CategoryStore', {
-    list: types.array(Category),
+    list: types.map(Category),
+    tags: types.map(Tag),
     isLoading: true,
     err: ''
   })
@@ -34,19 +36,25 @@ export const CategoryStore = types
     },
 
     get count() {
-      return self.list.length;
+      return self.list.size;
     },
 
-    get tags() {
-      return self.list
+    get tag() {
+      return Array.from(self.list.values())
         .filter((c) => c.selected)
-        .reduce((acc: string[], c: ICategory) => [...acc, ...c.tags.map((t) => t.name)], []);
+        .reduce((acc: string[], c: ICategory) => [...acc, ...c.tags.map((t) => t.id)], []);
     }
   }))
 
   .actions((self) => ({
     add(item: ICategory) {
-      self.list.push(item);
+      item.id = String(item.id);
+      self.list.put(item);
+    },
+
+    addTags(item: any) {
+      item.id = String(item.id);
+      self.tags.set(String(item.id), { id: item.id, name: item.name });
     },
 
     setLoading(l: boolean) {
@@ -54,7 +62,9 @@ export const CategoryStore = types
     },
 
     clear() {
-      self.list.map((c: ICategory) => (c.selected = false));
+      self.list.forEach((c) => {
+        c.selected = false;
+      });
     }
   }))
 
@@ -64,7 +74,16 @@ export const CategoryStore = types
         self.setLoading(true);
         const { api } = self;
         const json = yield api.categories();
-        json.data.forEach((item: ICategory) => self.add(item));
+        json.data.forEach((item: any) => {
+          item.tags.forEach((tag: any) => {
+            self.addTags(tag);
+          });
+
+          for (let i = 0; i < item.tags.length; i++) {
+            item.tags[i] = item.tags[i].id;
+          }
+          self.add(item);
+        });
       } catch (err) {
         self.err = err.toString();
       }
