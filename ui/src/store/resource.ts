@@ -16,11 +16,17 @@ export const catalog = types
     }
   }));
 
-export const kind = types.model({
-  id: types.number,
-  name: types.identifier,
-  selected: false
-});
+export const kind = types
+  .model({
+    id: types.number,
+    name: types.identifier,
+    selected: false
+  })
+  .actions((self) => ({
+    toggle(): void {
+      self.selected = !self.selected;
+    }
+  }));
 
 const latestVersion = types.model({
   id: types.number,
@@ -52,19 +58,40 @@ export const RootStore = types
     resources: types.map(resource),
     catalog: types.map(catalog),
     kind: types.map(kind),
+    search: '',
     err: '',
     isLoading: true
   })
   .views((self) => ({
     get api(): Api {
       return getEnv(self).api;
+    },
+    get selectedCatalog() {
+      let list: any = [];
+      self.catalog.forEach((c: any) => {
+        if (c.selected) {
+          list.push(c.id);
+        }
+      });
+      return list;
+    },
+    get selectedKind() {
+      let list: any = [];
+      self.kind.forEach((c: any) => {
+        if (c.selected) {
+          list.push(c.name);
+        }
+      });
+      return list;
     }
   }))
   .actions((self) => ({
     setLoading(l: boolean) {
       self.isLoading = l;
     },
-
+    setSearch(text: string) {
+      self.search = text;
+    },
     addResources(item: IResource) {
       item.id = String(item.id);
       self.resources.put(item);
@@ -94,7 +121,7 @@ export const RootStore = types
 
         json.data.forEach((item: any) => {
           for (let i = 0; i < item.tags.length; i++) {
-            item.tags[i] = item.tags[i].id;
+            item.tags[i] = String(item.tags[i].id);
           }
           self.addKind(item.kind);
           self.addCatalog(item.catalog);
@@ -110,5 +137,10 @@ export const RootStore = types
   .actions((self) => ({
     afterCreate() {
       self.load();
+    }
+  }))
+  .views((self) => ({
+    get listData() {
+      return null;
     }
   }));

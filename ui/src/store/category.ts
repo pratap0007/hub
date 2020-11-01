@@ -1,6 +1,5 @@
 import { types, getEnv, flow, Instance } from 'mobx-state-tree';
 import { Api } from '../api';
-import { NavItemSeparator } from '@patternfly/react-core';
 
 export const Tag = types.model('Tags', {
   id: types.identifier,
@@ -90,7 +89,6 @@ export const CategoryStore = types
       self.setLoading(false);
     })
   }))
-
   .actions((self) => ({
     afterCreate() {
       self.load();

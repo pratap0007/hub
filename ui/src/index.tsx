@@ -14,10 +14,14 @@ export const store = RootStore.create({}, { api });
 
 export const Store = CategoryStore.create({}, { api });
 
-// setInterval(() => {
-//   // console.log(getSnapshot(Store));
-//   console.log(getSnapshot(store));
-// }, 10000);
+// console.log(getSnapshot(store.catalog));
+
+// console.log(getSnapshot(store.catalog));
+
+setInterval(() => {
+  console.log(getSnapshot(Store));
+  console.log(getSnapshot(store));
+}, 5000);
 
 ReactDOM.render(
   <Provider>

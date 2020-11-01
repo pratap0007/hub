@@ -1,7 +1,9 @@
 import { RootStore, resource, catalog, kind } from './resource';
 import { getSnapshot } from 'mobx-state-tree';
-import { when } from 'mobx';
+import { values, when } from 'mobx';
+import fuzzysort from 'fuzzysort';
 import { FakeHub } from '../api/testutil';
+import { CategoryStore } from './category';
 
 const TESTDATA_DIR = `${__dirname}/testdata`;
 const api = new FakeHub(TESTDATA_DIR);
@@ -76,6 +78,25 @@ describe('Store functions', () => {
     );
   });
 
+  it('can toggle a selected  catalog', (done) => {
+    const store = RootStore.create({}, { api });
+
+    expect(store.isLoading).toBe(true);
+
+    when(
+      () => !store.isLoading,
+      () => {
+        expect(store.isLoading).toBe(false);
+        expect(store.resources.size).toBe(5);
+
+        store.catalog.get('1')?.toggle();
+
+        expect(store.catalog.get('1')?.selected).toBe(true);
+        done();
+      }
+    );
+  });
+
   it('can toggle a selected kind', (done) => {
     const store = RootStore.create({}, { api });
 
@@ -87,20 +108,59 @@ describe('Store functions', () => {
         expect(store.isLoading).toBe(false);
         expect(store.resources.size).toBe(5);
 
-        console.log(getSnapshot(store.catalog));
-        store.catalog.get('1')?.toggle();
-        console.log(getSnapshot(store.catalog));
-        expect(store.catalog.get('1')?.selected).toBe(true);
+        // console.log(getSnapshot(store.kind));
+        store.kind.get('Task')?.toggle();
+        // console.log(getSnapshot(store.kind));
+        expect(store.kind.get('Task')?.selected).toBe(true);
+        // console.log('kindd', store.selectedKind);
+        done();
+      }
+    );
+  });
 
-        store.catalog.forEach((c) => {
-          if (c.selected === true) {
-            store.resources.forEach((r) => {
-              if (r.catalog.id == c.id) {
-                console.log(r.id);
-              }
-            });
+  it('filter resources based on selected category and catalog', (done) => {
+    const store = RootStore.create({}, { api });
+    expect(store.isLoading).toBe(true);
+
+    when(
+      () => !store.isLoading,
+      () => {
+        expect(store.isLoading).toBe(false);
+        expect(store.resources.size).toBe(5);
+
+        store.catalog.get('1')?.toggle();
+        store.kind.get('Task')?.toggle();
+        store.setSearch('aws');
+        console.log(store.selectedCatalog);
+        console.log(store.selectedKind);
+
+        const { resources } = store;
+        const { search } = store;
+
+        const catalogList = new Set(store.selectedCatalog);
+        const kindList = new Set(store.selectedKind);
+        const tagList = new Set(['2']);
+
+        const temp: any = [];
+        store.resources.forEach((r: any) => {
+          // console.log(store.kind.has(String(r.kind.name)));
+          // console.log(store.catalog.has(String(r.catalog.id)));
+          if (kindList.has(String(r.kind.name)) && catalogList.has(String(r.catalog.id))) {
+            temp.push(getSnapshot(r));
           }
         });
+
+        // console.log(temp);
+
+        const filtered =
+          search !== ''
+            ? fuzzysort
+                .go(search, temp, {
+                  keys: ['name', 'displayName']
+                })
+                .map((resource: any) => resource.obj)
+            : temp;
+        console.log('filtered resources', filtered);
         done();
       }
     );
