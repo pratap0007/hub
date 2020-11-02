@@ -8,16 +8,21 @@ import { Provider } from 'mobx-react';
 import * as serviceWorker from './serviceWorker';
 import { RootStore } from './store/resource';
 import { getSnapshot } from 'mobx-state-tree';
+import { CatalogStore } from './store/catalog';
 
 const api = new Hub();
-export const store = RootStore.create({}, { api });
+export const store = RootStore.create(
+  {},
+  { api, catalogStore: CatalogStore.create({}), categoryStore: CategoryStore.create({}, { api }) }
+);
 
 export const Store = CategoryStore.create({}, { api });
 
 // setInterval(() => {
-//   // console.log(getSnapshot(Store));
+//   console.log(getSnapshot(Store));
 //   console.log(getSnapshot(store));
-// }, 10000);
+//   console.log(store.filteredResources);
+// }, 5000);
 
 ReactDOM.render(
   <Provider>
