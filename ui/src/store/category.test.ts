@@ -9,14 +9,14 @@ const api = new FakeHub(TESTDATA_DIR);
 describe('Store Object', () => {
   it('can create a tag object', () => {
     const store = Tag.create({
-      id: '1',
+      id: 1,
       name: 'cli'
     });
     expect(store.name).toBe('cli');
   });
   it('can create a category object', () => {
     const category = Category.create({
-      id: '1',
+      id: 1,
       name: 'test',
       tags: ['1']
     });
@@ -99,7 +99,7 @@ describe('Store functions', () => {
         store.list.get('2')?.toggle();
 
         const tags = store.tag;
-
+        tags.map((t) => console.log(t));
         expect(tags.length).toBe(2);
 
         done();

@@ -1,15 +1,14 @@
 import { types, getEnv, flow, Instance } from 'mobx-state-tree';
 import { Api } from '../api';
-import { NavItemSeparator } from '@patternfly/react-core';
 
 export const Tag = types.model('Tags', {
-  id: types.identifier,
+  id: types.identifierNumber,
   name: types.string
 });
 
 export const Category = types
   .model('Category', {
-    id: types.identifier,
+    id: types.identifierNumber,
     name: types.string,
     tags: types.array(types.reference(Tag)),
     selected: false
@@ -42,18 +41,16 @@ export const CategoryStore = types
     get tag() {
       return Array.from(self.list.values())
         .filter((c) => c.selected)
-        .reduce((acc: string[], c: ICategory) => [...acc, ...c.tags.map((t) => t.id)], []);
+        .reduce((acc: string[], c: any) => [...acc, ...c.tags.map((t) => t.id)], []);
     }
   }))
 
   .actions((self) => ({
     add(item: ICategory) {
-      item.id = String(item.id);
       self.list.put(item);
     },
 
     addTags(item: any) {
-      item.id = String(item.id);
       self.tags.set(String(item.id), { id: item.id, name: item.name });
     },
 

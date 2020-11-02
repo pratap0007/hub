@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Store functions creates a store 1`] = `
+Object {
+  "1": Object {
+    "catalog": 1,
+    "id": 1,
+    "kind": "Task",
+    "latestVersion": 1,
+    "name": "ansible-runner",
+    "rating": 4.5,
+    "tags": Array [
+      2,
+    ],
+    "versions": Object {},
+  },
+  "4": Object {
+    "catalog": 1,
+    "id": 4,
+    "kind": "Task",
+    "latestVersion": 4,
+    "name": "aws-cli",
+    "rating": 5,
+    "tags": Array [
+      2,
+    ],
+    "versions": Object {},
+  },
+  "44": Object {
+    "catalog": 1,
+    "id": 44,
+    "kind": "Task",
+    "latestVersion": 47,
+    "name": "golang-build",
+    "rating": 5,
+    "tags": Array [
+      1,
+    ],
+    "versions": Object {},
+  },
+  "54": Object {
+    "catalog": 1,
+    "id": 54,
+    "kind": "Task",
+    "latestVersion": 57,
+    "name": "jib-maven",
+    "rating": 5,
+    "tags": Array [
+      8,
+    ],
+    "versions": Object {},
+  },
+  "98": Object {
+    "catalog": 1,
+    "id": 98,
+    "kind": "Task",
+    "latestVersion": 104,
+    "name": "jenkins",
+    "rating": 5,
+    "tags": Array [
+      57,
+      56,
+    ],
+    "versions": Object {},
+  },
+}
+`;

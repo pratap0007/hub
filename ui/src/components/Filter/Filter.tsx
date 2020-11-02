@@ -7,7 +7,6 @@ import './Filter.css';
 interface Filterable {
   id: number;
   name: string;
-  tags: string[];
   selected: boolean;
   toggle(): void;
 }
@@ -22,18 +21,19 @@ interface FilterList {
   header: string;
 }
 
-const checkboxes = (items: any) =>
-  items.forEach((c: Filterable) => (
+const checkboxes = (items: any) => {
+  return Array.from(items.values()).map((c: any) => (
     <Checkbox
-      key={c.id}
+      key={1}
       label={c.name}
       isChecked={c.selected}
       onChange={() => c.toggle()}
       aria-label="controlled checkbox"
-      id={`${c.id}`}
-      name={c.name}
+      id={`${'1'}`}
+      name={'tags'}
     />
   ));
+};
 
 const Filter: React.FC<FilterList> = ({ store, header }) => {
   return useObserver(() => (

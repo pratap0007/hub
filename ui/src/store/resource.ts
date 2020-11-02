@@ -3,9 +3,9 @@ import { Tag } from './category';
 import { flow, getEnv } from 'mobx-state-tree';
 import { Api } from '../api';
 
-export const catalog = types
+export const Catalog = types
   .model({
-    id: types.identifier,
+    id: types.identifierNumber,
     name: types.optional(types.string, ''),
     type: types.optional(types.string, ''),
     selected: false
@@ -17,13 +17,12 @@ export const catalog = types
   }));
 
 export const kind = types.model({
-  id: types.number,
   name: types.identifier,
   selected: false
 });
 
-const latestVersion = types.model({
-  id: types.number,
+const VersionInfo = types.model({
+  id: types.identifierNumber,
   version: types.string,
   displayName: types.string,
   description: types.string,
@@ -31,26 +30,29 @@ const latestVersion = types.model({
   rawURL: types.string,
   webURL: types.string,
   updatedAt: types.string
+  // resource: types.late(() => types.reference(Resource))
 });
 
-export const resource = types.model({
-  id: types.identifier,
+export const Resource = types.model({
+  id: types.identifierNumber,
   name: types.optional(types.string, ''),
-  catalog: types.reference(catalog),
+  catalog: types.reference(Catalog),
   kind: types.reference(kind),
-  latestVersion: latestVersion,
+  latestVersion: types.reference(VersionInfo),
   tags: types.array(types.reference(Tag)), // ["1", "2"]
-  rating: types.number
+  rating: types.number,
+  versions: types.map(VersionInfo)
 });
 
 export type IKind = Instance<typeof kind>;
-export type ICatalog = Instance<typeof catalog>;
-export type IResource = Instance<typeof resource>;
+export type ICatalog = Instance<typeof Catalog>;
+export type IResource = Instance<typeof Resource>;
 
 export const RootStore = types
   .model({
-    resources: types.map(resource),
-    catalog: types.map(catalog),
+    resources: types.map(Resource),
+    versions: types.map(VersionInfo),
+    catalog: types.map(Catalog),
     kind: types.map(kind),
     err: '',
     isLoading: true
@@ -66,22 +68,20 @@ export const RootStore = types
     },
 
     addResources(item: IResource) {
-      item.id = String(item.id);
       self.resources.put(item);
     },
 
     addCatalog(item: ICatalog) {
-      item.id = String(item.id);
+      // item.id = String(item.id);
       self.catalog.put(item);
     },
 
     addKind(item: string) {
-      let size = self.kind.size;
+      self.kind.put({ name: item });
+    },
 
-      if (!self.kind.has(item)) {
-        size = size + 1;
-      }
-      self.kind.put({ name: item, id: size });
+    addVersionInfo(item: any) {
+      self.versions.put(item);
     }
   }))
   .actions((self) => ({
@@ -99,9 +99,13 @@ export const RootStore = types
           self.addKind(item.kind);
           self.addCatalog(item.catalog);
           item.catalog = item.catalog.id;
+
+          self.versions.put(item.latestVersion);
+          item.latestVersion = item.latestVersion.id;
           self.addResources(item);
         });
       } catch (err) {
+        console.log(err);
         self.err = err.toString();
       }
       self.setLoading(false);
