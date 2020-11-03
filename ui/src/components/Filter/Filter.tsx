@@ -4,10 +4,15 @@ import { Button, Checkbox, Text, TextVariants, Grid, GridItem } from '@patternfl
 import TimesIcon from '@patternfly/react-icons/dist/js/icons/times-icon';
 import './Filter.css';
 
+interface Tags {
+  id: number;
+  name: string;
+}
 interface Filterable {
   id: number;
   name: string;
   selected: boolean;
+  tags?: Tags[];
   toggle(): void;
 }
 

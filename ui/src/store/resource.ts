@@ -1,27 +1,24 @@
-import { types, Instance, getSnapshot } from 'mobx-state-tree';
-import { CategoryStore, ICategoryStore, Tag } from './category';
+import {
+  types,
+  Instance,
+  SnapshotIn,
+  SnapshotOut,
+  IType,
+  ReferenceIdentifier,
+  IMSTArray,
+  ISimpleType,
+  IReferenceType,
+  IAnyComplexType
+} from 'mobx-state-tree';
+import { Tag, ICategoryStore } from './category';
 import { flow, getEnv } from 'mobx-state-tree';
 import { Api } from '../api';
-import fuzzysort from 'fuzzysort';
-import { Catalog, ICatalogStore } from './catalog';
-import { store } from '..';
-
-// export const Catalog = types
-//   .model({
-//     id: types.identifierNumber,
-//     name: types.optional(types.string, ''),
-//     type: types.optional(types.string, ''),
-//     selected: false
-//   })
-//   .actions((self) => ({
-//     toggle() {
-//       self.selected = !self.selected;
-//     }
-//   }));
-
-export const kind = types
+import { ICatalogStore } from './catalog';
+export const Catalog = types
   .model({
-    name: types.identifier,
+    id: types.identifierNumber,
+    name: types.optional(types.string, ''),
+    type: types.optional(types.string, ''),
     selected: false
   })
   .actions((self) => ({
@@ -29,8 +26,11 @@ export const kind = types
       self.selected = !self.selected;
     }
   }));
-
-const VersionInfo = types.model({
+export const kind = types.model({
+  name: types.identifier,
+  selected: false
+});
+const VersionInfo_A = types.model({
   id: types.identifierNumber,
   version: types.string,
   displayName: types.string,
@@ -39,28 +39,55 @@ const VersionInfo = types.model({
   rawURL: types.string,
   webURL: types.string,
   updatedAt: types.string
-  // resource: types.late(() => types.reference(Resource))
 });
-
-export const Resource = types.model({
+export interface IVersionInfo extends Instance<typeof VersionInfo_A> {
+  // resource: string | number;
+  resource: IResource;
+}
+export interface IVersionInfoSnapshotIn extends SnapshotIn<typeof VersionInfo_A> {
+  resource?: string | number;
+}
+export interface IVersionInfoSnapshotOut extends SnapshotOut<typeof VersionInfo_A> {
+  resource: string | number;
+}
+export type IVersionInfoRunType = IType<
+  IVersionInfoSnapshotIn,
+  IVersionInfoSnapshotOut,
+  IVersionInfo
+>;
+export const VersionInfo: IVersionInfoRunType = VersionInfo_A.props({
+  resource: types.reference(types.late(() => Resource))
+});
+const Resource_A = types.model({
   id: types.identifierNumber,
   name: types.optional(types.string, ''),
   catalog: types.reference(Catalog),
   kind: types.reference(kind),
   latestVersion: types.reference(VersionInfo),
   tags: types.array(types.reference(Tag)), // ["1", "2"]
-  rating: types.number,
-  versions: types.map(VersionInfo)
+  rating: types.number
 });
-
+export interface IResource extends Instance<typeof Resource_A> {
+  versions: IMSTArray<IVersionInfoRunType>;
+}
+export interface IResourceSnapshotIn extends SnapshotIn<typeof Resource_A> {
+  versions?: IVersionInfoSnapshotIn[];
+}
+export interface IResourceSnapshotOut extends SnapshotOut<typeof Resource_A> {
+  versions: IVersionInfoSnapshotOut[];
+}
+export type IResourceoRunType = IType<IResourceSnapshotIn, IResourceSnapshotOut, IResource>;
+export const Resource: IResourceoRunType = Resource_A.props({
+  versions: types.array(types.late(() => VersionInfo))
+});
 export type IKind = Instance<typeof kind>;
 export type ICatalog = Instance<typeof Catalog>;
-export type IResource = Instance<typeof Resource>;
-
+// export type IResource = Instance<typeof Resource>;
 export const RootStore = types
   .model({
     resources: types.map(Resource),
     versions: types.map(VersionInfo),
+    // catalog: types.map(Catalog),
     kind: types.map(kind),
     search: '',
     err: '',
@@ -76,7 +103,6 @@ export const RootStore = types
     get catalogStore(): ICatalogStore {
       return getEnv(self).catalogStore;
     },
-
     get selectedKind() {
       let list: Array<string> = [];
       self.kind.forEach((c: any) => {
@@ -91,23 +117,17 @@ export const RootStore = types
     setLoading(l: boolean) {
       self.isLoading = l;
     },
-    setSearch(text: string) {
-      self.search = text;
-    },
-
     addResources(item: IResource) {
+      // console.log(item);
       self.resources.put(item);
     },
-
-    // addCatalog(item: ICatalog) {
-    //   // item.id = String(item.id);
-    //   self.catalog.put(item);
-    // },
-
+    addCatalog(item: ICatalog) {
+      // item.id = String(item.id);
+      self.catalog.put(item);
+    },
     addKind(item: string) {
       self.kind.put({ name: item });
     },
-
     addVersionInfo(item: any) {
       self.versions.put(item);
     }
@@ -116,22 +136,22 @@ export const RootStore = types
     load: flow(function* () {
       try {
         self.setLoading(true);
-
         const { api } = self;
         const json = yield api.resources();
-
         json.data.forEach((item: any) => {
           for (let i = 0; i < item.tags.length; i++) {
             item.tags[i] = item.tags[i].id;
           }
           self.addKind(item.kind);
-          // console.log(self.catalogStore);
-
+          // self.addCatalog(item.catalog);
           self.catalogStore.addcatalog(item.catalog);
           item.catalog = item.catalog.id;
-
+          item.latestVersion.resource = item.id;
           self.versions.put(item.latestVersion);
           item.latestVersion = item.latestVersion.id;
+          item.versions = [];
+          // item.versions.push(item.latestVersion);
+          // self.addVersionInfo(item.latestVersion);
           self.addResources(item);
         });
       } catch (err) {
@@ -146,6 +166,7 @@ export const RootStore = types
       self.load();
     }
   }))
+
   .views((self) => ({
     get filteredResources() {
       const { resources, search } = self;

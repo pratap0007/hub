@@ -1,5 +1,5 @@
 import { RootStore, Resource, Catalog, kind } from './resource';
-import { getSnapshot } from 'mobx-state-tree';
+import { getSnapshot, isValidReference } from 'mobx-state-tree';
 import { when } from 'mobx';
 import { FakeHub } from '../api/testutil';
 import fuzzysort from 'fuzzysort';
@@ -42,7 +42,7 @@ describe('Store Object', () => {
 });
 
 describe('Store functions', () => {
-  fit('creates a store', (done) => {
+  it('creates a store', (done) => {
     const store = RootStore.create(
       {},
       {
@@ -60,9 +60,9 @@ describe('Store functions', () => {
         expect(store.isLoading).toBe(false);
         expect(store.resources.size).toBe(5);
 
-        // expect(store.catalog.get(1)?.name).toBe('tekton');
+        expect(store.catalog.get('1')?.name).toBe('tekton');
 
-        // expect(getSnapshot(store.resources)).toMatchSnapshot();
+        expect(getSnapshot(store.resources)).toMatchSnapshot();
 
         done();
       }
@@ -145,9 +145,11 @@ describe('Store functions', () => {
         expect(store.resources.size).toBe(5);
 
         store.catalogStore.list.get('1')?.toggle();
-        store.kind.get('Task')?.toggle();
-        store.setSearch('golang');
-        console.log(store.filteredResources);
+
+        // store.kind.get('Task')?.toggle();
+        // store.setSearch('golang');
+
+        store.filteredResources;
 
         // expect(store.filteredResources.length).toBe(1);
         // expect(store.filteredResources[0].name).toBe('golang-build');

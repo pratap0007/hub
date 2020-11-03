@@ -19,12 +19,13 @@ export const Category = types
     }
   }));
 
+export type ITag = Instance<typeof Tag>;
 export type ICategory = Instance<typeof Category>;
 
 export const CategoryStore = types
   .model('CategoryStore', {
     list: types.map(Category),
-    tags: types.map(Tag),
+    tags: types.optional(types.map(Tag), {}),
     isLoading: true,
     err: ''
   })
@@ -41,7 +42,7 @@ export const CategoryStore = types
     get tag() {
       return Array.from(self.list.values())
         .filter((c) => c.selected)
-        .reduce((acc: string[], c: any) => [...acc, ...c.tags.map((t) => t.id)], []);
+        .reduce((acc: string[], c: any) => [...acc, ...c.tags.map((t: any) => t.id)], []);
     }
   }))
 

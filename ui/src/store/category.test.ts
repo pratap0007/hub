@@ -99,7 +99,6 @@ describe('Store functions', () => {
         store.list.get('2')?.toggle();
 
         const tags = store.tag;
-        tags.map((t) => console.log(t));
         expect(tags.length).toBe(2);
 
         done();
