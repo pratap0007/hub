@@ -41,8 +41,8 @@ export const CategoryStore = types
 
     get tag() {
       return Array.from(self.list.values())
-        .filter((c) => c.selected)
-        .reduce((acc: string[], c: any) => [...acc, ...c.tags.map((t: any) => t.id)], []);
+        .filter((c: ICategory) => c.selected)
+        .reduce((acc: number[], c: ICategory) => [...acc, ...c.tags.map((t: ITag) => t.id)], []);
     }
   }))
 
@@ -51,7 +51,7 @@ export const CategoryStore = types
       self.list.put(item);
     },
 
-    addTags(item: any) {
+    addTags(item: ITag) {
       self.tags.set(String(item.id), { id: item.id, name: item.name });
     },
 
@@ -72,13 +72,13 @@ export const CategoryStore = types
         self.setLoading(true);
         const { api } = self;
         const json = yield api.categories();
-        json.data.forEach((item: any) => {
-          item.tags.forEach((tag: any) => {
+        json.data.forEach((item: ICategory) => {
+          item.tags.forEach((tag: ITag) => {
             self.addTags(tag);
           });
 
           for (let i = 0; i < item.tags.length; i++) {
-            item.tags[i] = item.tags[i].id;
+            item.tags[i] = item.tags[i].id as any;
           }
           self.add(item);
         });

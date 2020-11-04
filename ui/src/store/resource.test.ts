@@ -60,7 +60,7 @@ describe('Store functions', () => {
         expect(store.isLoading).toBe(false);
         expect(store.resources.size).toBe(5);
 
-        expect(store.catalog.get('1')?.name).toBe('tekton');
+        expect(store.catalogStore.list.get('1')?.name).toBe('tekton');
 
         expect(getSnapshot(store.resources)).toMatchSnapshot();
 
@@ -144,15 +144,14 @@ describe('Store functions', () => {
         expect(store.isLoading).toBe(false);
         expect(store.resources.size).toBe(5);
 
-        store.catalogStore.list.get('1')?.toggle();
+        store.categoryStore.list.get('2')?.toggle();
 
-        // store.kind.get('Task')?.toggle();
-        // store.setSearch('golang');
+        // store.catalogStore.list.get('1')?.toggle();
+        store.setSearch('Ansible Runner');
 
-        store.filteredResources;
-
-        // expect(store.filteredResources.length).toBe(1);
-        // expect(store.filteredResources[0].name).toBe('golang-build');
+        store.kind.get('Task')?.toggle();
+        expect(store.filteredResources.length).toBe(1);
+        expect(store.filteredResources[0].name).toBe('ansible-runner');
 
         done();
       }

@@ -84,7 +84,7 @@ describe('Store functions', () => {
     );
   });
 
-  it('can return the tags for the categories which are selected', (done) => {
+  fit('can return the tags for the categories which are selected', (done) => {
     const store = CategoryStore.create({}, { api });
     expect(store.count).toBe(0);
     expect(store.isLoading).toBe(true);
@@ -99,6 +99,7 @@ describe('Store functions', () => {
         store.list.get('2')?.toggle();
 
         const tags = store.tag;
+        console.log(tags);
         expect(tags.length).toBe(2);
 
         done();

@@ -8,6 +8,7 @@ import { Provider } from 'mobx-react';
 import * as serviceWorker from './serviceWorker';
 import { RootStore } from './store/resource';
 import { CatalogStore } from './store/catalog';
+// import { getSnapshot } from 'mobx-state-tree';
 
 const api = new Hub();
 export const store = RootStore.create(

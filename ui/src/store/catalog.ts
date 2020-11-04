@@ -13,19 +13,22 @@ export const Catalog = types
     }
   }));
 
+export type ICatalog = Instance<typeof Catalog>;
+export type ICatalogStore = Instance<typeof CatalogStore>;
+
 export const CatalogStore = types
   .model({
     list: types.map(Catalog)
   })
   .actions((self) => ({
-    addcatalog(item: any) {
+    addcatalog(item: ICatalog) {
       self.list.put(item);
     }
   }))
   .views((self) => ({
     get selectedCatalog() {
-      let list: Array<string> = [];
-      self.list.forEach((c: any) => {
+      let list: Array<number> = [];
+      self.list.forEach((c: ICatalog) => {
         if (c.selected) {
           list.push(c.id);
         }
@@ -33,6 +36,3 @@ export const CatalogStore = types
       return list;
     }
   }));
-
-export type ICatalog = Instance<typeof Catalog>;
-export type ICatalogStore = Instance<typeof CatalogStore>;
