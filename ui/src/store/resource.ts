@@ -64,6 +64,7 @@ export const ResourceStore = types
     catalogs: types.optional(CatalogStore, {}),
     kinds: types.optional(KindStore, {}),
     sortBy: types.optional(types.enumeration(Object.values(sortByFields)), sortByFields.Name),
+    tags: types.optional(types.map(Tag), {}),
     search: '',
     err: '',
     isLoading: true
@@ -112,13 +113,18 @@ export const ResourceStore = types
           self.versions.put(r.latestVersion);
         });
 
+        // adding the tags to the store - normalized
+        const tags: ITag[] = json.data.flatMap((item: IResource) => item.tags);
+
+        tags.forEach((t) => (t != null ? self.tags.put(t) : null));
+
         const resources: IResource[] = json.data.map((r: IResource) => ({
           id: r.id,
           name: r.name,
           catalog: r.catalog.id,
           kind: r.kind,
           latestVersion: r.latestVersion.id,
-          tags: r.tags.map((tag: ITag) => tag.id),
+          tags: r.tags != null ? r.tags.map((tag: ITag) => tag.id) : [],
           rating: r.rating,
           versions: [],
           displayName: r.latestVersion.displayName

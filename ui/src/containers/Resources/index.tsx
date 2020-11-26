@@ -1,58 +1,28 @@
 import React from 'react';
-import {
-  Gallery,
-  GalleryItem,
-  Card,
-  CardBody,
-  Pagination,
-  GridItem,
-  Grid
-} from '@patternfly/react-core';
-import { Link } from 'react-router-dom';
+import { Gallery, GridItem, Grid } from '@patternfly/react-core';
+import { useMst } from '../../store/root';
+import { useObserver } from 'mobx-react';
+import Cards from '../../components/Cards';
 import './Resources.css';
 
+export const resourceName = (name: string, displayName: string) => {
+  return displayName === '' ? <span>{name}</span> : <span>{displayName}</span>;
+};
+
 const Resources = () => {
-  const [pageNumber, setPageNumber] = React.useState(1);
-  const [perPgae, setPerPage] = React.useState(20);
+  const { resources } = useMst();
 
-  const setPage = (event: React.MouseEvent | React.KeyboardEvent | MouseEvent, page: number) => {
-    setPageNumber(page);
-  };
-
-  const perPageSelect = (
-    event: React.MouseEvent | React.KeyboardEvent | MouseEvent,
-    perpage: number
-  ) => {
-    setPerPage(perpage);
-  };
-  return (
+  return useObserver(() => (
     <React.Fragment>
-      <Grid>
+      <Grid className="hub-resource">
         <GridItem>
-          <Pagination
-            itemCount={200}
-            perPage={perPgae}
-            onSetPage={setPage}
-            onPerPageSelect={perPageSelect}
-            page={pageNumber}
-            isCompact
-          />
-
           <Gallery hasGutter>
-            {Array.apply(0, Array(20)).map((x, i) => (
-              <GalleryItem key={i}>
-                <Link to="/tekton/task/name/version">
-                  <Card isHoverable className="hub-resource-card">
-                    <CardBody>Resources</CardBody>
-                  </Card>
-                </Link>
-              </GalleryItem>
-            ))}
+            <Cards resources={resources.filteredResources} />
           </Gallery>
         </GridItem>
       </Grid>
     </React.Fragment>
-  );
+  ));
 };
 
 export default Resources;
