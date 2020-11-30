@@ -1,24 +1,23 @@
 import React from 'react';
 import { useMst } from '../../store/root';
-import { useParams } from 'react-router-dom';
 import { useObserver } from 'mobx-react';
+import { Spinner } from '@patternfly/react-core';
 
 const Details: React.FC = () => {
-  const { categories, resources } = useMst();
+  const { resources } = useMst();
 
-  const { catalog, name, id } = useParams();
-
-  // console.log(name);
-  console.log(resources.resources);
-
-  return useObserver(() => (
-    <React.Fragment>
-      <span>
-        Add Resources detail here
-        {/* {resources.resources.get(name).name} */}
-      </span>
-    </React.Fragment>
-  ));
+  return useObserver(() =>
+    resources.resources.size === 0 ? (
+      <Spinner />
+    ) : (
+      <React.Fragment>
+        <span>
+          {console.log(resources.isLoading)}
+          {console.log('in details----', resources.resources.get('1').name)}
+          Add Resources detail here
+        </span>
+      </React.Fragment>
+    )
+  );
 };
-
 export default Details;
