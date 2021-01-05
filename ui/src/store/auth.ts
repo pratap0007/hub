@@ -108,13 +108,23 @@ export const AuthStore = types
           refresh();
         }
       } catch (err) {
-        const error: IError = {
-          status: err.status,
-          serverMessage: titleCase(err.data.message),
-          customMessage: ''
-        };
-        self.setErrorMessage(error);
-        self.authErr = error;
+        if (err === undefined) {
+          const error: IError = {
+            status: 500,
+            serverMessage: 'Server Error',
+            customMessage: ''
+          };
+          self.setErrorMessage(error);
+          self.authErr = error;
+        } else {
+          const error: IError = {
+            status: err.status,
+            serverMessage: titleCase(err.data.message),
+            customMessage: ''
+          };
+          self.setErrorMessage(error);
+          self.authErr = error;
+        }
       }
       self.setLoading(false);
     }),
@@ -129,13 +139,23 @@ export const AuthStore = types
           self.setUserRating(json.rating);
         }
       } catch (err) {
-        const error: IError = {
-          status: err.status,
-          serverMessage: titleCase(err.data.message),
-          customMessage: ''
-        };
-        self.setErrorMessage(error);
-        self.ratingErr = error;
+        if (err === undefined) {
+          const error: IError = {
+            status: 500,
+            serverMessage: 'Server Error',
+            customMessage: ''
+          };
+          self.setErrorMessage(error);
+          self.authErr = error;
+        } else {
+          const error: IError = {
+            status: err.status,
+            serverMessage: titleCase(err.data.message),
+            customMessage: ''
+          };
+          self.setErrorMessage(error);
+          self.authErr = error;
+        }
       }
       self.setLoading(false);
     }),
