@@ -27,6 +27,7 @@ import (
 )
 
 type service struct {
+	base app.Service
 	*auth.Service
 	wq *syncer
 }
@@ -45,6 +46,7 @@ func New(api app.Config) catalog.Service {
 	time.AfterFunc(3*time.Second, wq.Run)
 
 	s := &service{
+		api.Service("catalog"),
 		svc,
 		wq,
 	}
@@ -77,4 +79,26 @@ func (s *service) Refresh(ctx context.Context, p *catalog.RefreshPayload) (*cata
 	log.Infof("job %d queued for refresh", job.ID)
 
 	return ret, nil
+}
+
+// List all Catalog
+func (s *service) List(ctx context.Context) (*catalog.ListResult, error) {
+
+	log := s.base.Logger(ctx)
+	db := s.base.DB(ctx)
+	var all []model.Catalog
+	if err := db.Find(&all).Error; err != nil {
+		log.Error(err)
+		return nil, internalError
+	}
+
+	res := &catalog.ListResult{
+		Data: []*catalog.Catalog{},
+	}
+
+	for _, c := range all {
+		res.Data = append(res.Data, &catalog.Catalog{ID: c.ID, Name: c.Name, Type: c.Type})
+	}
+
+	return res, nil
 }

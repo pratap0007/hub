@@ -32,7 +32,7 @@ import (
 func UsageCommands() string {
 	return `admin (update-agent|refresh-config)
 auth authenticate
-catalog refresh
+catalog (refresh|list)
 category list
 rating (get|update)
 resource (query|list|versions-by-id|by-catalog-kind-name-version|by-version-id|by-catalog-kind-name|by-id)
@@ -44,17 +44,16 @@ user (refresh-access-token|new-refresh-token)
 // UsageExamples produces an example of a valid invocation of the CLI tool.
 func UsageExamples() string {
 	return os.Args[0] + ` admin update-agent --body '{
-      "name": "Nostrum assumenda.",
+      "name": "Non omnis quas deserunt.",
       "scopes": [
-         "Voluptas assumenda.",
-         "Quaerat consequatur ullam quia.",
-         "Officia itaque non aut qui."
+         "Pariatur occaecati voluptas assumenda maiores quaerat consequatur.",
+         "Quia nihil officia itaque."
       ]
-   }' --token "Consequatur assumenda suscipit aut minima autem ut."` + "\n" +
+   }' --token "Aut qui dolor consequatur assumenda suscipit aut."` + "\n" +
 		os.Args[0] + ` auth authenticate --code "5628b69ec09c09512eef"` + "\n" +
 		os.Args[0] + ` catalog refresh --token "Sunt est."` + "\n" +
 		os.Args[0] + ` category list` + "\n" +
-		os.Args[0] + ` rating get --id 7081746155990172147 --token "Molestiae eligendi animi sit nulla omnis incidunt."` + "\n" +
+		os.Args[0] + ` rating get --id 16726950839056036454 --token "Nulla omnis incidunt earum expedita velit."` + "\n" +
 		""
 }
 
@@ -86,6 +85,8 @@ func ParseEndpoint(
 
 		catalogRefreshFlags     = flag.NewFlagSet("refresh", flag.ExitOnError)
 		catalogRefreshTokenFlag = catalogRefreshFlags.String("token", "REQUIRED", "")
+
+		catalogListFlags = flag.NewFlagSet("list", flag.ExitOnError)
 
 		categoryFlags = flag.NewFlagSet("category", flag.ContinueOnError)
 
@@ -155,6 +156,7 @@ func ParseEndpoint(
 
 	catalogFlags.Usage = catalogUsage
 	catalogRefreshFlags.Usage = catalogRefreshUsage
+	catalogListFlags.Usage = catalogListUsage
 
 	categoryFlags.Usage = categoryUsage
 	categoryListFlags.Usage = categoryListUsage
@@ -246,6 +248,9 @@ func ParseEndpoint(
 			switch epn {
 			case "refresh":
 				epf = catalogRefreshFlags
+
+			case "list":
+				epf = catalogListFlags
 
 			}
 
@@ -351,6 +356,9 @@ func ParseEndpoint(
 			case "refresh":
 				endpoint = c.Refresh()
 				data, err = catalogc.BuildRefreshPayload(*catalogRefreshTokenFlag)
+			case "list":
+				endpoint = c.List()
+				data = nil
 			}
 		case "category":
 			c := categoryc.NewClient(scheme, host, doer, enc, dec, restore)
@@ -443,13 +451,12 @@ Create or Update an agent user with required scopes
 
 Example:
     `+os.Args[0]+` admin update-agent --body '{
-      "name": "Nostrum assumenda.",
+      "name": "Non omnis quas deserunt.",
       "scopes": [
-         "Voluptas assumenda.",
-         "Quaerat consequatur ullam quia.",
-         "Officia itaque non aut qui."
+         "Pariatur occaecati voluptas assumenda maiores quaerat consequatur.",
+         "Quia nihil officia itaque."
       ]
-   }' --token "Consequatur assumenda suscipit aut minima autem ut."
+   }' --token "Aut qui dolor consequatur assumenda suscipit aut."
 `, os.Args[0])
 }
 
@@ -460,7 +467,7 @@ Refresh the changes in config file
     -token STRING: 
 
 Example:
-    `+os.Args[0]+` admin refresh-config --token "Iure modi facere cumque omnis non ut."
+    `+os.Args[0]+` admin refresh-config --token "Rerum non iure modi facere cumque omnis."
 `, os.Args[0])
 }
 
@@ -496,6 +503,7 @@ Usage:
 
 COMMAND:
     refresh: Refreshes Tekton Catalog
+    list: List all Catalog
 
 Additional help:
     %s catalog COMMAND --help
@@ -509,6 +517,16 @@ Refreshes Tekton Catalog
 
 Example:
     `+os.Args[0]+` catalog refresh --token "Sunt est."
+`, os.Args[0])
+}
+
+func catalogListUsage() {
+	fmt.Fprintf(os.Stderr, `%s [flags] catalog list
+
+List all Catalog
+
+Example:
+    `+os.Args[0]+` catalog list
 `, os.Args[0])
 }
 
@@ -557,7 +575,7 @@ Find user's rating for a resource
     -token STRING: 
 
 Example:
-    `+os.Args[0]+` rating get --id 7081746155990172147 --token "Molestiae eligendi animi sit nulla omnis incidunt."
+    `+os.Args[0]+` rating get --id 16726950839056036454 --token "Nulla omnis incidunt earum expedita velit."
 `, os.Args[0])
 }
 
@@ -571,8 +589,8 @@ Update user's rating for a resource
 
 Example:
     `+os.Args[0]+` rating update --body '{
-      "rating": 4
-   }' --id 4075726782902513524 --token "Quia consequatur possimus tempora omnis et."
+      "rating": 0
+   }' --id 8223604650900295604 --token "Tempora omnis et nihil aut quo quidem."
 `, os.Args[0])
 }
 
@@ -612,7 +630,7 @@ Example:
    ]' --tags '[
       "image",
       "build"
-   ]' --limit 100 --match "exact"
+   ]' --limit 100 --match "contains"
 `, os.Args[0])
 }
 
@@ -648,7 +666,7 @@ Find resource using name of catalog & name, kind and version of resource
     -version STRING: version of resource
 
 Example:
-    `+os.Args[0]+` resource by-catalog-kind-name-version --catalog "tektoncd" --kind "task" --name "buildah" --version "0.1"
+    `+os.Args[0]+` resource by-catalog-kind-name-version --catalog "tektoncd" --kind "pipeline" --name "buildah" --version "0.1"
 `, os.Args[0])
 }
 
@@ -672,7 +690,7 @@ Find resources using name of catalog, resource name and kind of resource
     -name STRING: Name of resource
 
 Example:
-    `+os.Args[0]+` resource by-catalog-kind-name --catalog "tektoncd" --kind "task" --name "buildah"
+    `+os.Args[0]+` resource by-catalog-kind-name --catalog "tektoncd" --kind "pipeline" --name "buildah"
 `, os.Args[0])
 }
 

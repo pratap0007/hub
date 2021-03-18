@@ -19,6 +19,8 @@ import (
 type Service interface {
 	// Refreshes Tekton Catalog
 	Refresh(context.Context, *RefreshPayload) (res *Job, err error)
+	// List all Catalog
+	List(context.Context) (res *ListResult, err error)
 }
 
 // Auther defines the authorization functions to be implemented by the service.
@@ -35,7 +37,7 @@ const ServiceName = "catalog"
 // MethodNames lists the service method names as defined in the design. These
 // are the same values that are set in the endpoint request contexts under the
 // MethodKey key.
-var MethodNames = [1]string{"Refresh"}
+var MethodNames = [2]string{"Refresh", "List"}
 
 // RefreshPayload is the payload type of the catalog service Refresh method.
 type RefreshPayload struct {
@@ -49,6 +51,20 @@ type Job struct {
 	ID uint
 	// status of the job
 	Status string
+}
+
+// ListResult is the result type of the catalog service List method.
+type ListResult struct {
+	Data []*Catalog
+}
+
+type Catalog struct {
+	// ID is the unique id of the catalog
+	ID uint
+	// Name of catalog
+	Name string
+	// Type of catalog
+	Type string
 }
 
 // MakeInternalError builds a goa.ServiceError from an error.

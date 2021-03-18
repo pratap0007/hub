@@ -11,3 +11,8 @@ package server
 func RefreshCatalogPath() string {
 	return "/catalog/refresh"
 }
+
+// ListCatalogPath returns the URL path to the catalog service List HTTP endpoint.
+func ListCatalogPath() string {
+	return "/catalogs"
+}

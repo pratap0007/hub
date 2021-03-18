@@ -28,6 +28,12 @@ paths:
                 - error: unable to reach db
                   name: api
                   status: ok
+                - error: unable to reach db
+                  name: api
+                  status: ok
+                - error: unable to reach db
+                  name: api
+                  status: ok
   /auth/login:
     post:
       tags:
@@ -166,6 +172,41 @@ paths:
         - catalog:refresh
         - config:refresh
         - refresh:token
+  /catalogs:
+    get:
+      tags:
+      - catalog
+      summary: List catalog
+      description: List all Catalog
+      operationId: catalog#List
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListResponseBody'
+              example:
+                data:
+                - id: 1
+                  name: Tekton
+                  type: community
+                - id: 1
+                  name: Tekton
+                  type: community
+        "500":
+          description: ""
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                fault: true
+                id: 123abc
+                message: parameter 'p' must be an integer
+                name: bad_request
+                temporary: false
+                timeout: false
   /categories:
     get:
       tags:
@@ -179,9 +220,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListResponseBody'
+                $ref: '#/components/schemas/ListResponseBody2'
               example:
                 data:
+                - id: 1
+                  name: Image Builder
+                  tags:
+                  - id: 1
+                    name: image-build
+                  - id: 2
+                    name: kaniko
+                - id: 1
+                  name: Image Builder
+                  tags:
+                  - id: 1
+                    name: image-build
+                  - id: 2
+                    name: kaniko
                 - id: 1
                   name: Image Builder
                   tags:
@@ -203,7 +258,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
@@ -235,7 +290,7 @@ paths:
           type: array
           items:
             type: string
-            example: Qui ullam id asperiores aut.
+            example: Id asperiores aut et.
           description: Kinds of resource to filter by
           example:
           - task
@@ -251,7 +306,7 @@ paths:
           type: array
           items:
             type: string
-            example: Est unde quia quia blanditiis.
+            example: Unde quia quia blanditiis nam dolorem.
           description: Tags associated with a resource to filter by
           example:
           - image
@@ -277,7 +332,7 @@ paths:
           type: string
           description: Strategy used to find matching resources
           default: contains
-          example: contains
+          example: exact
           enum:
           - exact
           - contains
@@ -341,20 +396,32 @@ paths:
                     version: "0.1"
                   - id: 2
                     version: "0.2"
+                - catalog:
+                    id: 1
+                    type: community
+                  id: 1
+                  kind: task
+                  latestVersion:
+                    description: Buildah task builds source into a container image
+                      and then pushes it to a container registry.
+                    displayName: Buildah
+                    id: 1
+                    minPipelinesVersion: 0.12.1
+                    rawURL: https://raw.githubusercontent.com/tektoncd/catalog/main/task/buildah/0.1/buildah.yaml
+                    updatedAt: 2020-01-01 12:00:00 +0000 UTC
+                    version: "0.1"
+                    webURL: https://github.com/tektoncd/catalog/blob/main/task/buildah/0.1/buildah.yaml
+                  name: buildah
+                  rating: 4.3
+                  tags:
+                  - id: 1
+                    name: image-build
+                  versions:
+                  - id: 1
+                    version: "0.1"
+                  - id: 2
+                    version: "0.2"
         "400":
-          description: ""
-          content:
-            application/vnd.goa.error:
-              schema:
-                $ref: '#/components/schemas/Error'
-              example:
-                fault: true
-                id: 123abc
-                message: parameter 'p' must be an integer
-                name: bad_request
-                temporary: false
-                timeout: false
-        "404":
           description: ""
           content:
             application/vnd.goa.error:
@@ -367,7 +434,7 @@ paths:
                 name: bad_request
                 temporary: true
                 timeout: true
-        "500":
+        "404":
           description: ""
           content:
             application/vnd.goa.error:
@@ -379,7 +446,20 @@ paths:
                 message: parameter 'p' must be an integer
                 name: bad_request
                 temporary: false
-                timeout: false
+                timeout: true
+        "500":
+          description: ""
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                fault: true
+                id: 123abc
+                message: parameter 'p' must be an integer
+                name: bad_request
+                temporary: false
+                timeout: true
   /resource/{catalog}/{kind}/{name}:
     get:
       tags:
@@ -405,7 +485,7 @@ paths:
         schema:
           type: string
           description: kind of resource
-          example: pipeline
+          example: task
           enum:
           - task
           - pipeline
@@ -460,7 +540,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: false
+                fault: true
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
@@ -473,11 +553,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
+                temporary: true
                 timeout: false
   /resource/{catalog}/{kind}/{name}/{version}:
     get:
@@ -504,11 +584,11 @@ paths:
         schema:
           type: string
           description: kind of resource
-          example: task
+          example: pipeline
           enum:
           - task
           - pipeline
-        example: pipeline
+        example: task
       - name: name
         in: path
         description: name of resource
@@ -563,12 +643,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: false
+                fault: true
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
                 temporary: false
-                timeout: true
+                timeout: false
         "500":
           description: ""
           content:
@@ -576,12 +656,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: false
+                fault: true
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
-                timeout: true
+                temporary: true
+                timeout: false
   /resource/{id}:
     get:
       tags:
@@ -640,11 +720,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: false
+                fault: true
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: true
+                temporary: false
                 timeout: true
         "500":
           description: ""
@@ -653,11 +733,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
+                temporary: true
                 timeout: false
   /resource/{id}/rating:
     get:
@@ -674,8 +754,8 @@ paths:
         schema:
           type: integer
           description: ID of a resource
-          example: 14582771311047901300
-        example: 8210680075738745939
+          example: 10688584409638675814
+        example: 3184943508311376227
       responses:
         "200":
           description: ""
@@ -692,12 +772,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: false
+                fault: true
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
-                timeout: false
+                temporary: true
+                timeout: true
         "403":
           description: ""
           content:
@@ -710,21 +790,8 @@ paths:
                 message: parameter 'p' must be an integer
                 name: bad_request
                 temporary: true
-                timeout: true
-        "404":
-          description: ""
-          content:
-            application/vnd.goa.error:
-              schema:
-                $ref: '#/components/schemas/Error'
-              example:
-                fault: false
-                id: 123abc
-                message: parameter 'p' must be an integer
-                name: bad_request
-                temporary: false
                 timeout: false
-        "500":
+        "404":
           description: ""
           content:
             application/vnd.goa.error:
@@ -737,6 +804,19 @@ paths:
                 name: bad_request
                 temporary: true
                 timeout: true
+        "500":
+          description: ""
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                fault: false
+                id: 123abc
+                message: parameter 'p' must be an integer
+                name: bad_request
+                temporary: false
+                timeout: false
       security:
       - jwt_header_Authorization:
         - rating:read
@@ -759,8 +839,8 @@ paths:
         schema:
           type: integer
           description: ID of a resource
-          example: 10688584409638675814
-        example: 3184943508311376227
+          example: 8595986174012840593
+        example: 5076360215727984068
       requestBody:
         required: true
         content:
@@ -768,7 +848,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateRequestBody'
             example:
-              rating: 4
+              rating: 0
       responses:
         "200":
           description: ""
@@ -782,12 +862,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: false
+                fault: true
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
                 temporary: true
-                timeout: false
+                timeout: true
         "403":
           description: ""
           content:
@@ -795,12 +875,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: true
-                timeout: true
+                temporary: false
+                timeout: false
         "404":
           description: ""
           content:
@@ -812,7 +892,7 @@ paths:
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: true
+                temporary: false
                 timeout: true
         "500":
           description: ""
@@ -825,7 +905,7 @@ paths:
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: true
+                temporary: false
                 timeout: false
       security:
       - jwt_header_Authorization:
@@ -882,12 +962,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: false
+                fault: true
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
                 temporary: true
-                timeout: true
+                timeout: false
         "500":
           description: ""
           content:
@@ -895,11 +975,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
+                temporary: true
                 timeout: false
   /resource/version/{versionID}:
     get:
@@ -959,7 +1039,7 @@ paths:
                 message: parameter 'p' must be an integer
                 name: bad_request
                 temporary: true
-                timeout: true
+                timeout: false
         "500":
           description: ""
           content:
@@ -1050,6 +1130,31 @@ paths:
                     version: "0.1"
                   - id: 2
                     version: "0.2"
+                - catalog:
+                    id: 1
+                    type: community
+                  id: 1
+                  kind: task
+                  latestVersion:
+                    description: Buildah task builds source into a container image
+                      and then pushes it to a container registry.
+                    displayName: Buildah
+                    id: 1
+                    minPipelinesVersion: 0.12.1
+                    rawURL: https://raw.githubusercontent.com/tektoncd/catalog/main/task/buildah/0.1/buildah.yaml
+                    updatedAt: 2020-01-01 12:00:00 +0000 UTC
+                    version: "0.1"
+                    webURL: https://github.com/tektoncd/catalog/blob/main/task/buildah/0.1/buildah.yaml
+                  name: buildah
+                  rating: 4.3
+                  tags:
+                  - id: 1
+                    name: image-build
+                  versions:
+                  - id: 1
+                    version: "0.1"
+                  - id: 2
+                    version: "0.2"
         "500":
           description: ""
           content:
@@ -1061,8 +1166,8 @@ paths:
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: true
-                timeout: false
+                temporary: false
+                timeout: true
   /schema/swagger.json:
     get:
       tags:
@@ -1088,7 +1193,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RefreshConfigResponseBody'
               example:
-                checksum: Quos distinctio ipsam eos.
+                checksum: Ut aut quos distinctio ipsam eos.
         "401":
           description: ""
           content:
@@ -1150,11 +1255,10 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateAgentRequestBody'
             example:
-              name: Nostrum assumenda.
+              name: Non omnis quas deserunt.
               scopes:
-              - Voluptas assumenda.
-              - Quaerat consequatur ullam quia.
-              - Officia itaque non aut qui.
+              - Pariatur occaecati voluptas assumenda maiores quaerat consequatur.
+              - Quia nihil officia itaque.
       responses:
         "200":
           description: ""
@@ -1163,21 +1267,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/UpdateAgentResponseBody'
               example:
-                token: Error eaque quos commodi.
+                token: Autem ut est error eaque.
         "400":
-          description: ""
-          content:
-            application/vnd.goa.error:
-              schema:
-                $ref: '#/components/schemas/Error'
-              example:
-                fault: true
-                id: 123abc
-                message: parameter 'p' must be an integer
-                name: bad_request
-                temporary: false
-                timeout: false
-        "401":
           description: ""
           content:
             application/vnd.goa.error:
@@ -1190,7 +1281,7 @@ paths:
                 name: bad_request
                 temporary: true
                 timeout: false
-        "403":
+        "401":
           description: ""
           content:
             application/vnd.goa.error:
@@ -1203,6 +1294,19 @@ paths:
                 name: bad_request
                 temporary: false
                 timeout: true
+        "403":
+          description: ""
+          content:
+            application/vnd.goa.error:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                fault: false
+                id: 123abc
+                message: parameter 'p' must be an integer
+                name: bad_request
+                temporary: false
+                timeout: false
         "500":
           description: ""
           content:
@@ -1210,11 +1314,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
+                temporary: true
                 timeout: true
       security:
       - jwt_header_Authorization:
@@ -1256,7 +1360,7 @@ paths:
                 message: parameter 'p' must be an integer
                 name: bad_request
                 temporary: false
-                timeout: false
+                timeout: true
         "403":
           description: ""
           content:
@@ -1268,7 +1372,7 @@ paths:
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: true
+                temporary: false
                 timeout: false
         "500":
           description: ""
@@ -1322,7 +1426,7 @@ paths:
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: true
+                temporary: false
                 timeout: true
         "403":
           description: ""
@@ -1331,12 +1435,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
-                temporary: false
-                timeout: false
+                temporary: true
+                timeout: true
         "500":
           description: ""
           content:
@@ -1380,6 +1484,12 @@ paths:
                 - error: unable to reach db
                   name: api
                   status: ok
+                - error: unable to reach db
+                  name: api
+                  status: ok
+                - error: unable to reach db
+                  name: api
+                  status: ok
   /v1/categories:
     get:
       tags:
@@ -1393,9 +1503,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListResponseBody'
+                $ref: '#/components/schemas/ListResponseBody2'
               example:
                 data:
+                - id: 1
+                  name: Image Builder
+                  tags:
+                  - id: 1
+                    name: image-build
+                  - id: 2
+                    name: kaniko
+                - id: 1
+                  name: Image Builder
+                  tags:
+                  - id: 1
+                    name: image-build
+                  - id: 2
+                    name: kaniko
                 - id: 1
                   name: Image Builder
                   tags:
@@ -1417,7 +1541,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
               example:
-                fault: true
+                fault: false
                 id: 123abc
                 message: parameter 'p' must be an integer
                 name: bad_request
@@ -1634,6 +1758,34 @@ components:
         data:
           type: array
           items:
+            $ref: '#/components/schemas/Catalog'
+          example:
+          - id: 1
+            name: Tekton
+            type: community
+          - id: 1
+            name: Tekton
+            type: community
+          - id: 1
+            name: Tekton
+            type: community
+      example:
+        data:
+        - id: 1
+          name: Tekton
+          type: community
+        - id: 1
+          name: Tekton
+          type: community
+        - id: 1
+          name: Tekton
+          type: community
+    ListResponseBody2:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
             $ref: '#/components/schemas/Category'
           example:
           - id: 1
@@ -1650,15 +1802,15 @@ components:
               name: image-build
             - id: 2
               name: kaniko
-          - id: 1
-            name: Image Builder
-            tags:
-            - id: 1
-              name: image-build
-            - id: 2
-              name: kaniko
       example:
         data:
+        - id: 1
+          name: Image Builder
+          tags:
+          - id: 1
+            name: image-build
+          - id: 2
+            name: kaniko
         - id: 1
           name: Image Builder
           tags:
@@ -1895,6 +2047,31 @@ components:
           version: "0.1"
         - id: 2
           version: "0.2"
+      - catalog:
+          id: 1
+          type: community
+        id: 1
+        kind: task
+        latestVersion:
+          description: Buildah task builds source into a container image and then
+            pushes it to a container registry.
+          displayName: Buildah
+          id: 1
+          minPipelinesVersion: 0.12.1
+          rawURL: https://raw.githubusercontent.com/tektoncd/catalog/main/task/buildah/0.1/buildah.yaml
+          updatedAt: 2020-01-01 12:00:00 +0000 UTC
+          version: "0.1"
+          webURL: https://github.com/tektoncd/catalog/blob/main/task/buildah/0.1/buildah.yaml
+        name: buildah
+        rating: 4.3
+        tags:
+        - id: 1
+          name: image-build
+        versions:
+        - id: 1
+          version: "0.1"
+        - id: 2
+          version: "0.2"
     ResourceVersion:
       type: object
       properties:
@@ -2078,6 +2255,31 @@ components:
             version: "0.1"
           - id: 2
             version: "0.2"
+        - catalog:
+            id: 1
+            type: community
+          id: 1
+          kind: task
+          latestVersion:
+            description: Buildah task builds source into a container image and then
+              pushes it to a container registry.
+            displayName: Buildah
+            id: 1
+            minPipelinesVersion: 0.12.1
+            rawURL: https://raw.githubusercontent.com/tektoncd/catalog/main/task/buildah/0.1/buildah.yaml
+            updatedAt: 2020-01-01 12:00:00 +0000 UTC
+            version: "0.1"
+            webURL: https://github.com/tektoncd/catalog/blob/main/task/buildah/0.1/buildah.yaml
+          name: buildah
+          rating: 4.3
+          tags:
+          - id: 1
+            name: image-build
+          versions:
+          - id: 1
+            version: "0.1"
+          - id: 2
+            version: "0.2"
       required:
       - data
     StatusResponseBody:
@@ -2098,8 +2300,14 @@ components:
           - error: unable to reach db
             name: api
             status: ok
+          - error: unable to reach db
+            name: api
+            status: ok
       example:
         services:
+        - error: unable to reach db
+          name: api
+          status: ok
         - error: unable to reach db
           name: api
           status: ok
@@ -2157,16 +2365,16 @@ components:
         name:
           type: string
           description: Name of Agent
-          example: Omnis consequatur omnis qui aut.
+          example: Molestiae nam quas veniam.
         scopes:
           type: array
           items:
             type: string
-            example: Voluptas animi molestiae nam quas veniam optio.
+            example: Accusamus ut dolorum sapiente.
           description: Scopes required for Agent
           example:
-          - Dolorum sapiente.
-          - Occaecati vitae ducimus ab natus autem.
+          - Vitae ducimus.
+          - Natus autem.
           - Id porro placeat et et at itaque.
           - Tempore animi iure eum et et nam.
       example:
@@ -2196,7 +2404,7 @@ components:
         rating:
           type: integer
           description: User rating for resource
-          example: 0
+          example: 2
           minimum: 0
           maximum: 5
       example:

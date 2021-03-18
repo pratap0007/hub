@@ -46,4 +46,19 @@ var _ = Service("catalog", func() {
 		})
 	})
 
+	Method("List", func() {
+		Description("List all Catalog")
+
+		Result(func() {
+			Attribute("data", ArrayOf(types.Catalog))
+		})
+
+		HTTP(func() {
+			GET("/catalogs")
+
+			Response(StatusOK)
+			Response("internal-error", StatusInternalServerError)
+		})
+	})
+
 })

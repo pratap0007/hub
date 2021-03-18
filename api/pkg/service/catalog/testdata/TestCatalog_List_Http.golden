@@ -1,0 +1,14 @@
+{
+	"data": [
+		{
+			"id": 1,
+			"name": "catalog-official",
+			"type": "official"
+		},
+		{
+			"id": 2,
+			"name": "catalog-community",
+			"type": "community"
+		}
+	]
+}

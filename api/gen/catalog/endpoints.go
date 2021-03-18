@@ -17,6 +17,7 @@ import (
 // Endpoints wraps the "catalog" service endpoints.
 type Endpoints struct {
 	Refresh goa.Endpoint
+	List    goa.Endpoint
 }
 
 // NewEndpoints wraps the methods of the "catalog" service with endpoints.
@@ -25,12 +26,14 @@ func NewEndpoints(s Service) *Endpoints {
 	a := s.(Auther)
 	return &Endpoints{
 		Refresh: NewRefreshEndpoint(s, a.JWTAuth),
+		List:    NewListEndpoint(s),
 	}
 }
 
 // Use applies the given middleware to all the "catalog" service endpoints.
 func (e *Endpoints) Use(m func(goa.Endpoint) goa.Endpoint) {
 	e.Refresh = m(e.Refresh)
+	e.List = m(e.List)
 }
 
 // NewRefreshEndpoint returns an endpoint function that calls the method
@@ -54,5 +57,13 @@ func NewRefreshEndpoint(s Service, authJWTFn security.AuthJWTFunc) goa.Endpoint 
 		}
 		vres := NewViewedJob(res, "default")
 		return vres, nil
+	}
+}
+
+// NewListEndpoint returns an endpoint function that calls the method "List" of
+// service "catalog".
+func NewListEndpoint(s Service) goa.Endpoint {
+	return func(ctx context.Context, req interface{}) (interface{}, error) {
+		return s.List(ctx)
 	}
 }

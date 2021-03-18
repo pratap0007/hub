@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"strings"
 
+	catalog "github.com/tektoncd/hub/api/gen/catalog"
 	catalogviews "github.com/tektoncd/hub/api/gen/catalog/views"
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
@@ -93,4 +94,59 @@ func EncodeRefreshError(encoder func(context.Context, http.ResponseWriter) goaht
 			return encodeError(ctx, w, v)
 		}
 	}
+}
+
+// EncodeListResponse returns an encoder for responses returned by the catalog
+// List endpoint.
+func EncodeListResponse(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder) func(context.Context, http.ResponseWriter, interface{}) error {
+	return func(ctx context.Context, w http.ResponseWriter, v interface{}) error {
+		res := v.(*catalog.ListResult)
+		enc := encoder(ctx, w)
+		body := NewListResponseBody(res)
+		w.WriteHeader(http.StatusOK)
+		return enc.Encode(body)
+	}
+}
+
+// EncodeListError returns an encoder for errors returned by the List catalog
+// endpoint.
+func EncodeListError(encoder func(context.Context, http.ResponseWriter) goahttp.Encoder, formatter func(err error) goahttp.Statuser) func(context.Context, http.ResponseWriter, error) error {
+	encodeError := goahttp.ErrorEncoder(encoder, formatter)
+	return func(ctx context.Context, w http.ResponseWriter, v error) error {
+		en, ok := v.(ErrorNamer)
+		if !ok {
+			return encodeError(ctx, w, v)
+		}
+		switch en.ErrorName() {
+		case "internal-error":
+			res := v.(*goa.ServiceError)
+			enc := encoder(ctx, w)
+			var body interface{}
+			if formatter != nil {
+				body = formatter(res)
+			} else {
+				body = NewListInternalErrorResponseBody(res)
+			}
+			w.Header().Set("goa-error", "internal-error")
+			w.WriteHeader(http.StatusInternalServerError)
+			return enc.Encode(body)
+		default:
+			return encodeError(ctx, w, v)
+		}
+	}
+}
+
+// marshalCatalogCatalogToCatalogResponseBody builds a value of type
+// *CatalogResponseBody from a value of type *catalog.Catalog.
+func marshalCatalogCatalogToCatalogResponseBody(v *catalog.Catalog) *CatalogResponseBody {
+	if v == nil {
+		return nil
+	}
+	res := &CatalogResponseBody{
+		ID:   v.ID,
+		Name: v.Name,
+		Type: v.Type,
+	}
+
+	return res
 }

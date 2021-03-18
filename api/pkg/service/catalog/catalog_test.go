@@ -31,6 +31,7 @@ func NewServiceTest(api app.Config) catalog.Service {
 	wq := newSyncer(api)
 
 	s := &service{
+		api.Service("catalog"),
 		svc,
 		wq,
 	}
@@ -78,4 +79,16 @@ func TestRefreshAgain(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, uint(10001), res.ID)
 	assert.Equal(t, "queued", res.Status)
+}
+
+func TestCatalog_List(t *testing.T) {
+	tc := testutils.Setup(t)
+	testutils.LoadFixtures(t, tc.FixturePath())
+
+	catalog := New(tc)
+	all, err := catalog.List(context.Background())
+
+	assert.NoError(t, err)
+	assert.Equal(t, 2, len(all.Data))
+
 }

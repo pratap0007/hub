@@ -16,6 +16,7 @@ package catalog
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"testing"
@@ -26,6 +27,7 @@ import (
 	"github.com/tektoncd/hub/api/gen/http/catalog/server"
 	"github.com/tektoncd/hub/api/pkg/service/auth"
 	"github.com/tektoncd/hub/api/pkg/testutils"
+	"gotest.tools/golden"
 )
 
 func RefreshChecker(tc *testutils.TestConfig) *goahttpcheck.APIChecker {
@@ -58,5 +60,28 @@ func TestRefresh_Http(t *testing.T) {
 		assert.NoError(t, marshallErr)
 
 		assert.Equal(t, uint(10001), res.ID)
+	})
+}
+
+func TestCatalog_List_Http(t *testing.T) {
+	tc := testutils.Setup(t)
+	testutils.LoadFixtures(t, tc.FixturePath())
+
+	checker := goahttpcheck.New()
+	checker.Mount(
+		server.NewListHandler,
+		server.MountListHandler,
+		catalog.NewListEndpoint(New(tc)))
+
+	checker.Test(t, http.MethodGet, "/catalogs").Check().
+		HasStatus(http.StatusOK).Cb(func(r *http.Response) {
+		b, readErr := ioutil.ReadAll(r.Body)
+		assert.NoError(t, readErr)
+		defer r.Body.Close()
+
+		res, err := testutils.FormatJSON(b)
+		assert.NoError(t, err)
+
+		golden.Assert(t, res, fmt.Sprintf("%s.golden", t.Name()))
 	})
 }
