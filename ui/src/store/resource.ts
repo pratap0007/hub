@@ -4,7 +4,7 @@ import moment, { Moment } from 'moment';
 import { flow, getEnv } from 'mobx-state-tree';
 import { Tag, ICategoryStore, ITag } from './category';
 import { Api } from '../api';
-import { Catalog, CatalogStore } from './catalog';
+import { Catalog, CatalogStore, ICatalogStore } from './catalog';
 import { Kind, KindStore } from './kind';
 import { assert } from './utils';
 
@@ -92,8 +92,8 @@ export const ResourceStore = types
   .model('ResourceStore', {
     resources: types.map(Resource),
     versions: types.map(Version),
-    catalogs: types.optional(CatalogStore, {}),
     kinds: types.optional(KindStore, {}),
+    catalog: types.optional(types.map(Catalog), {}),
     sortBy: types.optional(types.enumeration(Object.values(SortByFields)), SortByFields.Unknown),
     tags: types.optional(types.map(Tag), {}),
     search: '',
@@ -109,6 +109,9 @@ export const ResourceStore = types
     },
     get categories(): ICategoryStore {
       return getEnv(self).categories;
+    },
+    get catalogs(): ICatalogStore {
+      return getEnv(self).catalogs;
     }
   }))
 
@@ -210,7 +213,6 @@ export const ResourceStore = types
         kinds.forEach((k) => self.kinds.add(k));
 
         json.data.forEach((r: IResource) => {
-          self.catalogs.add(r.catalog);
           self.versions.put(r.latestVersion);
         });
 
@@ -299,13 +301,14 @@ export const ResourceStore = types
 
   .views((self) => ({
     get filteredResources() {
-      const { resources, kinds, catalogs, categories, search, sortBy } = self;
+      const { resources, kinds, categories, search, sortBy } = self;
       const { selectedTags } = categories;
 
       let filteredItems: IResource[] = [];
       resources.forEach((r: IResource) => {
         const matchesKind = kinds.selected.size === 0 || kinds.selected.has(r.kind.name);
-        const matchesCatalogs = catalogs.selected.size === 0 || catalogs.selected.has(r.catalog.id);
+        const matchesCatalogs =
+          self.catalogs.selected.size === 0 || self.catalogs.selected.has(r.catalog.id);
         const matchesTags = selectedTags.size === 0 || r.tags.some((t) => selectedTags.has(t.id));
 
         if (matchesKind && matchesCatalogs && matchesTags) {

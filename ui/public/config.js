@@ -1,4 +1,4 @@
 window.config = {
-  API_URL: 'https://api.hub.tekton.dev',
+  API_URL: 'http://localhost:8000',
   GH_CLIENT_ID: ''
 };

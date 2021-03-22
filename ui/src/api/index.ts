@@ -3,6 +3,7 @@ import { API_URL } from '../config/constants';
 import { ICategory } from '../store/category';
 import { IResource, IVersion } from '../store/resource';
 import { ITokenInfo } from '../store/auth';
+import { ICatalog } from '../store/catalog';
 
 interface Token {
   token: string;
@@ -26,6 +27,7 @@ export interface Rating {
 export interface Api {
   categories(): Promise<ICategory>;
   resources(): Promise<IResource>;
+  catalogs(): Promise<ICatalog>;
   resourceVersion(resourceId: number): Promise<IVersion>;
   versionUpdate(versionId: number): Promise<IVersion>;
   authentication(authCode: string): Promise<AuthResponse>;
@@ -49,6 +51,14 @@ export class Hub implements Api {
   async resources() {
     try {
       return axios.get(`${API_URL}/resources`).then((response) => response.data);
+    } catch (err) {
+      return err.response;
+    }
+  }
+
+  async catalogs() {
+    try {
+      return axios.get(`${API_URL}/catalogs`).then((response) => response.data);
     } catch (err) {
       return err.response;
     }

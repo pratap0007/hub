@@ -1,5 +1,7 @@
-import { Instance, types } from 'mobx-state-tree';
+import { Instance, types, flow, getEnv } from 'mobx-state-tree';
 import { Icons } from '../common/icons';
+import { Api } from '../api';
+import { copyFileSync } from 'fs';
 
 const icons: { [catalog: string]: Icons } = {
   official: Icons.Cat,
@@ -30,7 +32,9 @@ export type ICatalogStore = Instance<typeof CatalogStore>;
 
 export const CatalogStore = types
   .model({
-    items: types.map(Catalog)
+    items: types.map(Catalog),
+    isLoading: true,
+    err: ''
   })
 
   .actions((self) => ({
@@ -41,12 +45,19 @@ export const CatalogStore = types
       self.items.forEach((c) => {
         c.selected = false;
       });
+    },
+    setLoading(l: boolean) {
+      self.isLoading = l;
     }
   }))
 
   .views((self) => ({
     get values() {
       return Array.from(self.items.values());
+    },
+
+    get api(): Api {
+      return getEnv(self).api;
     },
 
     get selected() {
@@ -58,5 +69,34 @@ export const CatalogStore = types
       });
 
       return list;
+    }
+  }))
+  .actions((self) => ({
+    load: flow(function* () {
+      try {
+        self.setLoading(true);
+        const { api } = self;
+
+        const json = yield api.catalogs();
+
+        const catalogs: ICatalog[] = json.data.map((c: ICatalog) => ({
+          id: c.id,
+          name: c.name,
+          type: c.type
+        }));
+
+        console.log('ccc', catalogs);
+        catalogs.forEach((c: ICatalog) => self.add(c));
+      } catch (err) {
+        self.err = err.toString();
+      }
+
+      self.setLoading(false);
+    })
+  }))
+
+  .actions((self) => ({
+    afterCreate() {
+      self.load();
     }
   }));

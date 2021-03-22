@@ -24,13 +24,14 @@ interface Props {
 }
 
 const Cards: React.FC<Props> = (resources) => {
+  console.log('326762366', resources);
   return (
     <React.Fragment>
       {resources.items.map((resource: IResource, r: number) => (
         <GalleryItem key={r}>
           <Link
             to={{
-              pathname: `${resource.catalog.name.toLowerCase()}/${resource.kind.name.toLowerCase()}/${resource.name.toLowerCase()}`
+              pathname: `4/${resource.kind.name.toLowerCase()}/${resource.name.toLowerCase()}`
             }}
             className="hub-card-link"
           >
