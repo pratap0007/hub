@@ -11,8 +11,10 @@ import AlertDisplay from '../../components/AlertDisplay';
 import Icon from '../../components/Icon';
 import './Authentication.css';
 
+/* This component return github login page */
 const Authentication: React.FC = observer(() => {
   const history = useHistory();
+  // This function does history back by on1
   const historyBack = () => {
     history.goBack();
   };

@@ -11,13 +11,20 @@ import AlertDisplay from '../../components/AlertDisplay';
 import { titleCase } from '../../common/titlecase';
 import './Rating.css';
 
+/* This component implement rating for hub resources */
 const Rating: React.FC = observer(() => {
   const { name, kind, catalog } = useParams();
+
+  // A key to access the resource from the store
   const resourceKey = `${catalog}/${titleCase(kind)}/${name}`;
 
+  // State for stars
   const [star, setStar] = useState([false, false, false, false, false]);
+
+  // For rating error
   const [ratingError, setRatingError] = useState('');
 
+  // This function helps in to highlight the stars
   const highlightStar = (value: number) => {
     const checkedStatus = [false, false, false, false, false];
     switch (value) {
@@ -41,6 +48,7 @@ const Rating: React.FC = observer(() => {
     setStar(checkedStatus);
   };
 
+  // Unordered list of stars
   const starList = (
     <ul className="hub-rate-area">
       <input readOnly type="radio" id="5" name="rating" value="5" checked={star[4]} />
@@ -68,6 +76,9 @@ const Rating: React.FC = observer(() => {
 
   const { user, resources } = useMst();
   const history = useHistory();
+
+  /* This function check user is logged in or not if yes
+     enables the user to rate a resource otherwise redirect to login page */
   const rateResource = (event: React.MouseEvent<HTMLFormElement, MouseEvent>) => {
     const target = event.target as HTMLInputElement;
     const rating = target.value;
@@ -88,6 +99,8 @@ const Rating: React.FC = observer(() => {
     }
   };
 
+  /* To check whether user is logged in or not
+     if yes highlight intial user rating */
   if (!user.isLoading) {
     highlightStar(user.userRating);
     user.setLoading(true);

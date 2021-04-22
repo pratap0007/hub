@@ -10,15 +10,21 @@ import { PageNotFound } from '../../components/PageNotFound';
 import { titleCase } from '../../common/titlecase';
 import { scrollToTop } from '../../common/scrollToTop';
 
+/* This component returns details page of resource if url is valid
+   otherwise return Page Not Found component  */
 const Details: React.FC = () => {
   const { resources, user } = useMst();
   const { name, catalog, kind } = useParams();
 
+  // This is a key required to access a resource from the store
   const resourceKey = `${catalog}/${titleCase(kind)}/${name}`;
+
+  // This function verify resource key which contains name,catalog and kind params
   const validateUrl = () => {
     return resources.resources.has(resourceKey);
   };
 
+  // This function load the required details for detail page of a resource
   const resourceDetails = () => {
     resources.versionInfo(resourceKey);
     resources.loadReadme(resourceKey);

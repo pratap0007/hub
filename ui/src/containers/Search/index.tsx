@@ -6,6 +6,7 @@ import { useMst } from '../../store/root';
 import { useDebounce } from '../../utils/useDebounce';
 import './Search.css';
 
+/*     */
 const Search: React.FC = () => {
   const { resources } = useMst();
 

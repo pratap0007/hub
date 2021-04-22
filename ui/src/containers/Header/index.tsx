@@ -18,9 +18,18 @@ import { useMst } from '../../store/root';
 import './Header.css';
 import { scrollToTop } from '../../common/scrollToTop';
 
+/* This componnet returns header for hub , header contains
+hub logo,search box and user profile if user is authenticated  */
 const Header: React.FC = observer(() => {
   const { user } = useMst();
   const history = useHistory();
+
+  //This function checks expiry time of refresh token
+  const checkRefreshToken = () => {
+    return user.isAuthenticated && user.refreshTokenInfo.expiresAt * 1000 > global.Date.now()
+      ? true
+      : false;
+  };
 
   const headerTools = (
     <PageHeaderTools>
@@ -29,7 +38,7 @@ const Header: React.FC = observer(() => {
           <Search />
         </GridItem>
       </Grid>
-      {user.isAuthenticated && user.refreshTokenInfo.expiresAt * 1000 > global.Date.now() ? (
+      {checkRefreshToken() ? (
         <UserProfile />
       ) : (
         <Text component={TextVariants.h3}>
@@ -41,6 +50,8 @@ const Header: React.FC = observer(() => {
     </PageHeaderTools>
   );
 
+  /* This function scroll to top of home page and
+     redirect to home page if users are at detail page */
   const homePage = () => {
     if (!window.location.search) history.push('/');
     scrollToTop();

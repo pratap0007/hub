@@ -17,6 +17,7 @@ import Cards from '../../components/Cards';
 import { UpdateURL } from '../../utils/updateUrl';
 import './Resources.css';
 
+/* This component  */
 const Resources: React.FC = observer(() => {
   const { resources, categories } = useMst();
   const { catalogs, kinds, search, sortBy } = resources;
@@ -32,11 +33,14 @@ const Resources: React.FC = observer(() => {
     if (!resources.isLoading) history.replace(`?${url}`);
   }, [search, sortBy, categories.selectedByName, kinds.selected, catalogs.selected]);
 
+  // Function to clear all filters and redirect to home page
   const clearFilter = () => {
     resources.clearAllFilters();
     history.push('/');
   };
 
+  /* This function checks resource length if it is empty return
+  `No Resource Found` otherwise returns resources in the cards*/
   const checkResources = (items: IResource[]) => {
     return !items.length ? (
       <EmptyState variant={EmptyStateVariant.full} className="hub-resource-emptystate__margin">
