@@ -240,32 +240,12 @@ paths:
                 data:
                 - id: 1
                   name: Image Builder
-                  tags:
-                  - id: 1
-                    name: image-build
-                  - id: 2
-                    name: kaniko
                 - id: 1
                   name: Image Builder
-                  tags:
-                  - id: 1
-                    name: image-build
-                  - id: 2
-                    name: kaniko
                 - id: 1
                   name: Image Builder
-                  tags:
-                  - id: 1
-                    name: image-build
-                  - id: 2
-                    name: kaniko
                 - id: 1
                   name: Image Builder
-                  tags:
-                  - id: 1
-                    name: image-build
-                  - id: 2
-                    name: kaniko
         "500":
           description: Internal Server Error response.
           content:
@@ -1453,32 +1433,12 @@ paths:
                 data:
                 - id: 1
                   name: Image Builder
-                  tags:
-                  - id: 1
-                    name: image-build
-                  - id: 2
-                    name: kaniko
                 - id: 1
                   name: Image Builder
-                  tags:
-                  - id: 1
-                    name: image-build
-                  - id: 2
-                    name: kaniko
                 - id: 1
                   name: Image Builder
-                  tags:
-                  - id: 1
-                    name: image-build
-                  - id: 2
-                    name: kaniko
                 - id: 1
                   name: Image Builder
-                  tags:
-                  - id: 1
-                    name: image-build
-                  - id: 2
-                    name: kaniko
         "500":
           description: Internal Server Error response.
           content:
@@ -1579,28 +1539,12 @@ components:
           type: string
           description: Name of category
           example: Image Builder
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-          description: List of tags associated with the category
-          example:
-          - id: 1
-            name: image-build
-          - id: 2
-            name: kaniko
       example:
         id: 1
         name: Image Builder
-        tags:
-        - id: 1
-          name: image-build
-        - id: 2
-          name: kaniko
       required:
       - id
       - name
-      - tags
     Error:
       type: object
       properties:
@@ -1725,48 +1669,18 @@ components:
           example:
           - id: 1
             name: Image Builder
-            tags:
-            - id: 1
-              name: image-build
-            - id: 2
-              name: kaniko
           - id: 1
             name: Image Builder
-            tags:
-            - id: 1
-              name: image-build
-            - id: 2
-              name: kaniko
           - id: 1
             name: Image Builder
-            tags:
-            - id: 1
-              name: image-build
-            - id: 2
-              name: kaniko
           - id: 1
             name: Image Builder
-            tags:
-            - id: 1
-              name: image-build
-            - id: 2
-              name: kaniko
       example:
         data:
         - id: 1
           name: Image Builder
-          tags:
-          - id: 1
-            name: image-build
-          - id: 2
-            name: kaniko
         - id: 1
           name: Image Builder
-          tags:
-          - id: 1
-            name: image-build
-          - id: 2
-            name: kaniko
     NewRefreshTokenResponseBody:
       type: object
       properties:
@@ -1877,7 +1791,7 @@ components:
         tags:
           type: array
           items:
-            $ref: '#/components/schemas/Tag'
+            $ref: '#/components/schemas/Category'
           description: Tags related to resource
           example:
           - id: 1
@@ -2251,23 +2165,6 @@ components:
         - error: unable to reach db
           name: api
           status: ok
-    Tag:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: ID is the unique id of tag
-          example: 1
-        name:
-          type: string
-          description: Name of tag
-          example: image-build
-      example:
-        id: 1
-        name: image-build
-      required:
-      - id
-      - name
     Token:
       type: object
       properties:
