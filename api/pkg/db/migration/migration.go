@@ -36,6 +36,8 @@ func Migrate(api *app.APIBase) error {
 			addRefreshTokenChecksumColumnInUserTable(log),
 			updateCatalogBranchToMain(log),
 			addAvatarURLColumnInUsersTable(log),
+			removeCatgoryAndTagAssociation(log),
+			removeCatgoryIdFromTagtable(log),
 		},
 	)
 
