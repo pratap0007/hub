@@ -26,10 +26,27 @@ func removeCatgoryIdFromTagtable(log *log.Logger) *gormigrate.Migration {
 	return &gormigrate.Migration{
 		ID: "202105311800_remove_categoryid_column_from_tag_table.go",
 		Migrate: func(db *gorm.DB) error {
+
 			if err := db.AutoMigrate(&model.Tag{}); err != nil {
 				log.Error(err)
 				return err
 			}
+
+			if err := db.Migrator().DropConstraint(&model.Tag{}, "fk_categories_tags"); err != nil {
+				log.Error(err)
+				return err
+			}
+
+			if err := db.Migrator().DropConstraint(&model.Tag{}, "fk_tags_category"); err != nil {
+				log.Error(err)
+				return err
+			}
+
+			if err := db.Migrator().DropColumn(&model.Tag{}, "category_id"); err != nil {
+				log.Error(err)
+				return err
+			}
+
 			return nil
 		},
 	}
