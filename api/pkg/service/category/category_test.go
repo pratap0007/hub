@@ -31,5 +31,5 @@ func TestCategory_List(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, 3, len(all.Data))
-	assert.Equal(t, "xyz", all.Data[0].Name) // categories are sorted by name
+	assert.Equal(t, "abc", all.Data[0].Name) // categories are sorted by name
 }
