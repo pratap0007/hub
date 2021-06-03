@@ -176,6 +176,14 @@ paths:
         items:
           type: string
         collectionFormat: multi
+      - name: categories
+        in: query
+        description: Category associated with a resource to filter by
+        required: false
+        type: array
+        items:
+          type: string
+        collectionFormat: multi
       - name: kinds
         in: query
         description: Kinds of resource to filter by
@@ -2207,6 +2215,9 @@ definitions:
           id: 1
           name: tekton
           type: community
+        categories:
+        - id: 1
+          name: image-build
         id: 1
         kind: task
         latestVersion:
@@ -2455,6 +2466,9 @@ definitions:
           id: 1
           name: tekton
           type: community
+        categories:
+        - id: 1
+          name: image-build
         id: 1
         kind: task
         latestVersion:
@@ -2606,6 +2620,14 @@ definitions:
     properties:
       catalog:
         $ref: '#/definitions/CatalogResponseBodyMin'
+      categories:
+        type: array
+        items:
+          $ref: '#/definitions/CategoryResponseBody'
+        description: Categories related to resource
+        example:
+        - id: 1
+          name: image-build
       id:
         type: integer
         description: ID is the unique id of the resource
@@ -2650,6 +2672,9 @@ definitions:
         id: 1
         name: tekton
         type: community
+      categories:
+      - id: 1
+        name: image-build
       id: 1
       kind: task
       latestVersion:
@@ -2676,6 +2701,7 @@ definitions:
     - id
     - name
     - catalog
+    - categories
     - kind
     - latestVersion
     - tags
@@ -2739,6 +2765,14 @@ definitions:
     properties:
       catalog:
         $ref: '#/definitions/CatalogResponseBodyMin'
+      categories:
+        type: array
+        items:
+          $ref: '#/definitions/CategoryResponseBody'
+        description: Categories related to resource
+        example:
+        - id: 1
+          name: image-build
       id:
         type: integer
         description: ID is the unique id of the resource
@@ -2774,6 +2808,9 @@ definitions:
         id: 1
         name: tekton
         type: community
+      categories:
+      - id: 1
+        name: image-build
       id: 1
       kind: task
       latestVersion:
@@ -2795,6 +2832,7 @@ definitions:
     - id
     - name
     - catalog
+    - categories
     - kind
     - latestVersion
     - tags
@@ -2812,6 +2850,9 @@ definitions:
         id: 1
         name: tekton
         type: community
+      categories:
+      - id: 1
+        name: image-build
       id: 1
       kind: task
       latestVersion:
@@ -2838,6 +2879,9 @@ definitions:
         id: 1
         name: tekton
         type: community
+      categories:
+      - id: 1
+        name: image-build
       id: 1
       kind: task
       latestVersion:
@@ -2918,6 +2962,9 @@ definitions:
           id: 1
           name: tekton
           type: community
+        categories:
+        - id: 1
+          name: image-build
         id: 1
         kind: task
         latestVersion:
@@ -2939,6 +2986,9 @@ definitions:
           id: 1
           name: tekton
           type: community
+        categories:
+        - id: 1
+          name: image-build
         id: 1
         kind: task
         latestVersion:
@@ -2960,6 +3010,9 @@ definitions:
           id: 1
           name: tekton
           type: community
+        categories:
+        - id: 1
+          name: image-build
         id: 1
         kind: task
         latestVersion:
@@ -3127,6 +3180,9 @@ definitions:
           id: 1
           name: tekton
           type: community
+        categories:
+        - id: 1
+          name: image-build
         id: 1
         kind: task
         latestVersion:
@@ -3148,6 +3204,9 @@ definitions:
           id: 1
           name: tekton
           type: community
+        categories:
+        - id: 1
+          name: image-build
         id: 1
         kind: task
         latestVersion:
@@ -3169,6 +3228,9 @@ definitions:
           id: 1
           name: tekton
           type: community
+        categories:
+        - id: 1
+          name: image-build
         id: 1
         kind: task
         latestVersion:
