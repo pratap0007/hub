@@ -215,6 +215,7 @@ func withResourceVersionDetails(db *gorm.DB) *gorm.DB {
 	return db.
 		Preload("Resource").
 		Preload("Resource.Catalog").
+		Preload("Resource.Category").
 		Preload("Resource.Tags", orderByTags)
 }
 
