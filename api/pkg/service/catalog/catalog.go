@@ -128,24 +128,39 @@ func (s *service) CatalogError(ctx context.Context, p *catalog.CatalogErrorPaylo
 		return nil, fetchError
 	}
 
-	rs := map[string][]string{}
+	// rs := map[string][]string{}
+	a := []string{}
+	b := []string{}
+	c := []string{}
 
 	for _, item := range allCtgError {
 		switch item.Type {
-		case "info", "warning", "critical":
-			rs[item.Type] = append(rs[item.Type], item.Detail)
-		default:
-			rs["unknown"] = append(rs["unknown"], item.Detail)
+		case "info":
+			a = append(a, item.Detail)
+		case "warning":
+			b = append(b, item.Detail)
+		case "critical":
+			c = append(c, item.Detail)
+			// case "info", "warning", "critical":
+			// 	rs[item.Type] = append(rs[item.Type], item.Detail)
+			// default:
+			// 	rs["unknown"] = append(rs["unknown"], item.Detail)
 		}
 	}
 
 	allError := []*catalog.CatalogErrors{}
 
-	for key, element := range rs {
-		if len(element) > 0 {
-			allError = append(allError, &catalog.CatalogErrors{Type: key, Errors: element})
-		}
+	// for key, element := range rs {
+	if len(a) > 0 {
+		allError = append(allError, &catalog.CatalogErrors{Type: "info", Errors: a})
 	}
+	if len(b) > 0 {
+		allError = append(allError, &catalog.CatalogErrors{Type: "warning", Errors: b})
+	}
+	if len(c) > 0 {
+		allError = append(allError, &catalog.CatalogErrors{Type: "critical", Errors: c})
+	}
+	// }
 
 	return &catalog.CatalogErrorResult{Data: allError}, nil
 }
