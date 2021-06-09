@@ -123,7 +123,7 @@ func (s *service) CatalogError(ctx context.Context, p *catalog.CatalogErrorPaylo
 	}
 
 	allCtgError := []model.CatalogError{}
-	if err := db.Where(&model.CatalogError{CatalogID: ctg.ID}).Find(&allCtgError).Error; err != nil {
+	if err := db.Where(&model.CatalogError{CatalogID: ctg.ID}).Order("id").Find(&allCtgError).Error; err != nil {
 		log.Error(err)
 		return nil, fetchError
 	}
