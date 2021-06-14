@@ -41,6 +41,19 @@ const Search: React.FC = observer(() => {
     const currentInput = inputRef.current;
     assert(currentInput);
     setValue(currentInput.value);
+
+    const searchInput = currentInput.value;
+
+    if (searchInput.includes('tags:')) {
+      const tagsString = searchInput.substr(5);
+      let tagList = tagsString.split(',');
+      tagList = tagList.filter((item: string) => item !== '');
+      if (tagList.length > 0 && tagList !== undefined) {
+        resources.setSearchedTags(tagList);
+      }
+    } else {
+      resources.setSearchedTags([]);
+    }
     debounced(currentInput.value);
   };
 

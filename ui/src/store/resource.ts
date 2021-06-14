@@ -1,4 +1,5 @@
 import { types, Instance } from 'mobx-state-tree';
+import { cast } from 'mobx-state-tree';
 import fuzzysort from 'fuzzysort';
 import moment, { Moment } from 'moment';
 import { flow, getEnv } from 'mobx-state-tree';
@@ -31,6 +32,10 @@ export const updatedAt = types.custom<string, Moment>({
 export const Tag = types.model('Tags', {
   id: types.number,
   name: types.identifier
+});
+
+export const tagList = types.model('Tags', {
+  name: types.string
 });
 
 const Version = types.model('Version', {
@@ -119,6 +124,7 @@ export const ResourceStore = types
     tags: types.optional(types.map(Tag), {}),
     allcategories: types.optional(types.map(Category), {}),
     search: '',
+    searchedTags: types.array(types.string),
     urlParams: '',
     err: '',
     isLoading: true
@@ -154,6 +160,9 @@ export const ResourceStore = types
     },
     setURLParams(url: string) {
       self.urlParams = url;
+    },
+    setSearchedTags(tags: Array<string>) {
+      self.searchedTags = cast(tags);
     }
   }))
 
@@ -163,6 +172,7 @@ export const ResourceStore = types
       self.catalogs.clearSelected();
       self.categories.clearSelected();
       self.setSearch('');
+      self.setSearchedTags([]);
       self.setSortBy(SortByFields.Unknown);
     },
 
@@ -366,7 +376,9 @@ export const ResourceStore = types
 
   .views((self) => ({
     get filteredResources() {
-      const { resources, kinds, catalogs, search, sortBy, categories } = self;
+      const { resources, kinds, catalogs, search, sortBy, categories, searchedTags } = self;
+
+      const allTags = new Set(searchedTags);
 
       let filteredItems: IResource[] = [];
       resources.forEach((r: IResource) => {
@@ -374,13 +386,17 @@ export const ResourceStore = types
         const matchesCatalogs = catalogs.selected.size === 0 || catalogs.selected.has(r.catalog.id);
         const matchescategories =
           categories.selected.size === 0 || r.categories.some((c) => categories.selected.has(c.id));
+        const matchesTags =
+          searchedTags.length === 0 || r.tags.some((t: ITag) => allTags.has(t.name));
 
-        if (matchesKind && matchesCatalogs && matchescategories) {
+        if (matchesKind && matchesCatalogs && matchescategories && matchesTags) {
           filteredItems.push(r);
         }
       });
 
-      if (search.trim() !== '') {
+      if (search.trim() !== '' && searchedTags.length === 0) {
+        // TODO : Add `tags` into fuzzysort.go func to search resources by tags as well
+
         filteredItems = fuzzysort
           .go(search, filteredItems, { keys: ['name', 'displayName'] })
           .map((resource: Fuzzysort.KeysResult<IResource>) => resource.obj);
