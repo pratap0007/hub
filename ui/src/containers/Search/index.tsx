@@ -12,6 +12,11 @@ const Search: React.FC = observer(() => {
   const { resources } = useMst();
   const [value, setValue] = React.useState(resources.search);
 
+  interface SearchInfo {
+    search: string;
+    tags: Array<string>;
+  }
+
   React.useEffect(() => {
     setValue(resources.search);
   }, [resources.search]);
@@ -30,8 +35,9 @@ const Search: React.FC = observer(() => {
      when users stop searching
   */
   const debounced = useDebouncedCallback(
-    (value: string) => {
-      resources.setSearch(value);
+    (data: SearchInfo) => {
+      resources.setSearchedTags(data.tags);
+      resources.setSearch(data.search);
     },
     // Delay in ms
     500
@@ -43,18 +49,21 @@ const Search: React.FC = observer(() => {
     setValue(currentInput.value);
 
     const searchInput = currentInput.value;
+    let tagList: Array<string>;
 
     if (searchInput.includes('tags:')) {
-      const tagsString = searchInput.substr(5);
-      let tagList = tagsString.split(',');
-      tagList = tagList.filter((item: string) => item !== '');
-      if (tagList.length > 0 && tagList !== undefined) {
-        resources.setSearchedTags(tagList);
-      }
+      const tagsString = searchInput.substr(5); // Removes `tags:` from search Input
+      tagList = tagsString.split(',').filter((item: string) => item !== '');
     } else {
-      resources.setSearchedTags([]);
+      tagList = [];
     }
-    debounced(currentInput.value);
+
+    const searchedData: SearchInfo = {
+      search: currentInput.value,
+      tags: tagList
+    };
+
+    debounced(searchedData);
   };
 
   const history = useHistory();

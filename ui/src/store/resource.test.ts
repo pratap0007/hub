@@ -28,7 +28,7 @@ describe('Store Object', () => {
 });
 
 describe('Store functions', () => {
-  it('creates a resource store', (done) => {
+  fit('creates a resource store', (done) => {
     const store = ResourceStore.create(
       {},
       {

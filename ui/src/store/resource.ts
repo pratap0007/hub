@@ -63,6 +63,7 @@ export const Resource = types
     rating: types.number,
     versions: types.array(types.reference(Version)),
     displayName: '',
+    tagsString: '',
     readme: '',
     yaml: ''
   })
@@ -125,6 +126,7 @@ export const ResourceStore = types
     allcategories: types.optional(types.map(Category), {}),
     search: '',
     searchedTags: types.array(types.string),
+    tagsString: '',
     urlParams: '',
     err: '',
     isLoading: true
@@ -304,8 +306,11 @@ export const ResourceStore = types
           categories: r.categories != null ? r.categories.map((c: ICategory) => c.id) : [],
           rating: r.rating,
           versions: [],
-          displayName: r.latestVersion.displayName
+          displayName: r.latestVersion.displayName,
+          tagsString: `${r.tags.map((tag: ITag) => tag.name)}`.replaceAll(',', ' ')
         }));
+        console.log('abcd', resources);
+
         resources.forEach((r: IResource) => {
           r.versions.push(r.latestVersion);
           self.add(r);
@@ -395,10 +400,8 @@ export const ResourceStore = types
       });
 
       if (search.trim() !== '' && searchedTags.length === 0) {
-        // TODO : Add `tags` into fuzzysort.go func to search resources by tags as well
-
         filteredItems = fuzzysort
-          .go(search, filteredItems, { keys: ['name', 'displayName'] })
+          .go(search, filteredItems, { keys: ['name', 'displayName', 'tagsString'] })
           .map((resource: Fuzzysort.KeysResult<IResource>) => resource.obj);
       }
 

@@ -34,6 +34,7 @@ Object {
     "tags": Array [
       "resource",
     ],
+    "tagsString": "",
     "versions": Array [
       1,
     ],
@@ -56,6 +57,7 @@ Object {
     "tags": Array [
       "cli",
     ],
+    "tagsString": "",
     "versions": Array [
       1,
     ],
@@ -78,6 +80,7 @@ Object {
     "tags": Array [
       "cli",
     ],
+    "tagsString": "",
     "versions": Array [
       4,
     ],
@@ -100,6 +103,7 @@ Object {
     "tags": Array [
       "image-build",
     ],
+    "tagsString": "",
     "versions": Array [
       105,
     ],
@@ -122,6 +126,7 @@ Object {
     "tags": Array [
       "build-tool",
     ],
+    "tagsString": "",
     "versions": Array [
       47,
     ],
@@ -145,6 +150,7 @@ Object {
       "build",
       "jenkins",
     ],
+    "tagsString": "",
     "versions": Array [
       104,
     ],
@@ -167,6 +173,7 @@ Object {
     "tags": Array [
       "image-build",
     ],
+    "tagsString": "",
     "versions": Array [
       57,
     ],
