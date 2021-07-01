@@ -102,6 +102,8 @@ type ResourceVersionDataView struct {
 	Version *string
 	// Display name of version
 	DisplayName *string
+	// Deprecation status of a version
+	Deprecated *string
 	// Description of version
 	Description *string
 	// Minimum pipelines version the resource's version is compatible with
@@ -286,6 +288,7 @@ var (
 			"id",
 			"version",
 			"displayName",
+			"deprecated",
 			"description",
 			"minPipelinesVersion",
 			"rawURL",
@@ -686,6 +689,9 @@ func ValidateResourceVersionDataView(result *ResourceVersionDataView) (err error
 	}
 	if result.DisplayName == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("displayName", "result"))
+	}
+	if result.Deprecated == nil {
+		err = goa.MergeErrors(err, goa.MissingFieldError("deprecated", "result"))
 	}
 	if result.Description == nil {
 		err = goa.MergeErrors(err, goa.MissingFieldError("description", "result"))

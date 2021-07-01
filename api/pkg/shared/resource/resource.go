@@ -134,6 +134,8 @@ func (r *Request) ByVersionID() (model.ResourceVersion, error) {
 		return model.ResourceVersion{}, err
 	}
 
+	fmt.Println("11111", v.Deprecated)
+
 	return v, nil
 }
 
@@ -216,6 +218,7 @@ func withResourceVersionDetails(db *gorm.DB) *gorm.DB {
 		Preload("Resource").
 		Preload("Resource.Catalog").
 		Preload("Resource.Categories").
+		Preload("Resource.Versions").
 		Preload("Resource.Tags", orderByTags)
 }
 
@@ -313,6 +316,12 @@ func filterByResourceID(id uint) func(db *gorm.DB) *gorm.DB {
 func filterByVersionID(versionID uint) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		return db.Where("id = ?", versionID)
+	}
+}
+
+func filterByDeprecation() func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		return db.Where("deprecation = ?", "true")
 	}
 }
 
