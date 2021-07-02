@@ -377,6 +377,7 @@ func versionInfoFromResource(r model.Resource) *resource.ResourceVersion {
 		WebURL:              v.URL,
 		RawURL:              getStringReplacer(v.URL).Replace(v.URL),
 		UpdatedAt:           v.ModifiedAt.UTC().Format(time.RFC3339),
+		Deprecated:          v.Deprecated,
 		Resource:            res,
 	}
 
