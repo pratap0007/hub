@@ -67,6 +67,7 @@ func (i *Initializer) Run(ctx context.Context) (*model.Config, error) {
 	}
 
 	if err := withTransaction(db, logger, data,
+		deleteCategories,
 		addCategories,
 		addCatalogs,
 		addUsers,
@@ -79,6 +80,40 @@ func (i *Initializer) Run(ctx context.Context) (*model.Config, error) {
 }
 
 type initFn func(*gorm.DB, *log.Logger, *app.Data) error
+
+// Deletes categories and it's mapping with resource from the database
+// which are removed from the config
+func deleteCategories(db *gorm.DB, log *log.Logger, data *app.Data) error {
+	if len(data.Categories) == 0 {
+		return nil
+	}
+
+	var dbcategoryName []string
+	var dbCategory []*model.Category
+	for _, c := range data.Categories {
+		dbcategoryName = append(dbcategoryName, c.Name)
+	}
+
+	if err := db.Not(map[string]interface{}{"name": dbcategoryName}).Find(&dbCategory).Error; err != nil {
+		log.Error(err)
+		return err
+	}
+
+	for _, c := range dbCategory {
+		if err := db.Unscoped().Where(&model.ResourceCategory{CategoryID: c.ID}).Delete(&model.ResourceCategory{}).Error; err != nil {
+			log.Error(err)
+			return err
+		}
+
+		if err := db.Unscoped().Where("id = ?", c.ID).Delete(&model.Category{}).Error; err != nil {
+			log.Error(err)
+			return err
+		}
+		log.Infof("Category %s has been deleted", c.Name)
+	}
+
+	return nil
+}
 
 func addCategories(db *gorm.DB, log *log.Logger, data *app.Data) error {
 
