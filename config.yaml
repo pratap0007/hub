@@ -26,7 +26,7 @@ categories:
   - name: Openshift
   - name: Publishing
   - name: Security
-  - name: Abcd
+  - name: Abcder
 
 catalogs:
   - name: tekton
