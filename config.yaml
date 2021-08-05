@@ -33,6 +33,7 @@ categories:
   - name: Security
   - name: Storage
   - name: Testing
+  - name: Abcd
 
 catalogs:
   - name: tekton
