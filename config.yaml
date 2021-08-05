@@ -24,7 +24,6 @@ categories:
   - name: Monitoring
   - name: Networking
   - name: Openshift
-  - name: Publishing
 
 catalogs:
   - name: tekton
