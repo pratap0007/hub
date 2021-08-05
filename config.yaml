@@ -26,8 +26,6 @@ categories:
   - name: Openshift
   - name: Publishing
   - name: Security
-  - name: Accer
-  - name: Bnm
 
 catalogs:
   - name: tekton
