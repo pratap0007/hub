@@ -13,7 +13,6 @@
 # limitations under the License.
 ---
 categories:
-  - name: CLI
   - name: Cloud
   - name: Code Quality
   - name: Continuous Integration
