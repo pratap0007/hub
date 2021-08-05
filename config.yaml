@@ -13,8 +13,6 @@
 # limitations under the License.
 ---
 categories:
-  - name: Automation
-  - name: Build Tools
   - name: CLI
   - name: Cloud
   - name: Code Quality
@@ -32,8 +30,6 @@ categories:
   - name: Publishing
   - name: Security
   - name: Storage
-  - name: Testing
-  - name: Abcd
 
 catalogs:
   - name: tekton
