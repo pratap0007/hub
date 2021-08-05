@@ -23,7 +23,6 @@ categories:
   - name: Messaging
   - name: Monitoring
   - name: Networking
-  - name: Openshift
 
 catalogs:
   - name: tekton
