@@ -25,7 +25,6 @@ categories:
   - name: Networking
   - name: Openshift
   - name: Publishing
-  - name: Security
 
 catalogs:
   - name: tekton
