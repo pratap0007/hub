@@ -35,11 +35,11 @@ func (s JobState) String() string {
 
 type SyncJob struct {
 	gorm.Model
-	Catalog   Catalog
+	Catalog   Catalog `gorm:"constraint:OnDelete:CASCADE;"`
 	CatalogID uint
 	Status    string
 	UserID    uint
-	User      User
+	User      User `gorm:"constraint:OnDelete:CASCADE;"`
 }
 
 func (j *SyncJob) SetState(s JobState) {

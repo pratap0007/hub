@@ -24,13 +24,13 @@ type (
 	Category struct {
 		gorm.Model
 		Name      string      `gorm:"not null;unique"`
-		Resources []*Resource `gorm:"many2many:resource_categories;"`
+		Resources []*Resource `gorm:"many2many:resource_categories;constraint:OnDelete:CASCADE;"`
 	}
 
 	Tag struct {
 		gorm.Model
 		Name      string      `gorm:"not null;unique"`
-		Resources []*Resource `gorm:"many2many:resource_tags;"`
+		Resources []*Resource `gorm:"many2many:resource_tags;constraint:OnDelete:CASCADE;"`
 	}
 
 	Catalog struct {
@@ -42,13 +42,13 @@ type (
 		Revision   string `gorm:"not null;default:null"`
 		ContextDir string
 		SHA        string
-		Resources  []Resource
-		Errors     []CatalogError
+		Resources  []Resource     `gorm:"constraint:OnDelete:CASCADE;"`
+		Errors     []CatalogError `gorm:"constraint:OnDelete:CASCADE;"`
 	}
 
 	CatalogError struct {
 		gorm.Model
-		Catalog   Catalog
+		Catalog   Catalog `gorm:"constraint:OnDelete:CASCADE;"`
 		CatalogID uint
 		Type      string
 		Detail    string
@@ -59,11 +59,11 @@ type (
 		Name       string `gorm:"not null;default:null"`
 		Kind       string `gorm:"not null;default:null"`
 		Rating     float64
-		Catalog    Catalog
-		Categories []*Category `gorm:"many2many:resource_categories;"`
+		Catalog    Catalog     `gorm:"constraint:OnDelete:CASCADE;"`
+		Categories []*Category `gorm:"many2many:resource_categories;constraint:OnDelete:CASCADE;"`
 		CatalogID  uint
-		Versions   []ResourceVersion
-		Tags       []*Tag `gorm:"many2many:resource_tags;"`
+		Versions   []ResourceVersion `gorm:"constraint:OnDelete:CASCADE;"`
+		Tags       []*Tag            `gorm:"many2many:resource_tags;constraint:OnDelete:CASCADE;"`
 	}
 
 	ResourceVersion struct {
@@ -72,8 +72,8 @@ type (
 		Description         string
 		URL                 string `gorm:"not null;default:null"`
 		DisplayName         string
-		MinPipelinesVersion string `gorm:"not null;default:null"`
-		Resource            Resource
+		MinPipelinesVersion string   `gorm:"not null;default:null"`
+		Resource            Resource `gorm:"constraint:OnDelete:CASCADE;"`
 		ResourceID          uint
 		ModifiedAt          time.Time
 	}
@@ -94,7 +94,7 @@ type (
 		GithubLogin          string
 		GithubName           string
 		Type                 UserType
-		Scopes               []*Scope `gorm:"many2many:user_scopes;"`
+		Scopes               []*Scope `gorm:"many2many:user_scopes;constraint:OnDelete:CASCADE;"`
 		RefreshTokenChecksum string
 		AvatarURL            string
 	}
@@ -107,8 +107,8 @@ type (
 	UserResourceRating struct {
 		gorm.Model
 		UserID     uint
-		User       User
-		Resource   Resource
+		User       User     `gorm:"constraint:OnDelete:CASCADE;"`
+		Resource   Resource `gorm:"constraint:OnDelete:CASCADE;"`
 		ResourceID uint
 		Rating     uint `gorm:"not null;default:null"`
 	}
