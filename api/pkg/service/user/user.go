@@ -24,13 +24,13 @@ import (
 	"github.com/tektoncd/hub/api/gen/user"
 	"github.com/tektoncd/hub/api/pkg/app"
 	"github.com/tektoncd/hub/api/pkg/db/model"
-	"github.com/tektoncd/hub/api/pkg/service/auth"
+	"github.com/tektoncd/hub/api/pkg/service/admin"
 	"github.com/tektoncd/hub/api/pkg/token"
 	"gorm.io/gorm"
 )
 
 type service struct {
-	*auth.Service
+	*admin.Service
 	api app.Config
 }
 
@@ -49,7 +49,7 @@ var (
 
 // New returns the user service implementation.
 func New(api app.Config) user.Service {
-	return &service{auth.NewService(api, "user"), api}
+	return &service{admin.NewService(api, "user"), api}
 }
 
 func (s *service) newRequest(ctx context.Context, user *model.User) *request {

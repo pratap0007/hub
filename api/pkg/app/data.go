@@ -82,7 +82,12 @@ func readLocalFile(path string) ([]byte, error) {
 
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil, err
+		path = "../" + path
+		data, err = ioutil.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		return data, nil
 	}
 	return data, nil
 }
