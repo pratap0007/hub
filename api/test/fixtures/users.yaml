@@ -20,13 +20,14 @@
   refresh_token_checksum: test-checksum
   created_at: 2016-01-01 12:30:12 UTC
   updated_at: 2016-01-01 12:30:12 UTC
+  code: 'test-code'
 
 - id: 13
   github_name: abc
   github_login: abc
   avatar_url: 'https://bar'
   type: user
-  refresh_token_checksum: 7bd024c1d9a3009dd4208891f2ffd49cb5e972c034bce46883a7c1d982ba9b39
+  refresh_token_checksum: ca19d5085c04c8f0046d48f5c23daf150972b0df6cabe16a447a18c380629ee6
   created_at: 2016-01-01 12:30:12 UTC
   updated_at: 2016-01-01 12:30:12 UTC
 
