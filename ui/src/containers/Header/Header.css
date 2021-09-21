@@ -8,3 +8,11 @@
   margin-left: 0.2em;
   cursor: pointer;
 }
+
+.header-sigin-button {
+  margin-bottom: 2em;
+}
+
+.header-sigin-button__icon {
+  float: left;
+}
