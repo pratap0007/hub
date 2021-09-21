@@ -154,7 +154,7 @@ export class Hub implements Api {
     try {
       return axios({
         method: 'post',
-        url: `${API_URL}/user/refresh/refreshtoken`,
+        url: `${AUTH_BASE_URL}/user/refresh/refreshtoken`,
         headers: {
           Authorization: `Bearer ${refreshToken}`
         }
@@ -170,7 +170,7 @@ export class Hub implements Api {
     try {
       return axios({
         method: 'post',
-        url: `${API_URL}/user/refresh/accesstoken`,
+        url: `${AUTH_BASE_URL}/user/refresh/accesstoken`,
         headers: {
           Authorization: `Bearer ${refreshToken}`
         }
@@ -185,7 +185,7 @@ export class Hub implements Api {
   async profile(token: string) {
     try {
       return axios
-        .get(`${API_URL}/user/info`, {
+        .get(`${AUTH_BASE_URL}/user/info`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

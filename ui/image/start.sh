@@ -13,9 +13,7 @@ echo '----------------------------------------------'
 cat <<-EOF > $CONFIG_JS
 window.config = {
   API_URL: '$API_URL',
-  GH_CLIENT_ID: '$GH_CLIENT_ID',
   API_VERSION: '$API_VERSION',
-  GHE_URL: '$GHE_URL',
 };
 
 

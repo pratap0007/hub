@@ -14,7 +14,9 @@ import {
   TextContent,
   TextList,
   TextListItem,
-  Button
+  Button,
+  AlertVariant,
+  Divider
 } from '@patternfly/react-core';
 import logo from '../../assets/logo/logo.png';
 import { IconSize } from '@patternfly/react-icons';
@@ -28,12 +30,13 @@ import { useMst } from '../../store/root';
 import { AUTH_BASE_URL, REDIRECT_URI } from '../../config/constants';
 import { IProvider } from '../../store/provider';
 import { titleCase } from '../../common/titlecase';
+import AlertDisplay from '../../components/AlertDisplay';
 
 const Header: React.FC = observer(() => {
   const { user, providers } = useMst();
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
-  const [isSignInModalOpen, setIsSignInModalOpen] = React.useState(false);
+  const [disable, setDisable] = React.useState(false);
 
   const headerTools = (
     <PageHeaderTools>
@@ -41,7 +44,7 @@ const Header: React.FC = observer(() => {
         <GridItem span={10}>
           <Search />
         </GridItem>
-        <GridItem span={1} onClick={() => setIsModalOpen(true)} className="header-search-hint">
+        <GridItem span={1} onClick={() => setIsModalOpen(true)} className="hub-header-search-hint">
           <Icon id={Icons.Help} size={IconSize.sm} label={'search-tips'} />
         </GridItem>
       </Grid>
@@ -51,7 +54,7 @@ const Header: React.FC = observer(() => {
         <Text
           style={{ textDecoration: 'none' }}
           component={TextVariants.a}
-          onClick={() => setIsSignInModalOpen(true)}
+          onClick={() => user.setIsAuthModalOpen(true)}
         >
           <span className="hub-header-login">
             <b>Login</b>
@@ -72,6 +75,7 @@ const Header: React.FC = observer(() => {
         logo={<Brand src={logo} alt="Tekton Hub Logo" onClick={homePage} />}
         headerTools={headerTools}
       />
+
       <Modal
         variant={ModalVariant.small}
         title="Search tips:"
@@ -93,34 +97,29 @@ const Header: React.FC = observer(() => {
 
       <Modal
         variant={ModalVariant.small}
-        title="Sign In:"
-        isOpen={isSignInModalOpen}
-        onClose={() => setIsSignInModalOpen(false)}
-        actions={[
-          <Grid key="close-button">
-            <GridItem offset={10}>
-              <Button
-                style={{ marginLeft: '0.7em' }}
-                key="cancel"
-                variant="secondary"
-                onClick={() => setIsSignInModalOpen(false)}
-              >
-                Close
-              </Button>
-            </GridItem>
-          </Grid>
-        ]}
+        title={`Tekton Hub`}
+        isOpen={user.isAuthModalOpen}
+        onClose={() => user.setIsAuthModalOpen(false)}
+        className="hub-header-login__modal"
+        aria-label="login"
       >
+        <TextContent>
+          <Divider />
+          <Text component={TextVariants.h6}>Sign In With</Text>
+        </TextContent>
+
         <Grid>
-          {providers.values.slice(0, 1).map((provider: IProvider) => (
-            <GridItem key={provider.name} offset={3} span={6} className="header-sigin-button">
+          {providers.values.map((provider: IProvider) => (
+            <GridItem key={provider.name} offset={1} span={10} className="hub-header-sigin-button">
               <Button
-                variant="secondary"
+                variant="tertiary"
                 component="a"
+                isDisabled={disable}
+                onClick={() => setDisable(true)}
                 isBlock
                 href={`${AUTH_BASE_URL}/auth/${provider.name}?redirect_uri=${REDIRECT_URI}`}
               >
-                <span className="header-sigin-button__icon ">
+                <span className="hub-header-sigin-button__icon ">
                   <Icon id={provider.name as Icons} size={IconSize.sm} label={provider.name} />
                 </span>
                 {titleCase(provider.name)}
@@ -129,6 +128,9 @@ const Header: React.FC = observer(() => {
           ))}
         </Grid>
       </Modal>
+      {user.authErr.serverMessage ? (
+        <AlertDisplay message={user.authErr} alertVariant={AlertVariant.danger} />
+      ) : null}
     </React.Fragment>
   );
 });

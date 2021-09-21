@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Icon Component should render icon for Bitbucket 1`] = `"<BitbucketIcon size=\\"sm\\" label=\\"Bitbucket\\" className=\\"hub-icon\\" color=\\"currentColor\\" noVerticalAlign={false} />"`;
+
 exports[`Icon Component should render icon for Category Filter 1`] = `"<div />"`;
 
 exports[`Icon Component should render icon for Community Catalog 1`] = `"<UserIcon size=\\"sm\\" className=\\"hub-icon\\" label=\\"Community\\" color=\\"currentColor\\" noVerticalAlign={false} />"`;
