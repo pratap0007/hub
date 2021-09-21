@@ -3,6 +3,8 @@ interface API_CONFIG {
   GH_CLIENT_ID: string;
   API_VERSION: string;
   GHE_URL: string;
+  AUTH_BASE_URL: string;
+  REDIRECT_URI: string;
 }
 
 export declare global {

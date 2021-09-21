@@ -120,13 +120,13 @@ export const AuthStore = types
           historyBack();
         }
       } catch (err) {
-        const error: IError = {
-          status: err.status,
-          serverMessage: titleCase(err.data.message),
-          customMessage: ''
-        };
-        self.setErrorMessage(error);
-        self.authErr = error;
+        // const error: IError = {
+        //   // status: err.status,
+        //   serverMessage: titleCase(err.data.message),
+        //   customMessage: ''
+        // };
+        // self.setErrorMessage(error);
+        // self.authErr = error;
       }
       self.setLoading(false);
     }),

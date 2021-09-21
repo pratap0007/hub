@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import {
@@ -14,22 +13,27 @@ import {
   ModalVariant,
   TextContent,
   TextList,
-  TextListItem
+  TextListItem,
+  Button
 } from '@patternfly/react-core';
 import logo from '../../assets/logo/logo.png';
 import { IconSize } from '@patternfly/react-icons';
 import Search from '../../containers/Search';
-import UserProfile from '../UserProfile';
-import { useMst } from '../../store/root';
 import './Header.css';
 import { scrollToTop } from '../../common/scrollToTop';
 import Icon from '../../components/Icon';
 import { Icons } from '../../common/icons';
+import UserProfile from '../UserProfile';
+import { useMst } from '../../store/root';
+import { AUTH_BASE_URL, REDIRECT_URI } from '../../config/constants';
+import { IProvider } from '../../store/provider';
+import { titleCase } from '../../common/titlecase';
 
 const Header: React.FC = observer(() => {
-  const { user } = useMst();
+  const { user, providers } = useMst();
   const history = useHistory();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [isSignInModalOpen, setIsSignInModalOpen] = React.useState(false);
 
   const headerTools = (
     <PageHeaderTools>
@@ -44,10 +48,14 @@ const Header: React.FC = observer(() => {
       {user.isAuthenticated && user.refreshTokenInfo.expiresAt * 1000 > global.Date.now() ? (
         <UserProfile />
       ) : (
-        <Text component={TextVariants.h3}>
-          <Link to="/login" style={{ textDecoration: 'none' }}>
-            <span className="hub-header-login">Login</span>
-          </Link>
+        <Text
+          style={{ textDecoration: 'none' }}
+          component={TextVariants.a}
+          onClick={() => setIsSignInModalOpen(true)}
+        >
+          <span className="hub-header-login">
+            <b>Login</b>
+          </span>
         </Text>
       )}
     </PageHeaderTools>
@@ -80,6 +88,45 @@ const Header: React.FC = observer(() => {
               </TextListItem>
             </TextList>
           </TextContent>
+        </Grid>
+      </Modal>
+
+      <Modal
+        variant={ModalVariant.small}
+        title="Sign In:"
+        isOpen={isSignInModalOpen}
+        onClose={() => setIsSignInModalOpen(false)}
+        actions={[
+          <Grid key="close-button">
+            <GridItem offset={10}>
+              <Button
+                style={{ marginLeft: '0.7em' }}
+                key="cancel"
+                variant="secondary"
+                onClick={() => setIsSignInModalOpen(false)}
+              >
+                Close
+              </Button>
+            </GridItem>
+          </Grid>
+        ]}
+      >
+        <Grid>
+          {providers.values.slice(0, 1).map((provider: IProvider) => (
+            <GridItem key={provider.name} offset={3} span={6} className="header-sigin-button">
+              <Button
+                variant="secondary"
+                component="a"
+                isBlock
+                href={`${AUTH_BASE_URL}/auth/${provider.name}?redirect_uri=${REDIRECT_URI}`}
+              >
+                <span className="header-sigin-button__icon ">
+                  <Icon id={provider.name as Icons} size={IconSize.sm} label={provider.name} />
+                </span>
+                {titleCase(provider.name)}
+              </Button>
+            </GridItem>
+          ))}
         </Grid>
       </Modal>
     </React.Fragment>
