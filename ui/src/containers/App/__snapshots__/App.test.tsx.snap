@@ -69,9 +69,9 @@ exports[`App should render the component correctly and match the snapshot 1`] = 
                     <ModalContent variant=\\"small\\" isOpen={false} onClose={[Function: onClose]} className=\\"\\" showClose={true} id={[undefined]} actions={{...}} hasNoBodyWrapper={false} boxId=\\"pf-modal-part-0\\" labelId=\\"pf-modal-part-1\\" descriptorId=\\"pf-modal-part-2\\" title=\\"Search tips:\\" aria-label=\\"\\" aria-describedby=\\"\\" aria-labelledby=\\"\\" ouiaId={[undefined]} ouiaSafe={true} />
                   </Portal>
                 </Modal>
-                <Modal variant=\\"small\\" title=\\"Sign In:\\" isOpen={false} onClose={[Function: onClose]} actions={{...}} className=\\"\\" aria-label=\\"\\" showClose={true} aria-describedby=\\"\\" aria-labelledby=\\"\\" id={[undefined]} hasNoBodyWrapper={false} appendTo={[Function: appendTo]} ouiaSafe={true}>
+                <Modal variant=\\"small\\" isOpen={false} onClose={[Function: onClose]} className=\\"header-login__modal\\" aria-label=\\"login\\" title=\\"\\" showClose={true} aria-describedby=\\"\\" aria-labelledby=\\"\\" id={[undefined]} actions={{...}} hasNoBodyWrapper={false} appendTo={[Function: appendTo]} ouiaSafe={true}>
                   <Portal containerInfo={{...}}>
-                    <ModalContent variant=\\"small\\" isOpen={false} onClose={[Function: onClose]} actions={{...}} className=\\"\\" showClose={true} id={[undefined]} hasNoBodyWrapper={false} boxId=\\"pf-modal-part-1\\" labelId=\\"pf-modal-part-2\\" descriptorId=\\"pf-modal-part-3\\" title=\\"Sign In:\\" aria-label=\\"\\" aria-describedby=\\"\\" aria-labelledby=\\"\\" ouiaId={[undefined]} ouiaSafe={true} />
+                    <ModalContent variant=\\"small\\" isOpen={false} onClose={[Function: onClose]} className=\\"header-login__modal\\" showClose={true} id={[undefined]} actions={{...}} hasNoBodyWrapper={false} boxId=\\"pf-modal-part-1\\" labelId=\\"pf-modal-part-2\\" descriptorId=\\"pf-modal-part-3\\" title=\\"\\" aria-label=\\"login\\" aria-describedby=\\"\\" aria-labelledby=\\"\\" ouiaId={[undefined]} ouiaSafe={true} />
                   </Portal>
                 </Modal>
               </Memo(wrappedComponent)>

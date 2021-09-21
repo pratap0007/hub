@@ -85,6 +85,7 @@ export const AuthStore = types
         default:
           error.customMessage = '';
       }
+      self.authErr = error;
     },
     onFailure(err: Error) {
       self.authErr.serverMessage = err.toString();
@@ -120,13 +121,13 @@ export const AuthStore = types
           historyBack();
         }
       } catch (err) {
-        // const error: IError = {
-        //   // status: err.status,
-        //   serverMessage: titleCase(err.data.message),
-        //   customMessage: ''
-        // };
-        // self.setErrorMessage(error);
-        // self.authErr = error;
+        const error: IError = {
+          status: err.status,
+          serverMessage: titleCase(err.data),
+          customMessage: ''
+        };
+        self.setErrorMessage(error);
+        self.authErr = error;
       }
       self.setLoading(false);
     }),
@@ -184,10 +185,11 @@ export const AuthStore = types
       } catch (err) {
         const error: IError = {
           status: err.status,
-          serverMessage: titleCase(err.data.message),
+          serverMessage: titleCase(err.data),
           customMessage: 'Refresh token has been expired please login again !'
         };
         self.setErrorMessage(error);
+        self.setIsAuthenticated(false);
       }
     }),
 
@@ -201,10 +203,11 @@ export const AuthStore = types
       } catch (err) {
         const error: IError = {
           status: err.status,
-          serverMessage: titleCase(err.data.message),
+          serverMessage: titleCase(err.data),
           customMessage: 'Refresh token has been expired please login again !'
         };
         self.setErrorMessage(error);
+        self.setIsAuthenticated(false);
       }
     }),
 
@@ -218,7 +221,7 @@ export const AuthStore = types
       } catch (err) {
         const error: IError = {
           status: err.status,
-          serverMessage: titleCase(err.data.message),
+          serverMessage: titleCase(err.data),
           customMessage: 'Access token has been expired please login again !'
         };
         self.setErrorMessage(error);

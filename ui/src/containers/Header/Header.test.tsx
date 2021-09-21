@@ -2,6 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { when } from 'mobx';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Modal } from '@patternfly/react-core';
 import Header from '.';
 import Search from '../../containers/Search';
 import { FakeHub } from '../../api/testutil';
@@ -43,6 +44,58 @@ describe('Header', () => {
       </Provider>
     );
     expect(component.find('span').text()).toBe('Login');
+  });
+
+  it('should find Icon in header and it`s id', () => {
+    const component = mount(
+      <Provider>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>
+    );
+
+    expect(component.find(Icon).length).toBe(1);
+    expect(component.find(Icon).props().id).toBe(Icons.Help);
+  });
+
+  it('should find the login Modal', () => {
+    const component = mount(
+      <Provider>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>
+    );
+
+    expect(component.find(Modal).slice(1).props().className).toBe('header-login__modal');
+  });
+
+  it('should authenticate', (done) => {
+    const component = mount(
+      <Provider>
+        <Router>
+          <Header />
+        </Router>
+      </Provider>
+    );
+    const { user } = root;
+    const code = {
+      code: 'foo'
+    };
+    user.authenticate(code);
+    when(
+      () => {
+        return !user.isLoading;
+      },
+      () => {
+        setTimeout(() => {
+          component.debug();
+          expect(user.isAuthenticated).toBe(true);
+          done();
+        }, 0);
+      }
+    );
   });
 
   it('should find Icon in header and it`s id', () => {

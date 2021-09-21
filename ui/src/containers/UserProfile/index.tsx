@@ -30,10 +30,10 @@ const UserProfile: React.FC = observer(() => {
     // The condition checks the maximum delay for setInterval
     if (refreshTokenInterval < Math.pow(2, 31) - 1) {
       // To get a new refresh token
-      // Update the refresh token before 10 seconds of current refresh token's expiry time
+      // Update the refresh token before 20 seconds of current refresh token's expiry time
       const tempRefreshId = window.setInterval(() => {
         user.updateRefreshToken();
-      }, refreshTokenInterval - 10000);
+      }, refreshTokenInterval - 20000);
       setRefreshId(tempRefreshId);
     }
 

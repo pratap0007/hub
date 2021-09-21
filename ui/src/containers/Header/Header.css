@@ -11,8 +11,22 @@
 
 .header-sigin-button {
   margin-bottom: 2em;
+  margin-left: -0.5em;
 }
 
 .header-sigin-button__icon {
   float: left;
+}
+
+.header-login__modal {
+  width: 20em;
+}
+
+.header-login__modal svg {
+  margin-right: -1em;
+  vertical-align: 0em !important;
+}
+
+.header-sigin-button a {
+  outline: none;
 }
