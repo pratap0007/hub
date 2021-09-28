@@ -15,6 +15,9 @@
 package user
 
 import (
+	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"errors"
 	"fmt"
 	"net/http"
@@ -140,4 +143,59 @@ func (r *request) User(id int) (*model.User, error) {
 	}
 
 	return &user, nil
+}
+
+func (s *UserService) newRequest(user *model.User) *request {
+	return &request{
+		db:            s.DB(context.Background()),
+		log:           s.Logger(context.Background()),
+		user:          user,
+		defaultScopes: s.api.Data().Default.Scopes,
+		jwtConfig:     s.api.JWTConfig(),
+	}
+}
+
+func (s *UserService) validateRefreshToken(id int, token string) (*model.User, error) {
+
+	r := request{
+		db:            s.DB(context.Background()),
+		log:           s.Logger(context.Background()),
+		defaultScopes: s.api.Data().Default.Scopes,
+		jwtConfig:     s.api.JWTConfig(),
+	}
+
+	user, err := r.User(id)
+	if err != nil {
+		r.log.Error(err)
+		return nil, err
+	}
+
+	if user.RefreshTokenChecksum != createChecksum(token) {
+		return nil, invalidRefreshToken
+	}
+
+	return user, nil
+}
+
+func createChecksum(token string) string {
+	hash := sha256.Sum256([]byte(token))
+	return hex.EncodeToString(hash[:])
+}
+
+func (r *request) userScopes() ([]string, error) {
+
+	var userScopes []string = r.defaultScopes
+
+	q := r.db.Preload("Scopes").Where(&model.User{GithubLogin: r.user.GithubLogin})
+
+	dbUser := &model.User{}
+	if err := q.Find(dbUser).Error; err != nil {
+		return nil, refreshError
+	}
+
+	for _, s := range dbUser.Scopes {
+		userScopes = append(userScopes, s.Name)
+	}
+
+	return userScopes, nil
 }
