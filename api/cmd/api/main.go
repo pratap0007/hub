@@ -37,6 +37,7 @@ import (
 	"github.com/tektoncd/hub/api/pkg/app"
 	"github.com/tektoncd/hub/api/pkg/db/initializer"
 	auth "github.com/tektoncd/hub/api/pkg/oauth/auth"
+	userSvc "github.com/tektoncd/hub/api/pkg/oauth/user"
 	adminsvc "github.com/tektoncd/hub/api/pkg/service/admin"
 	catalogsvc "github.com/tektoncd/hub/api/pkg/service/catalog"
 	categorysvc "github.com/tektoncd/hub/api/pkg/service/category"
@@ -188,6 +189,7 @@ func main() {
 	authPort := "4200"
 
 	auth.AuthProvider(r, api)
+	userSvc.User(r, api)
 	go func() {
 		// start the web server on port and accept requests
 		logger.Infof("AUTH server listening on port %q", authPort)
