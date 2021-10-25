@@ -165,6 +165,17 @@ func (s *service) HubAuthenticate(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	//Add cookie and response and send it to in header
+	cookie := &http.Cookie{
+		Name:     "refreshToken",
+		Value:    user.Data.Refresh.Token,
+		MaxAge:   500,
+		Path:     "/",
+		Secure:   true,
+		HttpOnly: true,
+	}
+	http.SetCookie(res, cookie)
+
 	res.WriteHeader(http.StatusOK)
 	if err := json.NewEncoder(res).Encode(user); err != nil {
 		r.log.Error(err)

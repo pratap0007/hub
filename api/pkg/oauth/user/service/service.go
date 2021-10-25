@@ -157,6 +157,10 @@ func (s *UserService) newRequest(user *model.User) *request {
 
 func (s *UserService) validateRefreshToken(id int, token string) (*model.User, error) {
 
+	if len(token) > 6 && strings.ToUpper(token[0:7]) == "BEARER " {
+		token = token[7:]
+	}
+
 	r := request{
 		db:            s.DB(context.Background()),
 		log:           s.Logger(context.Background()),

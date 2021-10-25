@@ -178,6 +178,14 @@ func (r *request) refreshAccessToken() (*userApp.RefreshAccessTokenResult, error
 func (s *UserService) NewRefreshToken(res http.ResponseWriter, req *http.Request) {
 	id := req.Header.Get("UserID")
 
+	//
+	c, err := req.Cookie("refreshToken")
+	if err != nil {
+		fmt.Println(err.Error())
+	
+	}
+	// fmt.Println("-===================", c.Value)
+
 	r := request{
 		db:            s.DB(context.Background()),
 		log:           s.Logger(context.Background()),

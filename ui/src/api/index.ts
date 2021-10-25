@@ -152,9 +152,21 @@ export class Hub implements Api {
 
   async getRefreshToken(refreshToken: string) {
     try {
+      // return fetch(`${AUTH_BASE_URL}/user/refresh/refreshtoken`, {
+      //   method: 'POST',
+      //   credentials: 'same-origin',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: `Bearer ${refreshToken}`
+      //   }
+      // })
+      //   .then((response: any) => response.json())
+      //   .then((data) => data)
+      //   .then((err) => Promise.reject(err));
       return axios({
         method: 'post',
         url: `${AUTH_BASE_URL}/user/refresh/refreshtoken`,
+        // withCredentials: false,
         headers: {
           Authorization: `Bearer ${refreshToken}`
         }
