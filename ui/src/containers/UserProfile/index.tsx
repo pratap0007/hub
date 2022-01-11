@@ -21,7 +21,7 @@ const UserProfile: React.FC = observer(() => {
 
   useEffect(() => {
     user.getProfile();
-  }, [user.profile.githubId]);
+  }, [user.profile.user_name]);
 
   const triggerInterval = useCallback(() => {
     const accessTokenInterval = user.accessTokenInfo.expiresAt * 1000 - new Date().getTime();
@@ -71,7 +71,7 @@ const UserProfile: React.FC = observer(() => {
   const onToggle = (isOpen: React.SetStateAction<boolean>) => set(isOpen);
 
   const dropdownItems = [
-    <DropdownItem key="githubId">Hi {user.profile.githubId}</DropdownItem>,
+    <DropdownItem key="githubId">Hi {user.profile.user_name}</DropdownItem>,
     <DropdownSeparator key="separator" />,
     <DropdownItem key="copyToken" onClick={() => setIsModalOpen(!isModalOpen)}>
       Copy Hub Token

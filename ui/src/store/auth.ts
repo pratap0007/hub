@@ -9,7 +9,7 @@ export const TokenInfo = types.model('TokenInfo', {
 });
 
 export const UserProfile = types.model('UserProfile', {
-  githubId: types.optional(types.string, ''),
+  user_name: types.optional(types.string, ''),
   name: types.optional(types.string, ''),
   avatarUrl: types.optional(types.string, '')
 });
@@ -56,7 +56,7 @@ export const AuthStore = types
       self.refreshTokenInfo.refreshInterval = item.refreshInterval;
     },
     addUserProfile(item: IUserProfile) {
-      self.profile.githubId = item.githubId;
+      self.profile.user_name = item.user_name;
       self.profile.name = item.name;
       self.profile.avatarUrl = item.avatarUrl;
     },
