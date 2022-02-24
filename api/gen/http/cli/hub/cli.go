@@ -48,7 +48,7 @@ func UsageExamples() string {
    }' --token "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1Nzc4ODAzMDAsImlhdCI6MTU3Nzg4MDAwMCwiaWQiOjExLCJpc3MiOiJUZWt0b24gSHViIiwic2NvcGVzIjpbInJhdGluZzpyZWFkIiwicmF0aW5nOndyaXRlIiwiYWdlbnQ6Y3JlYXRlIl0sInR5cGUiOiJhY2Nlc3MtdG9rZW4ifQ.6pDmziSKkoSqI1f0rc4-AqVdcfY0Q8wA-tSLzdTCLgM"` + "\n" +
 		os.Args[0] + ` catalog refresh --catalog-name "tekton" --token "Inventore adipisci molestiae quaerat animi qui qui."` + "\n" +
 		os.Args[0] + ` category list` + "\n" +
-		os.Args[0] + ` rating get --id 18445012574457005975 --token "Rerum qui hic."` + "\n" +
+		os.Args[0] + ` rating get --id 18445012574457005975 --session "Rerum qui hic."` + "\n" +
 		os.Args[0] + ` resource query --name "buildah" --catalogs '[
       "tekton",
       "openshift"
@@ -106,14 +106,14 @@ func ParseEndpoint(
 
 		ratingFlags = flag.NewFlagSet("rating", flag.ContinueOnError)
 
-		ratingGetFlags     = flag.NewFlagSet("get", flag.ExitOnError)
-		ratingGetIDFlag    = ratingGetFlags.String("id", "REQUIRED", "ID of a resource")
-		ratingGetTokenFlag = ratingGetFlags.String("token", "REQUIRED", "")
+		ratingGetFlags       = flag.NewFlagSet("get", flag.ExitOnError)
+		ratingGetIDFlag      = ratingGetFlags.String("id", "REQUIRED", "ID of a resource")
+		ratingGetSessionFlag = ratingGetFlags.String("session", "REQUIRED", "")
 
-		ratingUpdateFlags     = flag.NewFlagSet("update", flag.ExitOnError)
-		ratingUpdateBodyFlag  = ratingUpdateFlags.String("body", "REQUIRED", "")
-		ratingUpdateIDFlag    = ratingUpdateFlags.String("id", "REQUIRED", "ID of a resource")
-		ratingUpdateTokenFlag = ratingUpdateFlags.String("token", "REQUIRED", "")
+		ratingUpdateFlags       = flag.NewFlagSet("update", flag.ExitOnError)
+		ratingUpdateBodyFlag    = ratingUpdateFlags.String("body", "REQUIRED", "")
+		ratingUpdateIDFlag      = ratingUpdateFlags.String("id", "REQUIRED", "ID of a resource")
+		ratingUpdateSessionFlag = ratingUpdateFlags.String("session", "REQUIRED", "")
 
 		resourceFlags = flag.NewFlagSet("resource", flag.ContinueOnError)
 
@@ -352,10 +352,10 @@ func ParseEndpoint(
 			switch epn {
 			case "get":
 				endpoint = c.Get()
-				data, err = ratingc.BuildGetPayload(*ratingGetIDFlag, *ratingGetTokenFlag)
+				data, err = ratingc.BuildGetPayload(*ratingGetIDFlag, *ratingGetSessionFlag)
 			case "update":
 				endpoint = c.Update()
-				data, err = ratingc.BuildUpdatePayload(*ratingUpdateBodyFlag, *ratingUpdateIDFlag, *ratingUpdateTokenFlag)
+				data, err = ratingc.BuildUpdatePayload(*ratingUpdateBodyFlag, *ratingUpdateIDFlag, *ratingUpdateSessionFlag)
 			}
 		case "resource":
 			c := resourcec.NewClient(scheme, host, doer, enc, dec, restore)
@@ -529,29 +529,29 @@ Additional help:
 `, os.Args[0], os.Args[0])
 }
 func ratingGetUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] rating get -id UINT -token STRING
+	fmt.Fprintf(os.Stderr, `%s [flags] rating get -id UINT -session STRING
 
 Find user's rating for a resource
     -id UINT: ID of a resource
-    -token STRING: 
+    -session STRING: 
 
 Example:
-    `+os.Args[0]+` rating get --id 18445012574457005975 --token "Rerum qui hic."
+    `+os.Args[0]+` rating get --id 18445012574457005975 --session "Rerum qui hic."
 `, os.Args[0])
 }
 
 func ratingUpdateUsage() {
-	fmt.Fprintf(os.Stderr, `%s [flags] rating update -body JSON -id UINT -token STRING
+	fmt.Fprintf(os.Stderr, `%s [flags] rating update -body JSON -id UINT -session STRING
 
 Update user's rating for a resource
     -body JSON: 
     -id UINT: ID of a resource
-    -token STRING: 
+    -session STRING: 
 
 Example:
     `+os.Args[0]+` rating update --body '{
       "rating": 4
-   }' --id 7308543305544376604 --token "Provident ducimus."
+   }' --id 7308543305544376604 --session "Provident ducimus."
 `, os.Args[0])
 }
 

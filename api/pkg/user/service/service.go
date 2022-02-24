@@ -43,11 +43,14 @@ type JWTScheme struct {
 func (s *UserService) JWTAuth(handler http.HandlerFunc) http.HandlerFunc {
 	return func(res http.ResponseWriter, req *http.Request) {
 
-		jwt := req.Header.Get("Authorization")
+		// jwt := req.Header.Get("Authorization")
 
-		if len(jwt) > 6 && strings.ToUpper(jwt[0:7]) == "BEARER " {
-			jwt = jwt[7:]
+		c, err := req.Cookie("accessToken")
+		if err == http.ErrNoCookie {
+			http.Error(res, err.Error(), http.StatusUnauthorized)
+			return
 		}
+		jwt := c.Value
 
 		claims, err := token.Verify(jwt, s.JwtConfig.SigningKey)
 		if err != nil {

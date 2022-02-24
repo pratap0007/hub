@@ -257,7 +257,7 @@ paths:
           type: array
           items:
             type: string
-            example: Aliquam voluptates illo.
+            example: Officia velit aliquid.
           description: Catalogs of resource to filter by
           example:
           - tekton
@@ -273,7 +273,7 @@ paths:
           type: array
           items:
             type: string
-            example: Illum et ut pariatur similique.
+            example: Saepe sed.
           description: Category associated with a resource to filter by
           example:
           - build
@@ -289,7 +289,7 @@ paths:
           type: array
           items:
             type: string
-            example: Laudantium nostrum quia totam magni reprehenderit maxime.
+            example: Ab beatae est magnam eveniet nihil et.
           description: Kinds of resource to filter by
           example:
           - task
@@ -305,7 +305,7 @@ paths:
           type: array
           items:
             type: string
-            example: Velit itaque dolores dolor esse.
+            example: Ex voluptas voluptas.
           description: Tags associated with a resource to filter by
           example:
           - image
@@ -321,7 +321,7 @@ paths:
           type: array
           items:
             type: string
-            example: Velit aliquid praesentium saepe sed optio ab.
+            example: Non molestiae illo aut numquam.
           description: Platforms associated with a resource to filter by
           example:
           - linux/s390x
@@ -347,7 +347,7 @@ paths:
           type: string
           description: Strategy used to find matching resources
           default: contains
-          example: exact
+          example: contains
           enum:
           - exact
           - contains
@@ -500,11 +500,11 @@ paths:
         schema:
           type: string
           description: kind of resource
-          example: pipeline
+          example: task
           enum:
           - task
           - pipeline
-        example: pipeline
+        example: task
       - name: name
         in: path
         description: Name of resource
@@ -786,6 +786,16 @@ paths:
           description: ID of a resource
           example: 13079036966868018111
         example: 8898227098768256088
+      - name: accessToken
+        in: cookie
+        description: Session ID
+        allowEmptyValue: true
+        required: true
+        schema:
+          type: string
+          description: Session ID
+          example: At a aliquam voluptates illo.
+        example: Illum et ut pariatur similique.
       responses:
         "200":
           description: OK response.
@@ -835,14 +845,6 @@ paths:
                 id: 3F1FKVRR
                 message: Value of ID must be an integer
                 name: bad_request
-      security:
-      - jwt_header_Authorization:
-        - rating:read
-        - rating:write
-        - agent:create
-        - catalog:refresh
-        - config:refresh
-        - refresh:token
     put:
       tags:
       - rating
@@ -857,8 +859,18 @@ paths:
         schema:
           type: integer
           description: ID of a resource
-          example: 17566308914815160138
-        example: 4705517885956809601
+          example: 5608341121233834653
+        example: 11617874741133432927
+      - name: accessToken
+        in: cookie
+        description: Session ID
+        allowEmptyValue: true
+        required: true
+        schema:
+          type: string
+          description: Session ID
+          example: Quia totam.
+        example: Reprehenderit maxime et velit itaque dolores dolor.
       requestBody:
         required: true
         content:
@@ -910,14 +922,6 @@ paths:
                 id: 3F1FKVRR
                 message: Value of ID must be an integer
                 name: bad_request
-      security:
-      - jwt_header_Authorization:
-        - rating:read
-        - rating:write
-        - agent:create
-        - catalog:refresh
-        - config:refresh
-        - refresh:token
   /resource/{id}/versions:
     get:
       tags:

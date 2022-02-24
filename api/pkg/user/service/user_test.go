@@ -45,19 +45,31 @@ func TestInfo(t *testing.T) {
 
 	res := httptest.NewRecorder()
 
+	http.SetCookie(res, &http.Cookie{
+		Name:     "accessToken",
+		Value:    accessToken,
+		MaxAge:   300,
+		Path:     "/",
+		HttpOnly: true,
+	})
+
 	userSvc := New(tc)
+
 	jwt := UserService{
 		JwtConfig: tc.JWTConfig(),
 	}
 
-	req.Header.Set("Authorization", accessToken)
+	// req.Header.Set("Authorization", accessToken)
+
 	handler := http.HandlerFunc(jwt.JWTAuth(userSvc.Info))
 	assert.NoError(t, err)
 
 	handler.ServeHTTP(res, req)
 
 	var u *userApp.InfoResult
+
 	err = json.Unmarshal(res.Body.Bytes(), &u)
+
 	assert.NoError(t, err)
 
 	assert.Equal(t, "abc", u.Data.UserName)

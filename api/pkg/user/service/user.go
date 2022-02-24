@@ -23,6 +23,7 @@ import (
 
 	"github.com/tektoncd/hub/api/gen/log"
 	"github.com/tektoncd/hub/api/pkg/app"
+	auth "github.com/tektoncd/hub/api/pkg/auth/service"
 	"github.com/tektoncd/hub/api/pkg/db/model"
 	"github.com/tektoncd/hub/api/pkg/token"
 	userApp "github.com/tektoncd/hub/api/pkg/user/app"
@@ -44,10 +45,20 @@ type UserService struct {
 	JwtConfig *app.JWTConfig
 }
 
+type cookie struct {
+	Name     string
+	Value    string
+	MaxAge   int
+	Path     string
+	HttpOnly bool
+}
+
 type Service interface {
 	Info(res http.ResponseWriter, req *http.Request)
 	RefreshAccessToken(res http.ResponseWriter, req *http.Request)
 	NewRefreshToken(res http.ResponseWriter, req *http.Request)
+	GetAcccessToken(res http.ResponseWriter, req *http.Request)
+	Logout(res http.ResponseWriter, req *http.Request)
 }
 
 var (
@@ -64,8 +75,9 @@ func New(api app.Config) Service {
 	}
 }
 
-// Get the user Info
 func (s *UserService) Info(res http.ResponseWriter, req *http.Request) {
+
+	fmt.Println("in the user info")
 
 	id := req.Header.Get("UserID")
 	provider := req.Header.Get("Provider")
@@ -128,7 +140,13 @@ func (s *UserService) RefreshAccessToken(res http.ResponseWriter, req *http.Requ
 		return
 	}
 
-	refreshToken := req.Header.Get("Authorization")
+	cookie, err := req.Cookie(auth.RefreshToken)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+	}
+	refreshToken := cookie.Value
+
+	// refreshToken := req.Header.Get("Authorization")
 	user, err := s.validateRefreshToken(userId, refreshToken)
 	if err != nil {
 		r.log.Error(err)
@@ -136,7 +154,7 @@ func (s *UserService) RefreshAccessToken(res http.ResponseWriter, req *http.Requ
 		return
 	}
 
-	result, err := s.newRequest(user, provider).refreshAccessToken()
+	result, err := s.newRequest(user, provider).refreshAccessToken(res, req)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -150,25 +168,33 @@ func (s *UserService) RefreshAccessToken(res http.ResponseWriter, req *http.Requ
 
 }
 
-func (r *request) refreshAccessToken() (*userApp.RefreshAccessTokenResult, error) {
+func (r *request) refreshAccessToken(res http.ResponseWriter, req *http.Request) (*userApp.RefreshAccessTokenResult, error) {
 
 	scopes, err := r.userScopes()
 	if err != nil {
 		return nil, err
 	}
 
-	req := token.Request{
+	request := token.Request{
 		User:      r.user,
 		Scopes:    scopes,
 		JWTConfig: r.jwtConfig,
 		Provider:  r.provider,
 	}
 
-	accessToken, accessExpiresAt, err := req.AccessJWT()
+	accessToken, accessExpiresAt, err := request.AccessJWT()
 	if err != nil {
 		r.log.Error(err)
 		return nil, refreshError
 	}
+
+	http.SetCookie(res, &http.Cookie{
+		Name:     auth.AccessToken,
+		Value:    accessToken,
+		MaxAge:   300,
+		Path:     "/",
+		HttpOnly: true,
+	})
 
 	data := &userApp.AccessToken{
 		Access: &userApp.Token{
@@ -185,6 +211,15 @@ func (s *UserService) NewRefreshToken(res http.ResponseWriter, req *http.Request
 	id := req.Header.Get("UserID")
 	provider := req.Header.Get("Provider")
 
+	cookie, err := req.Cookie("refreshToken")
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+	}
+
+	refreshToken := cookie.Value
+
+	fmt.Println("print  the old tokenvalue  ,refreshtoke", refreshToken)
+
 	r := request{
 		db:            s.DB(context.Background()),
 		log:           s.Logger(context.Background()),
@@ -200,7 +235,6 @@ func (s *UserService) NewRefreshToken(res http.ResponseWriter, req *http.Request
 		return
 	}
 
-	refreshToken := req.Header.Get("Authorization")
 	user, err := s.validateRefreshToken(userId, refreshToken)
 	if err != nil {
 		r.log.Error(err)
@@ -208,7 +242,8 @@ func (s *UserService) NewRefreshToken(res http.ResponseWriter, req *http.Request
 		return
 	}
 
-	result, err := s.newRequest(user, provider).newRefreshToken()
+	// result, err := s.newRequest(user, provider).newRefreshToken()
+	result, err := s.newRequest(user, provider).newRefreshToken(res, req)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -222,15 +257,15 @@ func (s *UserService) NewRefreshToken(res http.ResponseWriter, req *http.Request
 
 }
 
-func (r *request) newRefreshToken() (*userApp.NewRefreshTokenResult, error) {
+func (r *request) newRefreshToken(res http.ResponseWriter, req *http.Request) (*userApp.NewRefreshTokenResult, error) {
 
-	req := token.Request{
+	request := token.Request{
 		User:      r.user,
 		JWTConfig: r.jwtConfig,
 		Provider:  r.provider,
 	}
 
-	refreshToken, refreshExpiresAt, err := req.RefreshJWT()
+	refreshToken, refreshExpiresAt, err := request.RefreshJWT()
 	if err != nil {
 		r.log.Error(err)
 		return nil, refreshError
@@ -242,6 +277,14 @@ func (r *request) newRefreshToken() (*userApp.NewRefreshTokenResult, error) {
 		return nil, refreshError
 	}
 
+	http.SetCookie(res, &http.Cookie{
+		Name:     auth.RefreshToken,
+		Value:    refreshToken,
+		MaxAge:   240,
+		Path:     "/",
+		HttpOnly: true,
+	})
+
 	data := &userApp.RefreshToken{
 		Refresh: &userApp.Token{
 			Token:           refreshToken,
@@ -251,4 +294,47 @@ func (r *request) newRefreshToken() (*userApp.NewRefreshTokenResult, error) {
 	}
 
 	return &userApp.NewRefreshTokenResult{Data: data}, nil
+}
+
+func (s *UserService) GetAcccessToken(res http.ResponseWriter, req *http.Request) {
+
+	c, err := req.Cookie("accessToken")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	accessToken := c.Value
+
+	result := userApp.ExitingAccessToken{Data: accessToken}
+
+	res.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(res).Encode(result); err != nil {
+		http.Error(res, err.Error(), http.StatusBadRequest)
+		return
+	}
+}
+
+func (s *UserService) Logout(res http.ResponseWriter, req *http.Request) {
+
+	// Unset the cookie
+	deleteCookie(res, auth.AccessToken)
+	deleteCookie(res, auth.RefreshToken)
+
+	result := userApp.ClearCookies{Data: true}
+
+	res.WriteHeader(http.StatusOK)
+	if err := json.NewEncoder(res).Encode(result); err != nil {
+		http.Error(res, err.Error(), http.StatusBadRequest)
+		return
+	}
+}
+
+func deleteCookie(res http.ResponseWriter, name string) {
+	cookie := &http.Cookie{
+		Name:     name,
+		MaxAge:   -1,
+		Path:     "/",
+		HttpOnly: true,
+	}
+	http.SetCookie(res, cookie)
 }
