@@ -15,6 +15,7 @@
 package token
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -42,6 +43,7 @@ var Now = time.Now
 func (r *Request) AccessJWT() (string, int64, error) {
 
 	expiresAt := Now().Add(r.JWTConfig.AccessExpiresIn).Unix()
+	fmt.Println("-----------unixtime", expiresAt)
 	claim := jwt.MapClaims{
 		"iss":      issuer,
 		"id":       r.User.ID,

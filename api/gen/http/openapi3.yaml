@@ -249,6 +249,16 @@ paths:
           description: ID of a resource
           example: 17081788299688252022
         example: 11089527418313215274
+      - name: accessToken
+        in: cookie
+        description: Session ID
+        allowEmptyValue: true
+        required: true
+        schema:
+          type: string
+          description: Session ID
+          example: Ipsum tenetur unde et amet eum hic.
+        example: Consequatur explicabo.
       responses:
         "200":
           description: OK response.
@@ -298,14 +308,6 @@ paths:
                 id: 3F1FKVRR
                 message: Value of ID must be an integer
                 name: bad_request
-      security:
-      - jwt_header_Authorization:
-        - rating:read
-        - rating:write
-        - agent:create
-        - catalog:refresh
-        - config:refresh
-        - refresh:token
     put:
       tags:
       - rating
@@ -320,8 +322,18 @@ paths:
         schema:
           type: integer
           description: ID of a resource
-          example: 9739613307880178607
-        example: 2070151992422837927
+          example: 8741701717887354389
+        example: 12793890618565952106
+      - name: accessToken
+        in: cookie
+        description: Session ID
+        allowEmptyValue: true
+        required: true
+        schema:
+          type: string
+          description: Session ID
+          example: Ipsa minus ut.
+        example: Dolor sit.
       requestBody:
         required: true
         content:
@@ -373,14 +385,6 @@ paths:
                 id: 3F1FKVRR
                 message: Value of ID must be an integer
                 name: bad_request
-      security:
-      - jwt_header_Authorization:
-        - rating:read
-        - rating:write
-        - agent:create
-        - catalog:refresh
-        - config:refresh
-        - refresh:token
   /schema/swagger.json:
     get:
       tags:

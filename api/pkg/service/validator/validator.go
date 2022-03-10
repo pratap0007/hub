@@ -55,8 +55,12 @@ func NewService(api app.Config, name string) *Service {
 // JWTAuth implements the authorization logic for services for the "jwt" security scheme.
 func (s *Service) JWTAuth(ctx context.Context, jwt string, scheme *security.JWTScheme) (context.Context, error) {
 
+	fmt.Println("keeyeyye", s.jwtConfig.SigningKey)
+
 	claims, err := token.Verify(jwt, s.jwtConfig.SigningKey)
+	fmt.Println("ccccc", claims)
 	if err != nil {
+		fmt.Println("---verifyrrr", err)
 		return ctx, tokenError
 	}
 

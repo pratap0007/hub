@@ -181,10 +181,16 @@ func (s *service) ByCatalogKindNameVersion(ctx context.Context, p *resource.ByCa
 func (s *service) ByCatalogKindNameVersionReadme(ctx context.Context,
 	p *resource.ByCatalogKindNameVersionReadmePayload) (*resource.ResourceVersionReadme, error) {
 
+	fmt.Println("------in the readme catalog")
+
 	readmePath := fmt.Sprintf("%s/%s/%s/%s/%s/README.md", s.CatalogClonePath(), strings.ToLower(p.Catalog), strings.ToLower(p.Kind), p.Name, p.Version)
+
+	fmt.Println("--========readmepat", readmePath)
 	s.Logger(ctx).Info(fmt.Sprintf("Fetching README for resource %s", p.Name))
 	content, err := ioutil.ReadFile(readmePath)
 	if err != nil {
+		fmt.Println("fetching error r", err)
+
 		return nil, resource.MakeNotFound(fmt.Errorf("resource not found"))
 	}
 

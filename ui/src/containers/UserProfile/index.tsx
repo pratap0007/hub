@@ -21,20 +21,19 @@ const UserProfile: React.FC = observer(() => {
 
   useEffect(() => {
     user.getProfile();
+    user.accessToken();
   }, [user.profile.userName]);
 
   const triggerInterval = useCallback(() => {
     const accessTokenInterval = user.accessTokenInfo.expiresAt * 1000 - new Date().getTime();
     const refreshTokenInterval = user.refreshTokenInfo.expiresAt * 1000 - new Date().getTime();
 
+    // console.log('00000', accessTokenInterval, refreshTokenInterval);
     // The condition checks the maximum delay for setInterval
     if (refreshTokenInterval < Math.pow(2, 31) - 1) {
       // To get a new refresh token
       // Update the refresh token before 20 seconds of current refresh token's expiry time
       const tempRefreshId = window.setInterval(() => {
-        if (!user.isAuthenticated) {
-          clearInterval(tempRefreshId);
-        }
         user.updateRefreshToken();
       }, refreshTokenInterval - 20000);
       setRefreshId(tempRefreshId);
@@ -45,9 +44,6 @@ const UserProfile: React.FC = observer(() => {
       // To get a new access token
       // Update the access token before 10 seconds of current access token's expiry time
       const tempAccessId = window.setInterval(() => {
-        if (!user.isAuthenticated) {
-          clearInterval(tempAccessId);
-        }
         user.updateAccessToken();
       }, accessTokenInterval - 10000);
       setAccessId(tempAccessId);
@@ -63,11 +59,13 @@ const UserProfile: React.FC = observer(() => {
 
   const hubLogout = () => {
     user.logout();
-    localStorage.clear();
     clearInterval(refreshId);
     clearInterval(accessId);
-  };
 
+    setTimeout(() => {
+      localStorage.clear();
+    }, 1000);
+  };
   const onToggle = (isOpen: React.SetStateAction<boolean>) => set(isOpen);
 
   const dropdownItems = [
@@ -76,7 +74,7 @@ const UserProfile: React.FC = observer(() => {
     <DropdownItem key="copyToken" onClick={() => setIsModalOpen(!isModalOpen)}>
       Copy Hub Token
     </DropdownItem>,
-    <DropdownItem key="logout" onClick={hubLogout}>
+    <DropdownItem key="logout" onClick={() => hubLogout()}>
       Logout
     </DropdownItem>
   ];
@@ -104,7 +102,7 @@ const UserProfile: React.FC = observer(() => {
         <hr />
         <div>
           <ClipboardCopy isReadOnly variant={ClipboardCopyVariant.expansion}>
-            {user.accessTokenInfo.token}
+            {user.existingToken.token}
           </ClipboardCopy>
         </div>
       </Modal>

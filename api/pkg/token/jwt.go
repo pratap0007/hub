@@ -39,12 +39,16 @@ func Verify(token string, jwtKey string) (jwt.MapClaims, error) {
 
 	claims := make(jwt.MapClaims)
 
+	fmt.Println("=====", claims)
+
+	fmt.Println("--nnnottt")
 	// Parse JWT token
 	_, err := jwt.ParseWithClaims(token, claims,
 		func(_ *jwt.Token) (interface{}, error) {
 			return []byte(jwtKey), nil
 		})
 	if err != nil {
+		fmt.Println("parseerror ", err)
 		return nil, err
 	}
 
