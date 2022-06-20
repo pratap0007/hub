@@ -64,6 +64,7 @@ func (s *syncer) Enqueue(userID, catalogID uint) (*model.SyncJob, error) {
 	if err := s.db.Where(queued).Or(running).FirstOrCreate(&newJob).Error; err != nil {
 		return nil, internalError
 	}
+
 	s.wakeUp()
 
 	return &newJob, nil
@@ -79,9 +80,9 @@ func (s *syncer) wakeUp() {
 
 func (s *syncer) Run() {
 
-	if s.running {
-		return
-	}
+	// if s.running {
+	// 	return
+	// }
 
 	log := s.logger.With("action", "run")
 	log.Info("running catalog syncer ....")
@@ -100,6 +101,7 @@ func (s *syncer) Run() {
 			case s.limit <- true:
 				log.Info("processing the queue")
 				if err := s.Process(); err != nil {
+
 					time.AfterFunc(30*time.Second, s.Next)
 					return
 				}

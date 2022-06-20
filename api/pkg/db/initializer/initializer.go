@@ -16,8 +16,11 @@ package initializer
 
 import (
 	"context"
+	"fmt"
 	"strings"
+	"time"
 
+	"github.com/go-co-op/gocron"
 	"github.com/tektoncd/hub/api/gen/log"
 	"github.com/tektoncd/hub/api/pkg/app"
 	"github.com/tektoncd/hub/api/pkg/db/model"
@@ -267,18 +270,28 @@ func (i *Initializer) AddResources(db *gorm.DB, api app.BaseConfig, logger *log.
 
 	syncer := catalogsvc.NewSyncer(api, "")
 
-	for _, c := range catalogs {
-		res := []model.Resource{}
-		db.Model(model.Resource{}).Where("catalog_id = ?", c.ID).Take(&res)
+	// creates cron (https://github.com/go-co-op/gocron)
+	s := gocron.NewScheduler(time.UTC)
 
-		// If there is no resource from catalog then Enqueue the catalog to syncer
-		if len(res) == 0 {
-			_, err := syncer.Enqueue(uint(apiserverID), c.ID)
+	s.Every(120).Seconds().Do(func() error {
+		for _, c := range catalogs {
+			res := []model.Resource{}
+			db.Model(model.Resource{}).Where("catalog_id = ?", c.ID).Take(&res)
+
+			// If there is no resource from catalog then Enqueue the catalog to syncer
+			// if len(res) == 0 {
+			j, err := syncer.Enqueue(uint(apiserverID), c.ID)
+
+			fmt.Println("----------------------->", j)
 			if err != nil {
 				logger.Error(err)
 				return err
 			}
+			// }
 		}
-	}
+		return nil
+	})
+
+	s.StartAsync()
 	return nil
 }
