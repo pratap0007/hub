@@ -35,12 +35,12 @@ categories:
   - name: Testing
 
 catalogs:
-  - name: tekton
-    org: tektoncd
+  - name: tektoncd
+    org: pratap0007
     type: community
     provider: github
-    url: https://github.com/tektoncd/catalog
-    revision: main
+    url: https://github.com/pratap0007/catalog
+    revision: cron
 
 scopes:
   - name: agent:create
