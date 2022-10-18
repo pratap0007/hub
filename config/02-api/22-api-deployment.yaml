@@ -35,6 +35,13 @@ spec:
         - name: tekton-hub-config
           configMap:
             name: tekton-hub-api
+            items:
+              - key: CATEGORIES
+                path: 'categories'
+              - key: CATALOGS
+                path: 'catalogs'
+              - key: SCOPES
+                path: 'scopes'
         - name: ssh-creds
           secret:
             secretName: tekton-hub-api-ssh-crds
