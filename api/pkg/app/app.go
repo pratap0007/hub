@@ -168,17 +168,41 @@ func (ab *APIBase) Data() *Data {
 
 // ReloadData reads config file and loads data in Data object
 func (ab *APIBase) ReloadData() error {
-	// Reads config file url from env
-	url, err := configFileURL()
-	if err != nil {
-		return err
-	}
 
-	// Reads data from config file
-	fileData, err := dataFromURL(url)
-	if err != nil {
-		ab.logger.Errorf("failed to read config file: %v", err)
-		return err
+	dir, _ := os.ReadDir("/tmp/config")
+	var fileData []byte
+
+	if len(dir) > 0 {
+		for _, f := range dir {
+			if !strings.Contains(f.Name(), "..") {
+				d, err := readLocalFile("/tmp/config/" + f.Name())
+				if err != nil {
+					return err
+				}
+
+				if f.Name() == "DEFAULT" {
+					fileData = append(fileData, []byte(fmt.Sprintf("%s:\n %s", strings.ToLower(f.Name()), string(d)))...)
+
+				} else {
+
+					fileData = append(fileData, []byte(fmt.Sprintf("%s:\n%s", strings.ToLower(f.Name()), string(d)))...)
+				}
+			}
+		}
+	} else {
+
+		url, err := configFileURL()
+		if err != nil {
+			return err
+		}
+
+		// Reads data from config file
+		data, err := dataFromURL(url)
+		if err != nil {
+			ab.logger.Errorf("failed to read config file: %v", err)
+			return err
+		}
+		fileData = append(fileData, data...)
 	}
 
 	// Viper unmarshals data from config file into Data Object
@@ -188,13 +212,13 @@ func (ab *APIBase) ReloadData() error {
 		ab.logger.Errorf("failed to read configuration file: %v", err)
 		return err
 	}
+
 	if err := viper.Unmarshal(&data); err != nil {
 		ab.logger.Errorf("failed to unmarshal config data: %v", err)
 		return err
 	}
 	ab.data = data
 
-	// computes checksum on config data
 	hash := sha256.Sum256(fileData)
 	ab.data.Checksum = hex.EncodeToString(hash[:])
 
@@ -251,7 +275,7 @@ func FromEnvFile(file string) (*APIConfig, error) {
 // This will initialise db connection and logger only. This is called while
 // running db migration.
 func APIBaseFromEnv() (*APIBase, error) {
-	// load from .env.dev file for development but skip if not found
+	// load from .env.dev file for development but   if not found
 	return APIBaseFromEnvFile(".env.dev")
 }
 

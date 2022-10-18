@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -82,6 +83,15 @@ func httpRead(url string) ([]byte, error) {
 func readLocalFile(path string) ([]byte, error) {
 
 	data, err := ioutil.ReadFile(path)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+// readOSFile reads data from a os file
+func readOSFile(path string) ([]byte, error) {
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}

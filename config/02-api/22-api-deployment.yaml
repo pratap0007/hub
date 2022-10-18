@@ -32,6 +32,9 @@ spec:
         - name: catalog-source
           persistentVolumeClaim:
             claimName: tekton-hub-api
+        - name: tekton-hub-config
+          configMap:
+            name: tekton-hub-api
         - name: ssh-creds
           secret:
             secretName: tekton-hub-api-ssh-crds
@@ -40,7 +43,7 @@ spec:
         fsGroup: 101
       containers:
         - name: tekton-hub-api
-          image: quay.io/tekton-hub/api
+          image: docker.io/pratap7/api:v1.10.4
           resources:
             requests:
               cpu: 100m
@@ -50,9 +53,11 @@ spec:
               memory: 500Mi
           volumeMounts:
             - name: catalog-source
-              mountPath: "/tmp/catalog"
+              mountPath: '/tmp/catalog'
             - name: ssh-creds
-              mountPath: "/home/hub/.ssh"
+              mountPath: '/home/hub/.ssh'
+            - name: tekton-hub-config
+              mountPath: '/tmp/config'
           ports:
             - containerPort: 8000
             - containerPort: 4200
@@ -102,11 +107,6 @@ spec:
                 secretKeyRef:
                   name: tekton-hub-db
                   key: POSTGRES_PASSWORD
-            - name: CONFIG_FILE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: tekton-hub-api
-                  key: CONFIG_FILE_URL
             - name: CATALOG_REFRESH_INTERVAL
               valueFrom:
                 configMapKeyRef:
