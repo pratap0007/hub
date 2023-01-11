@@ -90,8 +90,22 @@ type initFn func(*gorm.DB, *log.Logger, *app.Data) error
 func addCategories(db *gorm.DB, log *log.Logger, data *app.Data) error {
 
 	var configCatID []uint
+
+	var ctgList []model.Catalog
+	db.Find(&ctgList)
+
 	for _, c := range data.Categories {
+
 		cat := model.Category{Name: c}
+		// check if a category already exists or not in the table
+		err := db.Where(cat).First(&cat).Error
+		if err == gorm.ErrRecordNotFound && len(ctgList) > 0 {
+			log.Infof("Adding %s a new  category", c)
+			if err := db.Model(&model.Catalog{}).Where("is_category_updated=?", false).Update("is_category_updated", true).Error; err != nil {
+				log.Error(err)
+				return err
+			}
+		}
 		if err := db.Where(cat).FirstOrCreate(&cat).Error; err != nil {
 			log.Error(err)
 			return err
@@ -248,6 +262,18 @@ func (i *Initializer) CreateApiServerAccount(db *gorm.DB, logger *log.Logger) er
 			return err
 		}
 	}
+
+	return nil
+}
+
+// This function creates mapping between newly added category to existing resources
+func createResourcecategoryMapping(db *gorm.DB, log *log.Logger, cat model.Category) error {
+
+	// var rs []model.Resource
+	// if err := r.Db.Find(&rs).Where('r'); err != nil {
+	// 	r.Log.Error(err)
+	// 	return nil, FetchError
+	// }
 
 	return nil
 }

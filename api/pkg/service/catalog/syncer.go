@@ -239,7 +239,7 @@ func (s *syncer) Process() error {
 		return nil
 	}
 
-	if repo.Head() == catalog.SHA {
+	if repo.Head() == catalog.SHA && catalog.IsCategoryUpdated == false {
 		log.Infof("skipping already cloned catalog - %s | sha: %s", catalog.URL, catalog.SHA)
 		setJobState(model.JobDone)
 		return nil
@@ -255,6 +255,11 @@ func (s *syncer) Process() error {
 		return err
 	}
 	setJobState(model.JobDone)
+
+	// Updates is_category_updated field to false in the catalog table
+	if err := db.Model(&model.Catalog{}).Where("name=?", catalog.Name).Update("is_category_updated", false).Error; err != nil {
+		return err
+	}
 	return nil
 }
 

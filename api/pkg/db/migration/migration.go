@@ -45,6 +45,7 @@ func Migrate(api *app.APIBase) error {
 			addCodeColInUserTable(log),
 			addUsersDetailsInAccountTable(log),
 			addSSHURLColumnInCatalogsTable(log),
+			addIsCategoryUpdatedColumnInCatalogTable(log),
 		},
 	)
 

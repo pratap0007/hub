@@ -42,17 +42,18 @@ type (
 
 	Catalog struct {
 		gorm.Model
-		Name       string `gorm:"uniqueIndex:uix_name_org"`
-		Org        string `gorm:"uniqueIndex:uix_name_org"`
-		Provider   string `gorm:"not null;default:github"`
-		Type       string `gorm:"not null;default:null"`
-		URL        string `gorm:"not null;default:null"`
-		SSHURL     string
-		Revision   string `gorm:"not null;default:null"`
-		ContextDir string
-		SHA        string
-		Resources  []Resource
-		Errors     []CatalogError
+		Name              string `gorm:"uniqueIndex:uix_name_org"`
+		Org               string `gorm:"uniqueIndex:uix_name_org"`
+		Provider          string `gorm:"not null;default:github"`
+		Type              string `gorm:"not null;default:null"`
+		URL               string `gorm:"not null;default:null"`
+		SSHURL            string
+		Revision          string `gorm:"not null;default:null"`
+		ContextDir        string
+		SHA               string
+		Resources         []Resource
+		Errors            []CatalogError
+		IsCategoryUpdated bool `gorm:"not null;default:false"`
 	}
 
 	CatalogError struct {
